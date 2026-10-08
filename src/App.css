@@ -29,6 +29,7 @@ body,
   margin: 0;
   min-height: 100%;
   height: 100%;
+  max-width: 100%;
 }
 
 body {
@@ -231,6 +232,7 @@ button {
 /* ===== GAME FRAME ===== */
 .game-screen {
   width: min(960px, 100%);
+  max-width: 100%;
   display: grid;
   gap: 12px;
   justify-items: center;
@@ -240,6 +242,7 @@ button {
   position: relative;
   /* Integer 2× scale of 480×320 when space allows */
   width: min(960px, 100%);
+  max-width: 100%;
   aspect-ratio: 480 / 320;
   max-height: 80vh;
   border: 4px solid #2a3a55;
@@ -247,6 +250,13 @@ button {
     0 0 0 2px #0a0f1a,
     0 16px 40px rgba(0, 0, 0, 0.5);
   background: #000;
+  overflow: hidden;
+}
+
+.game-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -1664,29 +1674,206 @@ button {
 }
 
 @media (max-width: 900px) {
+  html,
+  body,
+  #root {
+    height: 100%;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
   .app-shell {
-    padding: 8px;
-    align-items: start;
+    min-height: 100dvh;
+    height: 100dvh;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    align-items: stretch;
+    justify-items: stretch;
+    overflow: hidden;
+    overflow-x: hidden;
+  }
+
+  /* Title / menus: fill phone, no clipped buttons */
+  .title-screen {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: auto;
+    min-height: 100%;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    border-width: 0;
+    box-shadow: none;
+  }
+
+  .title-content {
+    min-height: 100%;
+    padding: max(16px, env(safe-area-inset-top, 0px)) 16px
+      max(20px, env(safe-area-inset-bottom, 0px));
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .title-eyebrow {
+    margin: 0 0 8px;
+    font-size: 9px;
+  }
+
+  .title-logo > span:first-child {
+    font-size: clamp(34px, 11vw, 52px);
+  }
+
+  .title-logo .subtitle {
+    font-size: clamp(14px, 3.6vw, 18px);
+    letter-spacing: 0.22em;
+  }
+
+  .tagline {
+    margin: 10px 0 18px;
+    font-size: 12px;
+  }
+
+  .title-menu {
+    min-width: min(260px, 100%);
+    width: min(280px, 92%);
+  }
+
+  .title-menu button {
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+
+  .name-form {
+    min-width: min(260px, 92%);
+    width: min(280px, 92%);
+  }
+
+  .app-shell > .overlay-panel {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-width: 0;
+    overflow: auto;
+  }
+
+  /* Play layout: letterboxed canvas + floating touch controls */
+  .game-screen {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    min-height: 0;
+    display: block;
+    overflow: hidden;
   }
 
   .game-frame {
-    max-height: 52vh;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    max-height: none;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-top: env(safe-area-inset-top, 0px);
+    /* Reserve bottom band for floating D-pad / A-B */
+    padding-bottom: calc(176px + env(safe-area-inset-bottom, 0px));
+    background: #05070f;
+  }
+
+  .game-stage {
+    width: min(100%, calc((100dvh - 176px - env(safe-area-inset-bottom, 0px)) * 480 / 320));
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 480 / 320;
+    height: auto;
+  }
+
+  .game-canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mobile-controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    gap: 8px;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 10px 10px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(8, 12, 24, 0.55) 40%,
+      rgba(8, 12, 24, 0.94) 100%
+    );
+    pointer-events: none;
+  }
+
+  .mobile-controls > * {
+    pointer-events: auto;
+  }
+
+  .mobile-controls-collapsed {
+    justify-content: center;
+    background: linear-gradient(180deg, transparent, rgba(5, 8, 16, 0.75));
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
   }
 
   .mobile-controls .dpad {
-    grid-template-columns: repeat(3, 52px);
-    grid-template-rows: repeat(3, 52px);
+    grid-template-columns: repeat(3, clamp(46px, 12.5vw, 58px));
+    grid-template-rows: repeat(3, clamp(46px, 12.5vw, 58px));
+    gap: 3px;
   }
 
   .mobile-controls .dpad-btn {
-    width: 52px;
-    height: 52px;
+    width: clamp(46px, 12.5vw, 58px);
+    height: clamp(46px, 12.5vw, 58px);
+    font-size: 16px;
+    background: linear-gradient(180deg, #3a4d72, #1a2438);
+    border-color: #4a6088;
+  }
+
+  .action-btns {
+    gap: 12px;
+    padding-right: 2px;
   }
 
   .action-btns .btn-a,
   .action-btns .btn-b {
-    width: 60px;
-    height: 60px;
+    width: clamp(54px, 14vw, 66px);
+    height: clamp(54px, 14vw, 66px);
+    font-size: 20px;
+  }
+
+  .hud {
+    top: max(6px, env(safe-area-inset-top, 0px));
+    right: 8px;
+  }
+
+  .dialogue-box {
+    left: 3%;
+    right: 3%;
+    bottom: 3%;
+    min-height: 64px;
+    font-size: 12px;
+  }
+
+  .toast-stack {
+    bottom: 48px;
   }
 
   .split-view {
@@ -1717,5 +1904,30 @@ button {
   .fr-sprite.tech-logo {
     width: 56px !important;
     height: 56px !important;
+  }
+}
+
+/* Very narrow phones: tighten the pad so A/B + D-pad fit */
+@media (max-width: 380px) {
+  .mobile-controls {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  .mobile-mid {
+    gap: 6px;
+    padding-bottom: 4px;
+  }
+
+  .mobile-controls .btn-menu {
+    min-width: 52px;
+    height: 32px;
+    font-size: 10px;
+  }
+
+  .mobile-hide-btn {
+    min-height: 28px;
+    padding: 4px 10px;
+    font-size: 10px;
   }
 }

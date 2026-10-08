@@ -92,167 +92,176 @@ export function GameScreen({ game }: Props) {
   return (
     <div className="game-screen">
       <div className="game-frame">
-        <GameCanvas key={engineVersion} engine={engineRef.current} />
+        <div className="game-stage">
+          <GameCanvas key={engineVersion} engine={engineRef.current} />
 
-        {battleTransition && <div className="battle-transition-flash" aria-hidden />}
+          {battleTransition && <div className="battle-transition-flash" aria-hidden />}
 
-        {(screen === 'dialogue' || game.dialogueOpen) && engineRef.current && (
-          <DialogueBox dialogue={engineRef.current.getDialogueEngine()} />
-        )}
+          {(screen === 'dialogue' || game.dialogueOpen) && engineRef.current && (
+            <DialogueBox dialogue={engineRef.current.getDialogueEngine()} />
+          )}
 
-        {screen === 'battle' && battle && (
-          <BattleUI
-            battle={battle}
-            inventory={player.inventory}
-            onAction={handleBattleAction}
-            levelUpName={
-              levelUpTech ? getTechnology(levelUpTech.definitionId).name : null
-            }
-          />
-        )}
+          {screen === 'battle' && battle && (
+            <BattleUI
+              battle={battle}
+              inventory={player.inventory}
+              onAction={handleBattleAction}
+              levelUpName={
+                levelUpTech ? getTechnology(levelUpTech.definitionId).name : null
+              }
+            />
+          )}
 
-        {screen === 'victory' && victorySummary && (
-          <VictoryPanel summary={victorySummary} onContinue={confirmVictory} />
-        )}
+          {screen === 'victory' && victorySummary && (
+            <VictoryPanel summary={victorySummary} onContinue={confirmVictory} />
+          )}
 
-        {screen === 'heal' && <HealSequence onDone={completeHealSequence} />}
+          {screen === 'heal' && <HealSequence onDone={completeHealSequence} />}
 
-        {screen === 'menu' && (
-          <PauseMenu
-            onResume={resumeGame}
-            onSave={saveGame}
-            onSelect={(id) => {
-              audioManager.playSfx('ui');
-              if (id === 'party') setScreen('party');
-              else if (id === 'techdex') setScreen('techdex');
-              else if (id === 'inventory') setScreen('inventory');
-              else if (id === 'quests') setScreen('quests');
-              else if (id === 'map') setScreen('map');
-              else if (id === 'settings') setScreen('settings');
-              else if (id === 'engineer_card') setScreen('engineer_card');
-            }}
-          />
-        )}
+          {screen === 'menu' && (
+            <PauseMenu
+              onResume={resumeGame}
+              onSave={saveGame}
+              onSelect={(id) => {
+                audioManager.playSfx('ui');
+                if (id === 'party') setScreen('party');
+                else if (id === 'techdex') setScreen('techdex');
+                else if (id === 'inventory') setScreen('inventory');
+                else if (id === 'quests') setScreen('quests');
+                else if (id === 'map') setScreen('map');
+                else if (id === 'settings') setScreen('settings');
+                else if (id === 'engineer_card') setScreen('engineer_card');
+              }}
+            />
+          )}
 
-        {screen === 'inventory' && (
-          <Inventory
-            inventory={player.inventory}
-            onUse={useItem}
-            onDiscard={discardItem}
-            onClose={closeOverlay}
-          />
-        )}
+          {screen === 'inventory' && (
+            <Inventory
+              inventory={player.inventory}
+              onUse={useItem}
+              onDiscard={discardItem}
+              onClose={closeOverlay}
+            />
+          )}
 
-        {screen === 'techdex' && (
-          <TechDex techDex={player.techDex} onClose={closeOverlay} />
-        )}
+          {screen === 'techdex' && (
+            <TechDex techDex={player.techDex} onClose={closeOverlay} />
+          )}
 
-        {screen === 'party' && (
-          <TechnologyParty
-            party={player.party}
-            storage={player.storage}
-            onSwap={swapParty}
-            onToStorage={moveToStorage}
-            onToParty={moveToParty}
-            onUpgrade={tryUpgrade}
-            onUnlearn={unlearnFromParty}
-            onForgetSkill={forgetSkill}
-            onClose={closeOverlay}
-            allowStorage={false}
-          />
-        )}
+          {screen === 'party' && (
+            <TechnologyParty
+              party={player.party}
+              storage={player.storage}
+              onSwap={swapParty}
+              onToStorage={moveToStorage}
+              onToParty={moveToParty}
+              onUpgrade={tryUpgrade}
+              onUnlearn={unlearnFromParty}
+              onForgetSkill={forgetSkill}
+              onClose={closeOverlay}
+              allowStorage={false}
+            />
+          )}
 
-        {screen === 'storage' && (
-          <TechnologyParty
-            party={player.party}
-            storage={player.storage}
-            onSwap={swapParty}
-            onToStorage={moveToStorage}
-            onToParty={moveToParty}
-            onUpgrade={tryUpgrade}
-            onUnlearn={unlearnFromParty}
-            onForgetSkill={forgetSkill}
-            onClose={closeOverlay}
-            allowStorage
-          />
-        )}
+          {screen === 'storage' && (
+            <TechnologyParty
+              party={player.party}
+              storage={player.storage}
+              onSwap={swapParty}
+              onToStorage={moveToStorage}
+              onToParty={moveToParty}
+              onUpgrade={tryUpgrade}
+              onUnlearn={unlearnFromParty}
+              onForgetSkill={forgetSkill}
+              onClose={closeOverlay}
+              allowStorage
+            />
+          )}
 
-        {screen === 'engineer_card' && (
-          <EngineerCard player={player} onClose={closeOverlay} />
-        )}
+          {screen === 'engineer_card' && (
+            <EngineerCard player={player} onClose={closeOverlay} />
+          )}
 
-        {screen === 'quests' && (
-          <QuestPanel player={player} onClose={closeOverlay} onQuiz={submitQuiz} />
-        )}
+          {screen === 'quests' && (
+            <QuestPanel player={player} onClose={closeOverlay} onQuiz={submitQuiz} />
+          )}
 
-        {screen === 'map' && <MiniMap player={player} onClose={closeOverlay} />}
+          {screen === 'map' && <MiniMap player={player} onClose={closeOverlay} />}
 
-        {screen === 'shop' && shopId && (
-          <ShopPanel
-            shopId={shopId}
-            money={player.money}
-            onBuy={buyItem}
-            onClose={() => {
-              setShopId(null);
-              closeOverlay();
-            }}
-          />
-        )}
+          {screen === 'shop' && shopId && (
+            <ShopPanel
+              shopId={shopId}
+              money={player.money}
+              onBuy={buyItem}
+              onClose={() => {
+                setShopId(null);
+                closeOverlay();
+              }}
+            />
+          )}
 
-        {screen === 'challenge' && challenge && (
-          <ChallengePanel
-            challenge={challenge}
-            onAnswer={submitChallengeAnswer}
-            onCancel={() => setScreen('battle')}
-          />
-        )}
+          {screen === 'challenge' && challenge && (
+            <ChallengePanel
+              challenge={challenge}
+              onAnswer={submitChallengeAnswer}
+              onCancel={() => setScreen('battle')}
+            />
+          )}
 
-        {screen === 'gym_puzzle' && gymPuzzle && (
-          <GymPuzzlePanel
-            puzzle={gymPuzzle}
-            onAnswer={submitGymAnswer}
-            onClose={closeOverlay}
-          />
-        )}
+          {screen === 'gym_puzzle' && gymPuzzle && (
+            <GymPuzzlePanel
+              puzzle={gymPuzzle}
+              onAnswer={submitGymAnswer}
+              onClose={closeOverlay}
+            />
+          )}
 
-        {screen === 'settings' && (
-          <SettingsPanel
-            settings={settings}
-            onChange={(s) => {
-              setSettings(s);
-              engineRef.current?.setSettings(s);
-            }}
-            onClose={closeOverlay}
-            onReset={resetSave}
-          />
-        )}
+          {screen === 'settings' && (
+            <SettingsPanel
+              settings={settings}
+              onChange={(s) => {
+                setSettings(s);
+                engineRef.current?.setSettings(s);
+              }}
+              onClose={closeOverlay}
+              onReset={resetSave}
+            />
+          )}
 
-        <div className="hud" aria-label="Status">
-          <span>₿{player.money.toLocaleString()}</span>
-          <button type="button" className="hud-menu" onClick={() => game.openMenu()}>
-            M
-          </button>
-        </div>
-
-        <div className="toast-stack">
-          {toasts.map((t) => (
-            <div key={t.id} className="toast">
-              {t.text}
-            </div>
-          ))}
-        </div>
-
-        {levelUpTech && screen !== 'battle' && screen !== 'victory' && (
-          <div className="level-up-banner floating">
-            LEVEL UP! {getTechnology(levelUpTech.definitionId).name} → Lv
-            {levelUpTech.level}
+          <div className="hud" aria-label="Status">
+            <span>₿{player.money.toLocaleString()}</span>
+            <button type="button" className="hud-menu" onClick={() => game.openMenu()}>
+              M
+            </button>
           </div>
-        )}
+
+          <div className="toast-stack">
+            {toasts.map((t) => (
+              <div key={t.id} className="toast">
+                {t.text}
+              </div>
+            ))}
+          </div>
+
+          {levelUpTech && screen !== 'battle' && screen !== 'victory' && (
+            <div className="level-up-banner floating">
+              LEVEL UP! {getTechnology(levelUpTech.definitionId).name} → Lv
+              {levelUpTech.level}
+            </div>
+          )}
+        </div>
       </div>
 
       <MobileControls
         engine={engineRef.current}
-        visible={shouldShowMobileControls(settings.showMobileControls)}
+        visible={
+          shouldShowMobileControls(settings.showMobileControls) &&
+          screen !== 'battle' &&
+          screen !== 'victory' &&
+          screen !== 'heal' &&
+          screen !== 'challenge' &&
+          screen !== 'gym_puzzle'
+        }
       />
     </div>
   );
