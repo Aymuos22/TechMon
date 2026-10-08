@@ -300,7 +300,7 @@ button {
 
 .toast-stack {
   position: absolute;
-  bottom: 72px;
+  top: max(12px, env(safe-area-inset-top, 0px));
   left: 50%;
   transform: translateX(-50%);
   display: grid;
@@ -1873,7 +1873,7 @@ button {
   }
 
   .toast-stack {
-    bottom: 48px;
+    top: max(8px, env(safe-area-inset-top, 0px));
   }
 
   .split-view {
