@@ -594,4 +594,54 @@ export const gymPuzzles: Record<
       },
     ],
   },
+  vibe: {
+    title: 'Vibe Gym Challenges',
+    battleDialogueId: 'agent_battle',
+    winDialogueId: 'agent_win',
+    questions: [
+      {
+        id: 'gym_vibe_1',
+        question: 'Vibecoding mostly means?',
+        options: [
+          'Writing assembly by hand',
+          'Steering AI tools to ship code fast',
+          'Only using punch cards',
+          'Disabling autocomplete forever',
+        ],
+        correctIndex: 1,
+        explanation: 'Vibecoding is AI-assisted shipping guided by intent/prompts.',
+      },
+      {
+        id: 'gym_vibe_2',
+        question: 'Cursor Agent Mode is strongest when you?',
+        options: [
+          'Never open the diff',
+          'Review multi-file edits before merge',
+          'Commit straight from hallucinations',
+          'Delete tests first',
+        ],
+        correctIndex: 1,
+        explanation: 'Agent power still needs human review of the diff.',
+      },
+      {
+        id: 'gym_vibe_3',
+        question: 'GitHub Copilot primarily lives in the?',
+        options: ['Data center lobby', 'Code editor as pair suggestions', 'HR portal', 'Payroll CSV'],
+        correctIndex: 1,
+        explanation: 'Copilot suggests completions inside the editor.',
+      },
+      {
+        id: 'gym_vibe_4',
+        question: 'Best anti-LayOff stack tip?',
+        options: [
+          'Only update LinkedIn',
+          'Ship with Cursor/Copilot and keep receipts (tests, metrics)',
+          'Ignore production forever',
+          'Print the org chart',
+        ],
+        correctIndex: 1,
+        explanation: 'AI tools help you ship; evidence keeps you employed.',
+      },
+    ],
+  },
 };

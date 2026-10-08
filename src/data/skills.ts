@@ -107,6 +107,16 @@ export const skills: Skill[] = [
   { id: 'token_flood', name: 'Token Flood', description: 'Burn the budget in one call.', type: 'ai', power: 92, accuracy: 85, category: 'special', effect: { kind: 'status', status: 'overloaded', chance: 30 } },
   { id: 'agi_hype', name: 'AGI Hype', description: 'Announce the future, ship a chatbot.', type: 'ai', power: 0, accuracy: 100, category: 'status', effect: { kind: 'stat_mod', stat: 'specialAttack', stages: 2 } },
   { id: 'safety_theater', name: 'Safety Theater', description: 'Pause rivals while you scale.', type: 'ai', power: 60, accuracy: 100, category: 'status', effect: { kind: 'status', status: 'rate_limited', chance: 70 } },
+
+  // Dev tools — Cursor / Copilot (anti-LayOff toolbox)
+  { id: 'tab_complete', name: 'Tab Complete', description: 'Accept the whole diff. Careers included.', type: 'ai', power: 82, accuracy: 100, category: 'special' },
+  { id: 'agent_mode', name: 'Agent Mode', description: 'Let the agent rewrite production while you watch.', type: 'ai', power: 98, accuracy: 90, category: 'special' },
+  { id: 'codebase_index', name: 'Codebase Index', description: 'Know every file they forgot existed.', type: 'ai', power: 70, accuracy: 100, category: 'status', effect: { kind: 'stat_mod', stat: 'specialAttack', stages: 2 } },
+  { id: 'multi_file_edit', name: 'Multi-File Edit', description: 'Touch twelve files. Break three. Ship anyway.', type: 'language', power: 88, accuracy: 92, category: 'special' },
+  { id: 'ghost_text', name: 'Ghost Text', description: 'Suggest the line before they think it.', type: 'ai', power: 78, accuracy: 100, category: 'special' },
+  { id: 'pair_pilot', name: 'Pair Pilot', description: 'Two brains, one keyboard, zero meetings.', type: 'ai', power: 86, accuracy: 95, category: 'special' },
+  { id: 'suggestion_storm', name: 'Suggestion Storm', description: 'Flood HR bots with better code than they cut.', type: 'ai', power: 94, accuracy: 88, category: 'special', effect: { kind: 'status', status: 'overloaded', chance: 35 } },
+  { id: 'workspace_sync', name: 'Workspace Sync', description: 'Heal the stack from the cloud.', type: 'cloud', power: 0, accuracy: 100, category: 'status', effect: { kind: 'heal', percent: 40 } },
 ];
 
 export const skillById: Record<string, Skill> = Object.fromEntries(

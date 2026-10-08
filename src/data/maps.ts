@@ -749,6 +749,11 @@ export function createStackhaven(): MapData {
   fillRect(tiles, 8, 18, 5, 3, TILE.TALL_GRASS);
   fillRect(tiles, 22, 18, 4, 3, TILE.TALL_GRASS);
 
+  // South path → Vibe Causeway → CuckCoder
+  fillRect(tiles, 24, 18, 2, 5, TILE.PATH);
+  setTile(tiles, 24, H - 1, TILE.PATH);
+  setTile(tiles, 25, H - 1, TILE.PATH);
+
   // Cloud Center
   drawRoom(tiles, 4, 5, 5, 4);
   setTile(tiles, 6, 8, TILE.DOOR);
@@ -855,6 +860,24 @@ export function createStackhaven(): MapData {
         toPosition: { x: 6, y: 10 },
         toFacing: 'up',
       },
+      {
+        id: 'to_vibe_road',
+        from: { x: 24, y: H - 1 },
+        toMapId: 'route_vibe',
+        toPosition: { x: 17, y: 1 },
+        toFacing: 'down',
+        requiresFlag: 'badge_frontend',
+        message: 'Vibe Causeway sealed. Earn the Frontend Badge!',
+      },
+      {
+        id: 'to_vibe_road2',
+        from: { x: 25, y: H - 1 },
+        toMapId: 'route_vibe',
+        toPosition: { x: 18, y: 1 },
+        toFacing: 'down',
+        requiresFlag: 'badge_frontend',
+        message: 'Vibe Causeway sealed. Earn the Frontend Badge!',
+      },
     ],
     interactions: [
       { id: 'bug_stackhaven', position: { x: 28, y: 20 }, kind: 'bug', flag: 'bug_stackhaven' },
@@ -870,6 +893,12 @@ export function createStackhaven(): MapData {
         position: { x: 6, y: 17 },
         kind: 'sign',
         text: 'DIVERSITY ARENA — Women in tech. POSH literacy. Real battles.',
+      },
+      {
+        id: 'cuckcoder_sign',
+        position: { x: 23, y: 17 },
+        kind: 'sign',
+        text: 'South → Vibe Causeway → CUCKCODER — Pre-revenue AI SaaS. Maximum hubris.',
       },
       {
         id: 'district_sign_db',

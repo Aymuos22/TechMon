@@ -795,6 +795,442 @@ export function createFaangMart(): MapData {
   return smallMart('faang_mart', 'faang_heights', { x: 18, y: 7 }, 'faang_clerk');
 }
 
+/** North–south connector: Stackhaven → CuckCoder */
+function makeRouteNS(
+  id: string,
+  name: string,
+  north: { mapId: string; x: number; y: number },
+  south: { mapId: string; x: number; y: number; flag?: string; message?: string },
+  encounters: MapData['encounters'],
+  npcIds: string[],
+): MapData {
+  const W = 12;
+  const H = 28;
+  const tiles = createGrid(W, H, TILE.GRASS);
+  drawBorder(tiles, TILE.TREE);
+  fillRect(tiles, 5, 1, 2, H - 2, TILE.PATH);
+  fillRect(tiles, 1, 6, 3, 4, TILE.TALL_GRASS);
+  fillRect(tiles, 8, 12, 3, 4, TILE.TALL_GRASS);
+  fillRect(tiles, 2, 20, 3, 3, TILE.TALL_GRASS);
+  setTile(tiles, 5, 0, TILE.PATH);
+  setTile(tiles, 6, 0, TILE.PATH);
+  setTile(tiles, 5, H - 1, TILE.PATH);
+  setTile(tiles, 6, H - 1, TILE.PATH);
+
+  return {
+    id,
+    name,
+    width: W,
+    height: H,
+    tiles,
+    collision: buildCollision(tiles),
+    transitions: [
+      {
+        id: `${id}_n`,
+        from: { x: 5, y: 0 },
+        toMapId: north.mapId,
+        toPosition: { x: north.x, y: north.y },
+        toFacing: 'up',
+      },
+      {
+        id: `${id}_n2`,
+        from: { x: 6, y: 0 },
+        toMapId: north.mapId,
+        toPosition: { x: north.x, y: north.y },
+        toFacing: 'up',
+      },
+      {
+        id: `${id}_s`,
+        from: { x: 5, y: H - 1 },
+        toMapId: south.mapId,
+        toPosition: { x: south.x, y: south.y },
+        toFacing: 'down',
+        requiresFlag: south.flag,
+        message: south.message,
+      },
+      {
+        id: `${id}_s2`,
+        from: { x: 6, y: H - 1 },
+        toMapId: south.mapId,
+        toPosition: { x: south.x, y: south.y },
+        toFacing: 'down',
+        requiresFlag: south.flag,
+        message: south.message,
+      },
+    ],
+    interactions: [
+      { id: `${id}_sign`, position: { x: 4, y: 14 }, kind: 'sign', text: name },
+    ],
+    buildings: [],
+    npcIds,
+    music: 'route',
+    theme: 'route',
+    encounters,
+  };
+}
+
+export function createRouteVibe(): MapData {
+  return makeRouteNS(
+    'route_vibe',
+    'Vibe Causeway',
+    { mapId: 'stackhaven', x: 24, y: 22 },
+    { mapId: 'cuckcoder', x: 13, y: 1 },
+    {
+      chance: 0.16,
+      entries: [
+        { technologyId: 'cursor', weight: 25, minLevel: 18, maxLevel: 24 },
+        { technologyId: 'copilot', weight: 25, minLevel: 18, maxLevel: 24 },
+        { technologyId: 'langchain', weight: 20, minLevel: 15, maxLevel: 19 },
+        { technologyId: 'python', weight: 15, minLevel: 13, maxLevel: 17 },
+        { technologyId: 'typescript', weight: 15, minLevel: 14, maxLevel: 18 },
+      ],
+    },
+    ['trainer_vibe_road'],
+  );
+}
+
+export function createCuckCoder(): MapData {
+  const map = makeTown('cuckcoder', 'CuckCoder', 'stackhaven', {
+    buildings: [
+      {
+        bx: 2,
+        by: 2,
+        bw: 5,
+        bh: 4,
+        doorLocalX: 2,
+        toMapId: 'cuck_center',
+        toPos: { x: 5, y: 7 },
+        label: 'Code Center',
+        color: '#e8a0bf',
+      },
+      {
+        bx: 21,
+        by: 2,
+        bw: 5,
+        bh: 4,
+        doorLocalX: 2,
+        toMapId: 'cuck_mart',
+        toPos: { x: 4, y: 6 },
+        label: 'Tech Mart',
+        color: '#2E8B57',
+      },
+      {
+        bx: 2,
+        by: 12,
+        bw: 5,
+        bh: 5,
+        doorLocalX: 2,
+        toMapId: 'yc_f1',
+        toPos: { x: 5, y: 10 },
+        label: 'YC Batch House',
+        color: '#FF6600',
+      },
+      {
+        bx: 11,
+        by: 12,
+        bw: 6,
+        bh: 5,
+        doorLocalX: 3,
+        toMapId: 'vibe_gym',
+        toPos: { x: 5, y: 10 },
+        label: 'Vibe Gym',
+        color: '#9B59B6',
+      },
+      {
+        bx: 20,
+        by: 12,
+        bw: 5,
+        bh: 5,
+        doorLocalX: 2,
+        toMapId: 'lala_arena',
+        toPos: { x: 6, y: 10 },
+        label: 'LALA Company Arena',
+        color: '#F39C12',
+      },
+    ],
+    npcIds: [
+      'vibe_chad',
+      'nocode_nikhil',
+      'saas_sofia',
+      'prompt_perry',
+      'trainer_cuck_street',
+    ],
+    encounters: {
+      chance: 0.12,
+      entries: [
+        { technologyId: 'cursor', weight: 28, minLevel: 22, maxLevel: 28 },
+        { technologyId: 'copilot', weight: 28, minLevel: 22, maxLevel: 28 },
+        { technologyId: 'langchain', weight: 18, minLevel: 16, maxLevel: 22 },
+        { technologyId: 'typescript', weight: 14, minLevel: 15, maxLevel: 20 },
+        { technologyId: 'claude', weight: 12, minLevel: 20, maxLevel: 26 },
+      ],
+    },
+  });
+
+  // North exit back to Vibe Causeway
+  setTile(map.tiles, 12, 0, TILE.PATH);
+  setTile(map.tiles, 13, 0, TILE.PATH);
+  setTile(map.tiles, 14, 0, TILE.PATH);
+  fillRect(map.tiles, 12, 1, 3, 2, TILE.PATH);
+  map.collision = buildCollision(map.tiles);
+  map.transitions.push(
+    {
+      id: 'cuck_north',
+      from: { x: 12, y: 0 },
+      toMapId: 'route_vibe',
+      toPosition: { x: 5, y: 26 },
+      toFacing: 'up',
+    },
+    {
+      id: 'cuck_north2',
+      from: { x: 13, y: 0 },
+      toMapId: 'route_vibe',
+      toPosition: { x: 5, y: 26 },
+      toFacing: 'up',
+    },
+    {
+      id: 'cuck_north3',
+      from: { x: 14, y: 0 },
+      toMapId: 'route_vibe',
+      toPosition: { x: 6, y: 26 },
+      toFacing: 'up',
+    },
+  );
+  const welcome = map.interactions.find((i) => i.id === 'cuckcoder_sign');
+  if (welcome && welcome.kind === 'sign') {
+    welcome.text =
+      'CUCKCODER — Vibe Gym · YC Batch House · LALA Arena. Catch Cursor & Copilot for LayOff Tower.';
+  }
+  map.interactions.push({
+    id: 'cuck_pitch',
+    position: { x: 9, y: 10 },
+    kind: 'inspect',
+    text: 'Pitch deck slide 1/47: "AI-native B2B SaaS for AI-native B2B SaaS." Traction: vibes. Funding: climb YC for real money.',
+    flag: 'inspected_cuck_pitch',
+  });
+  return map;
+}
+
+export function createLalaArena(): MapData {
+  const W = 13;
+  const H = 12;
+  const tiles = createGrid(W, H, TILE.WALL);
+  fillRect(tiles, 1, 1, W - 2, H - 2, TILE.FLOOR);
+  fillRect(tiles, 2, 2, 9, 6, TILE.CARPET);
+  fillRect(tiles, 4, 3, 5, 4, TILE.SAND);
+  setTile(tiles, 6, H - 1, TILE.DOOR);
+  setTile(tiles, 2, 2, TILE.COMPUTER);
+  setTile(tiles, 10, 2, TILE.COMPUTER);
+  setTile(tiles, 6, 2, TILE.SIGN);
+
+  return {
+    id: 'lala_arena',
+    name: 'LALA Company Arena',
+    width: W,
+    height: H,
+    tiles,
+    collision: buildCollision(tiles),
+    transitions: [
+      {
+        id: 'lala_exit',
+        from: { x: 6, y: H - 1 },
+        toMapId: 'cuckcoder',
+        toPosition: { x: 22, y: 17 },
+        toFacing: 'down',
+      },
+    ],
+    interactions: [
+      {
+        id: 'lala_banner',
+        position: { x: 6, y: 2 },
+        kind: 'sign',
+        text: 'LALA COMPANY ARENA — No funding. Pre-revenue. Still look down on people with jobs.',
+      },
+      {
+        id: 'lala_mrr',
+        position: { x: 3, y: 5 },
+        kind: 'sign',
+        text: 'MRR board: $0.00. Footnote: "excluding vibes, LinkedIn impressions, and Discord cope."',
+      },
+      {
+        id: 'lala_yc',
+        position: { x: 9, y: 5 },
+        kind: 'sign',
+        text: 'Rejected by YC 4×. Rebranded as "bootstrapped and intentional." Still haughty.',
+      },
+    ],
+    buildings: [],
+    npcIds: ['lala_founder', 'lala_gtm', 'lala_cursor_kid', 'trainer_lala_boss'],
+    music: 'battle',
+    isInterior: true,
+    parentMapId: 'cuckcoder',
+    theme: 'interior',
+  };
+}
+
+export function createVibeGym(): MapData {
+  return makeInteriorGym('vibe_gym', 'Vibe Gym', 'cuckcoder', { x: 14, y: 17 }, [
+    'gym_agent_npc',
+  ]);
+}
+
+/** YC Batch House — climb 4 floors for a check */
+function makeYcFloor(
+  id: string,
+  name: string,
+  floorLabel: string,
+  opts: {
+    down?: { mapId: string; x: number; y: number };
+    up?: { mapId: string; x: number; y: number };
+    streetExit?: { mapId: string; x: number; y: number };
+    npcIds: string[];
+    signs?: Array<{ id: string; x: number; y: number; text: string }>;
+  },
+): MapData {
+  const W = 11;
+  const H = 12;
+  const tiles = createGrid(W, H, TILE.WALL);
+  fillRect(tiles, 1, 1, W - 2, H - 2, TILE.FLOOR);
+  fillRect(tiles, 3, 3, 5, 4, TILE.CARPET);
+  setTile(tiles, 2, 2, TILE.COMPUTER);
+  setTile(tiles, 8, 2, TILE.COMPUTER);
+  setTile(tiles, 5, 2, TILE.SIGN);
+
+  const transitions: MapData['transitions'] = [];
+  if (opts.streetExit) {
+    setTile(tiles, 5, H - 1, TILE.DOOR);
+    transitions.push({
+      id: `${id}_street`,
+      from: { x: 5, y: H - 1 },
+      toMapId: opts.streetExit.mapId,
+      toPosition: { x: opts.streetExit.x, y: opts.streetExit.y },
+      toFacing: 'down',
+    });
+  }
+  if (opts.down) {
+    setTile(tiles, 2, H - 2, TILE.DOOR);
+    transitions.push({
+      id: `${id}_down`,
+      from: { x: 2, y: H - 2 },
+      toMapId: opts.down.mapId,
+      toPosition: { x: opts.down.x, y: opts.down.y },
+      toFacing: 'down',
+    });
+  }
+  if (opts.up) {
+    setTile(tiles, 8, 1, TILE.DOOR);
+    transitions.push({
+      id: `${id}_up`,
+      from: { x: 8, y: 1 },
+      toMapId: opts.up.mapId,
+      toPosition: { x: opts.up.x, y: opts.up.y },
+      toFacing: 'up',
+    });
+  }
+
+  const interactions: MapData['interactions'] = [
+    {
+      id: `${id}_banner`,
+      position: { x: 5, y: 2 },
+      kind: 'sign',
+      text: floorLabel,
+    },
+    ...(opts.signs ?? []).map((s) => ({
+      id: s.id,
+      position: { x: s.x, y: s.y },
+      kind: 'sign' as const,
+      text: s.text,
+    })),
+  ];
+
+  return {
+    id,
+    name,
+    width: W,
+    height: H,
+    tiles,
+    collision: buildCollision(tiles),
+    transitions,
+    interactions,
+    buildings: [],
+    npcIds: opts.npcIds,
+    music: 'city',
+    isInterior: true,
+    parentMapId: 'cuckcoder',
+    theme: 'interior',
+  };
+}
+
+export function createYcF1(): MapData {
+  return makeYcFloor('yc_f1', 'YC Floor 1', 'YC F1 — LOBBY. Orange couch. Anxiety. Stairs up → Interview.', {
+    streetExit: { mapId: 'cuckcoder', x: 4, y: 17 },
+    up: { mapId: 'yc_f2', x: 2, y: 9 },
+    npcIds: ['yc_f1_greeter', 'trainer_yc_f1'],
+    signs: [
+      {
+        id: 'yc_f1_rules',
+        x: 3,
+        y: 5,
+        text: 'Batch rules: ship weekly, talk to users, ignore LinkedIn until Demo Day.',
+      },
+    ],
+  });
+}
+
+export function createYcF2(): MapData {
+  return makeYcFloor('yc_f2', 'YC Floor 2', 'YC F2 — OFFICE HOURS. Bring metrics or vibes (preferably metrics).', {
+    down: { mapId: 'yc_f1', x: 8, y: 2 },
+    up: { mapId: 'yc_f3', x: 2, y: 9 },
+    npcIds: ['yc_f2_mentor', 'trainer_yc_f2'],
+    signs: [
+      {
+        id: 'yc_f2_tip',
+        x: 7,
+        y: 5,
+        text: 'Tip: "AI wrapper" is fine if retention isn\'t a hallucination.',
+      },
+    ],
+  });
+}
+
+export function createYcF3(): MapData {
+  return makeYcFloor('yc_f3', 'YC Floor 3', 'YC F3 — PARTNER REVIEWS. They\'ve heard your pitch 400 times today.', {
+    down: { mapId: 'yc_f2', x: 8, y: 2 },
+    up: { mapId: 'yc_f4', x: 2, y: 9 },
+    npcIds: ['yc_f3_gp', 'trainer_yc_f3'],
+    signs: [
+      {
+        id: 'yc_f3_warn',
+        x: 3,
+        y: 5,
+        text: 'Warning: Saying "we\'ll figure out monetization later" resets you to Floor 1 spiritually.',
+      },
+    ],
+  });
+}
+
+export function createYcF4(): MapData {
+  return makeYcFloor('yc_f4', 'YC Floor 4', 'YC F4 — PARTNER DESK. Get backed. Get paid. Then go crush LayOff Tower.', {
+    down: { mapId: 'yc_f3', x: 8, y: 2 },
+    npcIds: ['yc_partner'],
+    signs: [
+      {
+        id: 'yc_f4_check',
+        x: 7,
+        y: 5,
+        text: 'Standard deal energy: large check, orange logo, infinite Slack.',
+      },
+    ],
+  });
+}
+
+export function createCuckCenter(): MapData {
+  return smallCenter('cuck_center', 'cuckcoder', { x: 4, y: 6 }, 'cuck_nurse');
+}
+export function createCuckMart(): MapData {
+  return smallMart('cuck_mart', 'cuckcoder', { x: 23, y: 6 }, 'cuck_clerk');
+}
+
 export const expansionMaps: MapData[] = [
   createRouteOps(),
   createContainerCove(),
@@ -816,4 +1252,14 @@ export const expansionMaps: MapData[] = [
   createFaangCenter(),
   createFaangMart(),
   createFaangGym(),
+  createRouteVibe(),
+  createCuckCoder(),
+  createCuckCenter(),
+  createCuckMart(),
+  createLalaArena(),
+  createVibeGym(),
+  createYcF1(),
+  createYcF2(),
+  createYcF3(),
+  createYcF4(),
 ];

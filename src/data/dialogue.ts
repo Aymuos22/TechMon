@@ -1436,6 +1436,317 @@ export const dialogues: Record<string, DialogueNode[]> = {
     },
   ],
 
+  // ——— CuckCoder / vibecoding ———
+  vibe_chad: [
+    {
+      id: 'vc_1',
+      speaker: 'Vibe Chad',
+      text: 'Bro I don\'t "write code." I vibecode. Cursor, Copilot, v0 — my IDE is a moodboard.',
+      nextId: 'vc_2',
+    },
+    {
+      id: 'vc_2',
+      speaker: 'Vibe Chad',
+      text: 'Catch Cursor & Copilot in the grass. They melt LayOff Tower. Or climb YC for freebies + ₿50k.',
+    },
+  ],
+  nocode_nikhil: [
+    {
+      id: 'nn_1',
+      speaker: 'Nikhil',
+      text: 'I\'m a No-Code SDE. Title on LinkedIn. Stack is Bubble + ChatGPT + hubris.',
+      nextId: 'nn_2',
+    },
+    {
+      id: 'nn_2',
+      speaker: 'Nikhil',
+      text: 'Building an AI B2B SaaS. Zero funding. Pre-revenue. Still too important to reply to recruiters.',
+      nextId: 'nn_3',
+    },
+    {
+      id: 'nn_3',
+      speaker: 'Nikhil',
+      text: 'You still write loops by hand? Cute. I\'m disrupting "software engineering" as a concept.',
+    },
+  ],
+  saas_sofia: [
+    {
+      id: 'ss_1',
+      speaker: 'Sofia',
+      text: 'Our AI-native B2B SaaS will 10× your pipeline. We have no customers. That\'s focus.',
+      nextId: 'ss_2',
+    },
+    {
+      id: 'ss_2',
+      speaker: 'Sofia',
+      text: 'No funding either — VCs "didn\'t get the vision." Translation: we have a Notion and a logo.',
+      nextId: 'ss_3',
+    },
+    {
+      id: 'ss_3',
+      speaker: 'Sofia',
+      text: 'Anyway, I wouldn\'t take a WITCH offer. I\'m founder-coded. Pre-revenue founders > salaried mortals.',
+    },
+  ],
+  prompt_perry: [
+    {
+      id: 'pp_1',
+      speaker: 'Perry',
+      text: 'Prompt engineering is the new systems design. I spent three hours tuning "be concise."',
+      nextId: 'pp_2',
+    },
+    {
+      id: 'pp_2',
+      speaker: 'Perry',
+      text: 'SDEs are cooked. Why hire someone who greps when the model hallucinates with confidence?',
+    },
+  ],
+  trainer_vibe_road: [
+    {
+      id: 'tvr_1',
+      speaker: 'Prompt Intern',
+      text: 'I accept-all\'d 400 lines of AI output. Battle me before the merge conflicts arrive.',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_vibe_road' } },
+        { label: 'Maybe later', nextId: 'tvr_no' },
+      ],
+    },
+    { id: 'tvr_no', speaker: 'Prompt Intern', text: 'Fine. I\'ll go regenerate the README again.' },
+  ],
+  trainer_cuck_street: [
+    {
+      id: 'tcs_1',
+      speaker: 'No-Code SDE',
+      text: 'I don\'t need a CS degree. I need ARR. We have neither. Still battling though.',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_cuck_street' } },
+        { label: 'Pass', nextId: 'tcs_no' },
+      ],
+    },
+    { id: 'tcs_no', speaker: 'No-Code SDE', text: 'Typical employed energy. Soft.' },
+  ],
+  lala_founder: [
+    {
+      id: 'lf_1',
+      speaker: 'Founder Lala',
+      text: 'Welcome to LALA Company Arena. We\'re a family of AI founders. No funding. All ego.',
+      nextId: 'lf_2',
+    },
+    {
+      id: 'lf_2',
+      speaker: 'Founder Lala',
+      text: 'Pre-revenue is a feature. It means we haven\'t sold out. Also means we haven\'t sold anything.',
+    },
+  ],
+  lala_gtm: [
+    {
+      id: 'lg_1',
+      speaker: 'GTM Guru',
+      text: 'My GTM motion is LinkedIn thought leadership and cold DMs that say "quick thought."',
+      nextId: 'lg_2',
+    },
+    {
+      id: 'lg_2',
+      speaker: 'GTM Guru',
+      text: 'Pipeline is empty. ICP is "anyone with a credit card." CAC is vibes. LTV is delusion.',
+    },
+  ],
+  lala_cursor_kid: [
+    {
+      id: 'lck_1',
+      speaker: 'Cursor Kid',
+      text: 'I vibecoded our entire backend in one afternoon. It works until you refresh.',
+      nextId: 'lck_2',
+    },
+    {
+      id: 'lck_2',
+      speaker: 'Cursor Kid',
+      text: 'Auth is Copy-Paste from the model. Secrets are in the client. Ship fast, patch never.',
+    },
+  ],
+  trainer_lala_boss: [
+    {
+      id: 'tlb_1',
+      speaker: 'CEO Vibesh',
+      text: 'I\'m CEO of an AI B2B SaaS. Pre-seed energy. Seed attitude. Zero dollars. Kneel.',
+      choices: [
+        {
+          label: 'Battle this nonsense',
+          action: { kind: 'start_battle', trainerId: 'trainer_lala_boss' },
+        },
+        { label: 'Walk away employed', nextId: 'tlb_no' },
+      ],
+    },
+    {
+      id: 'tlb_no',
+      speaker: 'CEO Vibesh',
+      text: 'Go enjoy your salary and dental. Visionaries suffer for the meme.',
+    },
+  ],
+
+  // ——— Vibe Gym ———
+  agent_intro: [
+    {
+      id: 'agent_1',
+      speaker: 'Agent',
+      text: 'I\'m Agent — Vibe Gym Leader. Cursor, Copilot, accept-all energy. Pass my quizzes, then face the agent.',
+      choices: [
+        { label: 'Take the challenge', action: { kind: 'open_gym_puzzle', gymId: 'vibe' } },
+        { label: 'Not ready', nextId: 'agent_wait' },
+      ],
+    },
+    {
+      id: 'agent_wait',
+      speaker: 'Agent',
+      text: 'Come back when your prompt has acceptance criteria.',
+    },
+    {
+      id: 'agent_battle',
+      speaker: 'Agent',
+      text: 'Diff reviewed. Initiating battle!',
+      action: { kind: 'start_battle', trainerId: 'gym_agent' },
+    },
+    {
+      id: 'agent_win',
+      speaker: 'Agent',
+      text: 'You earned the Vibe Badge. Catch Cursor & Copilot outside — they shred LayOff Tower.',
+      action: { kind: 'give_badge', badgeId: 'vibe' },
+    },
+  ],
+
+  // ——— YC Batch House ———
+  yc_f1_greeter: [
+    {
+      id: 'yc1_1',
+      speaker: 'Batch Greeter',
+      text: 'Welcome to YC Batch House. Four floors. Top floor = partner desk = real money.',
+      nextId: 'yc1_2',
+    },
+    {
+      id: 'yc1_2',
+      speaker: 'Batch Greeter',
+      text: 'Stairs are north-east-ish. Trainers gatekeep every level. Bring a pitch and a pulse.',
+    },
+  ],
+  trainer_yc_f1: [
+    {
+      id: 'ty1_1',
+      speaker: 'Batch Hopeful',
+      text: 'My app is an AI wrapper of an AI wrapper. Still applying. Battle for the stairs?',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_yc_f1' } },
+        { label: 'Later', nextId: 'ty1_no' },
+      ],
+    },
+    { id: 'ty1_no', speaker: 'Batch Hopeful', text: 'Cool. I\'ll refine my one-pager.' },
+  ],
+  yc_f2_mentor: [
+    {
+      id: 'yc2_1',
+      speaker: 'Group Partner',
+      text: 'Office hours: What\'s your growth loop? If you say "virality" with no funnel, walk back downstairs.',
+      nextId: 'yc2_2',
+    },
+    {
+      id: 'yc2_2',
+      speaker: 'Group Partner',
+      text: 'Good founders climb. Bad founders LinkedIn-post about climbing.',
+    },
+  ],
+  trainer_yc_f2: [
+    {
+      id: 'ty2_1',
+      speaker: 'Office-Hours Ace',
+      text: 'I survived three office hours. You\'ll survive me. Battle?',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_yc_f2' } },
+        { label: 'Pass', nextId: 'ty2_no' },
+      ],
+    },
+    { id: 'ty2_no', speaker: 'Office-Hours Ace', text: 'Take notes. Come back sharper.' },
+  ],
+  yc_f3_gp: [
+    {
+      id: 'yc3_1',
+      speaker: 'Skeptical GP',
+      text: 'Pre-revenue is fine. Pre-thought is not. Convince me you talk to users.',
+      nextId: 'yc3_2',
+    },
+    {
+      id: 'yc3_2',
+      speaker: 'Skeptical GP',
+      text: 'Partner desk is one floor up. The gatekeeper is meaner than me.',
+    },
+  ],
+  trainer_yc_f3: [
+    {
+      id: 'ty3_1',
+      speaker: 'Partner Gate',
+      text: 'Final filter before the check. No deck, no deal. Battle?',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_yc_f3' } },
+        { label: 'Retreat', nextId: 'ty3_no' },
+      ],
+    },
+    { id: 'ty3_no', speaker: 'Partner Gate', text: 'Then you\'re not ready for Floor 4.' },
+  ],
+  yc_partner: [
+    {
+      id: 'ycp_1',
+      speaker: 'YC Partner',
+      text: 'You climbed all four floors. That\'s more persistence than most "AI SaaS" founders.',
+      nextId: 'ycp_2',
+    },
+    {
+      id: 'ycp_2',
+      speaker: 'YC Partner',
+      text: 'We\'re in. Standard deal energy: a fat check, Cursor, Copilot — go dismantle LayOff Tower.',
+      choices: [
+        { label: 'Accept backing', nextId: 'ycp_pay' },
+        { label: 'Not yet', nextId: 'ycp_wait' },
+      ],
+    },
+    {
+      id: 'ycp_wait',
+      speaker: 'YC Partner',
+      text: 'The term sheet will wait. Barely.',
+    },
+    {
+      id: 'ycp_pay',
+      speaker: 'YC Partner',
+      text: 'Wire hitting. Don\'t spend it all on stickers.',
+      action: { kind: 'give_money', amount: 50000 },
+      nextId: 'ycp_cursor',
+    },
+    {
+      id: 'ycp_cursor',
+      speaker: 'YC Partner',
+      text: 'Here\'s Cursor — agent mode for when HR bots outnumber engineers.',
+      action: { kind: 'give_technology', technologyId: 'cursor', level: 30 },
+      nextId: 'ycp_copilot',
+    },
+    {
+      id: 'ycp_copilot',
+      speaker: 'YC Partner',
+      text: 'And Copilot — pair through the PIP floors. You\'re backed. Make it count.',
+      action: { kind: 'give_technology', technologyId: 'copilot', level: 30 },
+      nextId: 'ycp_flag',
+    },
+    {
+      id: 'ycp_flag',
+      speaker: 'YC Partner',
+      text: 'Welcome to the batch. Now go touch LayOff Tower.',
+      action: { kind: 'set_flag', flag: 'yc_backed', value: true },
+    },
+  ],
+  yc_partner_backed: [
+    {
+      id: 'ycpb_1',
+      speaker: 'YC Partner',
+      text: 'You\'re already backed. Check cashed. Cursor and Copilot delivered. Go ship — or go fight LayOff Tower.',
+    },
+  ],
+
   // ——— Farming life ———
   farm_rancher: [
     {

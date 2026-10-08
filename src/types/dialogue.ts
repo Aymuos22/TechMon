@@ -1,6 +1,8 @@
 export type DialogueAction =
   | { kind: 'give_starter'; technologyIds: string[] }
   | { kind: 'give_item'; itemId: string; quantity: number }
+  | { kind: 'give_money'; amount: number }
+  | { kind: 'give_technology'; technologyId: string; level: number }
   | { kind: 'heal_party' }
   | { kind: 'open_shop'; shopId: string }
   | { kind: 'start_battle'; trainerId: string }

@@ -57,6 +57,14 @@ export const GYM_LEADERS: Record<string, GymLeaderConfig> = {
     battleNodeId: 'leet_battle',
     winNodeId: 'leet_win',
   },
+  vibe: {
+    gymId: 'vibe',
+    trainerId: 'gym_agent',
+    badgeId: 'vibe',
+    dialogueId: 'agent_intro',
+    battleNodeId: 'agent_battle',
+    winNodeId: 'agent_win',
+  },
 };
 
 export const ALL_BADGE_IDS = [
@@ -66,4 +74,5 @@ export const ALL_BADGE_IDS = [
   'legacy',
   'service',
   'faang',
+  'vibe',
 ] as const;

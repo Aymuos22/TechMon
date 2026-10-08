@@ -68,6 +68,11 @@ export const minimapLandmarks: MinimapLandmark[] = [
   { id: 'lm_leet', name: 'Leetcode Gym', mapId: 'faang_gym', kind: 'gym', unlockedBy: 'badge_service' },
   { id: 'lm_layoff', name: 'LayOff Tower', mapId: 'layoff_tower', kind: 'building', unlockedBy: 'badge_faang' },
   { id: 'lm_div', name: 'Diversity Arena', mapId: 'diversity_arena', kind: 'building', unlockedBy: 'badge_frontend' },
+  { id: 'lm_vibe', name: 'Vibe Causeway', mapId: 'route_vibe', kind: 'route', unlockedBy: 'badge_frontend' },
+  { id: 'lm_cuck', name: 'CuckCoder', mapId: 'cuckcoder', kind: 'city', unlockedBy: 'badge_frontend' },
+  { id: 'lm_lala', name: 'LALA Arena', mapId: 'lala_arena', kind: 'building', unlockedBy: 'badge_frontend' },
+  { id: 'lm_vgym', name: 'Vibe Gym', mapId: 'vibe_gym', kind: 'gym', unlockedBy: 'badge_frontend' },
+  { id: 'lm_yc', name: 'YC Batch House', mapId: 'yc_f1', kind: 'building', unlockedBy: 'badge_frontend' },
   { id: 'lm_farm', name: 'Quiet Acre', mapId: 'farm_life', kind: 'route', unlockedBy: 'game_cleared' },
 ];
 
@@ -456,6 +461,77 @@ export const trainers: Record<string, TrainerDef> = {
       { technologyId: 'angular', level: 18 },
     ],
     rewardMoney: 900,
+  },
+  trainer_vibe_road: {
+    id: 'trainer_vibe_road',
+    name: 'Prompt Intern',
+    party: [
+      { technologyId: 'claude', level: 15 },
+      { technologyId: 'javascript', level: 16 },
+    ],
+    rewardMoney: 700,
+  },
+  trainer_cuck_street: {
+    id: 'trainer_cuck_street',
+    name: 'No-Code SDE',
+    party: [
+      { technologyId: 'openai_codex', level: 16 },
+      { technologyId: 'langchain', level: 17 },
+      { technologyId: 'typescript', level: 17 },
+    ],
+    rewardMoney: 850,
+  },
+  trainer_lala_boss: {
+    id: 'trainer_lala_boss',
+    name: 'CEO Vibesh',
+    party: [
+      { technologyId: 'claude', level: 18 },
+      { technologyId: 'openai_codex', level: 19 },
+      { technologyId: 'langgraph', level: 20 },
+    ],
+    rewardMoney: 1400,
+  },
+  gym_agent: {
+    id: 'gym_agent',
+    name: 'Agent',
+    party: [
+      { technologyId: 'copilot', level: 24 },
+      { technologyId: 'typescript', level: 25 },
+      { technologyId: 'langchain', level: 26 },
+      { technologyId: 'cursor', level: 28 },
+    ],
+    rewardMoney: 2800,
+    isGym: true,
+    winDialogueTreeId: 'agent_intro',
+    winDialogueId: 'agent_win',
+  },
+  trainer_yc_f1: {
+    id: 'trainer_yc_f1',
+    name: 'Batch Hopeful',
+    party: [
+      { technologyId: 'javascript', level: 18 },
+      { technologyId: 'react', level: 19 },
+    ],
+    rewardMoney: 800,
+  },
+  trainer_yc_f2: {
+    id: 'trainer_yc_f2',
+    name: 'Office-Hours Ace',
+    party: [
+      { technologyId: 'python', level: 20 },
+      { technologyId: 'copilot', level: 21 },
+    ],
+    rewardMoney: 1000,
+  },
+  trainer_yc_f3: {
+    id: 'trainer_yc_f3',
+    name: 'Partner Gate',
+    party: [
+      { technologyId: 'cursor', level: 22 },
+      { technologyId: 'langchain', level: 23 },
+      { technologyId: 'openai_codex', level: 24 },
+    ],
+    rewardMoney: 1300,
   },
   trainer_farm_a: {
     id: 'trainer_farm_a',

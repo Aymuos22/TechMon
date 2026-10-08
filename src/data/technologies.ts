@@ -812,6 +812,48 @@ export const technologies: TechnologyDefinition[] = [
       },
     ],
   },
+  {
+    id: 'cursor',
+    name: 'Cursor',
+    types: ['ai', 'language'],
+    description: 'Agentic IDE that eats LayOff Tower for breakfast. Tab to accept destiny.',
+    baseStats: { hp: 100, attack: 85, defense: 80, specialAttack: 130, specialDefense: 95, speed: 105 },
+    rarity: 'legendary',
+    skillIds: ['tab_complete', 'agent_mode', 'codebase_index', 'multi_file_edit'],
+    dexNumber: 39,
+    difficulty: 'Mythic',
+    speciality: 'Vibe-to-Prod Pipeline',
+    color: '#000000',
+    challenges: [
+      {
+        question: 'Cursor is best known as a?',
+        options: ['Payroll vendor', 'AI-native code editor / agent IDE', 'HR chatbot', 'Mainframe tape'],
+        correctIndex: 1,
+        explanation: 'Cursor is an AI-first coding environment with agent workflows.',
+      },
+    ],
+  },
+  {
+    id: 'copilot',
+    name: 'Copilot',
+    types: ['ai', 'cloud'],
+    description: 'Pair-programs through PIP season. Ghost text that ghosts HR bots.',
+    baseStats: { hp: 95, attack: 80, defense: 85, specialAttack: 120, specialDefense: 100, speed: 100 },
+    rarity: 'legendary',
+    skillIds: ['ghost_text', 'pair_pilot', 'suggestion_storm', 'workspace_sync'],
+    dexNumber: 40,
+    difficulty: 'Mythic',
+    speciality: 'LayOff Countermeasure',
+    color: '#22A6F2',
+    challenges: [
+      {
+        question: 'GitHub Copilot primarily helps by?',
+        options: ['Running payroll', 'Suggesting and completing code in the editor', 'Facilitating standups', 'Printing badges'],
+        correctIndex: 1,
+        explanation: 'Copilot suggests code completions and pair-programming assistance in the IDE.',
+      },
+    ],
+  },
 ];
 
 export const technologyById: Record<string, TechnologyDefinition> = Object.fromEntries(

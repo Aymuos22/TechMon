@@ -434,6 +434,11 @@ export class GameEngine {
       return;
     }
 
+    if (def.id === 'yc_partner' && this.player.flags.yc_backed) {
+      this.startDialogue('yc_partner_backed');
+      return;
+    }
+
     if (def.interaction?.kind === 'quest_giver') {
       // Turn-in talk already handled above
       if (talkAdvanced) return;
@@ -702,6 +707,48 @@ export class GameEngine {
       case 'give_item': {
         this.addItem(action.itemId, action.quantity);
         this.events.onMessage?.(`Received ${action.itemId.replace(/_/g, ' ')}!`);
+        break;
+      }
+      case 'give_money': {
+        this.player = {
+          ...this.player,
+          money: this.player.money + action.amount,
+        };
+        this.emitPlayer();
+        this.events.onMessage?.(`Received ₿${action.amount.toLocaleString()}!`);
+        break;
+      }
+      case 'give_technology': {
+        const tech = createOwnedTechnology(action.technologyId, action.level);
+        const techDex = { ...this.player.techDex };
+        const entry = techDex[action.technologyId] ?? {
+          discovered: false,
+          registered: false,
+          timesEncountered: 0,
+        };
+        techDex[action.technologyId] = {
+          ...entry,
+          discovered: true,
+          registered: true,
+          timesEncountered: entry.timesEncountered + 1,
+        };
+        const name = getTechnology(action.technologyId).name;
+        if (this.player.party.length < 6) {
+          this.player = {
+            ...this.player,
+            party: [...this.player.party, tech],
+            techDex,
+          };
+          this.events.onMessage?.(`${name} (Lv${action.level}) joined your party!`);
+        } else {
+          this.player = {
+            ...this.player,
+            storage: [...this.player.storage, tech],
+            techDex,
+          };
+          this.events.onMessage?.(`${name} (Lv${action.level}) sent to Tech Storage!`);
+        }
+        this.emitPlayer();
         break;
       }
       case 'heal_party': {
