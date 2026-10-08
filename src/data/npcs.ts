@@ -865,6 +865,29 @@ export const npcs: NPCDefinition[] = [
     interaction: { kind: 'trainer', trainerId: 'trainer_div_sre' },
     sightRange: 3,
   },
+  {
+    id: 'div_crack_kira',
+    name: 'Kira',
+    mapId: 'diversity_arena',
+    position: { x: 3, y: 9 },
+    direction: 'up',
+    color: '#AF7AC5',
+    dialogueId: 'div_crack_kira',
+    movement: { kind: 'horizontal', minX: 2, maxX: 5, intervalMs: 1400 },
+    interaction: { kind: 'dialogue', dialogueId: 'div_crack_kira' },
+  },
+  {
+    id: 'div_crack_reno',
+    name: 'Reno',
+    mapId: 'diversity_arena',
+    position: { x: 9, y: 9 },
+    direction: 'up',
+    color: '#D98880',
+    dialogueId: 'div_crack_reno',
+    movement: { kind: 'static' },
+    interaction: { kind: 'trainer', trainerId: 'trainer_div_crack' },
+    sightRange: 2,
+  },
 
   // ——— LayOff Tower ———
   {

@@ -447,6 +447,16 @@ export const trainers: Record<string, TrainerDef> = {
     ],
     rewardMoney: 1200,
   },
+  trainer_div_crack: {
+    id: 'trainer_div_crack',
+    name: 'Reno',
+    party: [
+      { technologyId: 'javascript', level: 16 },
+      { technologyId: 'salesforce', level: 17 },
+      { technologyId: 'angular', level: 18 },
+    ],
+    rewardMoney: 900,
+  },
   trainer_farm_a: {
     id: 'trainer_farm_a',
     name: 'Weekend Warrior',

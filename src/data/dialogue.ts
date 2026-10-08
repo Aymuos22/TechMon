@@ -1095,6 +1095,12 @@ export const dialogues: Record<string, DialogueNode[]> = {
       id: 'dp_3',
       speaker: 'Priya',
       text: 'Joke: the only mandatory training where people mute AND take notes. Because consequences beat quizzes.',
+      nextId: 'dp_4',
+    },
+    {
+      id: 'dp_4',
+      speaker: 'Priya',
+      text: 'Watch the two crackheads by the south wall. They try to slap POSH on anyone who breathes. False complaints poison the process for real victims — ICC exists for evidence, not vibes.',
     },
   ],
   div_aisha: [
@@ -1181,6 +1187,56 @@ export const dialogues: Record<string, DialogueNode[]> = {
       ],
     },
     { id: 'tds_no', speaker: 'SRE Kavya', text: 'Ack. I\'ll be on standby.' },
+  ],
+
+  div_crack_kira: [
+    {
+      id: 'dck_1',
+      speaker: 'Kira',
+      text: 'You looked at the POSH poster for 0.3 seconds. That\'s lingering. Lingering is intent. Intent is POSH. I\'m drafting the email.',
+      nextId: 'dck_2',
+    },
+    {
+      id: 'dck_2',
+      speaker: 'Kira',
+      text: 'Also you blinked near me. Hostile environment. HR will hear about your eyelids.',
+      nextId: 'dck_3',
+    },
+    {
+      id: 'dck_3',
+      speaker: 'Kira',
+      text: 'Priya says I need "evidence." Evidence is that I felt a vibe. Case closed. (Narrator: case not closed.)',
+    },
+  ],
+  div_crack_reno: [
+    {
+      id: 'dcr_1',
+      speaker: 'Reno',
+      text: 'You disagreed with me in a meeting once. In my head. That\'s retaliation energy. POSH form loading…',
+      nextId: 'dcr_2',
+    },
+    {
+      id: 'dcr_2',
+      speaker: 'Reno',
+      text: 'Said "good morning" too cheerfully. Power imbalance. Said nothing? Silent treatment. Harassment either way. I\'m undefeated at inventing tickets.',
+      choices: [
+        { label: 'Battle this nonsense', action: { kind: 'start_battle', trainerId: 'trainer_div_crack' } },
+        { label: 'Walk away', nextId: 'dcr_no' },
+      ],
+    },
+    {
+      id: 'dcr_no',
+      speaker: 'Reno',
+      text: 'Walking away is abandonment trauma. Adding that to the complaint. /s',
+    },
+  ],
+  trainer_div_crack: [
+    {
+      id: 'tdc_1',
+      speaker: 'Reno',
+      text: 'Fine. If ICC won\'t take "vibes," we settle this the tech way — battle. Still filing afterward.',
+      action: { kind: 'start_battle', trainerId: 'trainer_div_crack' },
+    },
   ],
 
   // ——— Dev jokes throughout the world ———

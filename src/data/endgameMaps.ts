@@ -339,6 +339,12 @@ export function createDiversityArena(): MapData {
         kind: 'sign',
         text: 'Know your ICC (Internal Complaints Committee). Silence helps harassers. Reporting helps teams.',
       },
+      {
+        id: 'div_false_note',
+        position: { x: 6, y: 8 },
+        kind: 'sign',
+        text: 'Notice: Weaponizing POSH for vibes / grudges / "you disagreed with me" wastes ICC time and harms real survivors. Don\'t be Kira or Reno.',
+      },
     ],
     buildings: [],
     npcIds: [
@@ -348,6 +354,8 @@ export function createDiversityArena(): MapData {
       'div_sofia',
       'trainer_div_lead',
       'trainer_div_sre',
+      'div_crack_kira',
+      'div_crack_reno',
     ],
     music: 'battle',
     isInterior: true,
