@@ -424,6 +424,11 @@ export class GameEngine {
       return;
     }
 
+    if (def.id === 'layoff_guide' && this.player.flags.game_cleared) {
+      this.startDialogue('layoff_guide_cleared');
+      return;
+    }
+
     if (def.interaction?.kind === 'shop') {
       this.startDialogue(def.dialogueId);
       return;
@@ -481,7 +486,12 @@ export class GameEngine {
     }
     if (point.kind === 'computer') {
       // Tech Storage terminals (Code Center PC)
-      if (this.player.mapId === 'code_center' || point.id === 'storage_pc') {
+      if (
+        this.player.mapId === 'code_center' ||
+        this.player.mapId === 'farm_hut' ||
+        point.id === 'storage_pc' ||
+        point.id === 'farm_pc'
+      ) {
         this.events.onOpenStorage?.();
         return;
       }
@@ -694,10 +704,18 @@ export class GameEngine {
         break;
       }
       case 'set_flag': {
-        this.player = {
-          ...this.player,
-          flags: { ...this.player.flags, [action.flag]: action.value },
-        };
+        const flags = { ...this.player.flags, [action.flag]: action.value };
+        let achievements = this.player.achievements;
+        if (flags.defeated_dario && flags.defeated_sam && !flags.game_cleared) {
+          flags.game_cleared = true;
+          achievements = [
+            ...new Set([...achievements, 'game_cleared', 'farm_life_unlocked']),
+          ];
+          this.events.onMessage?.(
+            'Both disruptors down! Quiet Acre Farming Life unlocked — north portal.',
+          );
+        }
+        this.player = { ...this.player, flags, achievements };
         this.emitPlayer();
         break;
       }

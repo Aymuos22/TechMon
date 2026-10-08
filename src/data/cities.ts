@@ -17,6 +17,7 @@ import {
   createTournamentArena,
 } from './maps';
 import { expansionMaps } from './worldExpansion';
+import { endgameMaps } from './endgameMaps';
 
 const allMaps: MapData[] = [
   createByteburg(),
@@ -35,6 +36,7 @@ const allMaps: MapData[] = [
   createDatabaseDistrict(),
   createTournamentArena(),
   ...expansionMaps,
+  ...endgameMaps,
 ];
 
 export const mapsById: Record<string, MapData> = Object.fromEntries(
@@ -65,6 +67,8 @@ export const minimapLandmarks: MinimapLandmark[] = [
   { id: 'lm_faang', name: 'FAANG Heights', mapId: 'faang_heights', kind: 'city', unlockedBy: 'badge_service' },
   { id: 'lm_leet', name: 'Leetcode Gym', mapId: 'faang_gym', kind: 'gym', unlockedBy: 'badge_service' },
   { id: 'lm_layoff', name: 'LayOff Tower', mapId: 'layoff_tower', kind: 'building', unlockedBy: 'badge_faang' },
+  { id: 'lm_div', name: 'Diversity Arena', mapId: 'diversity_arena', kind: 'building', unlockedBy: 'badge_frontend' },
+  { id: 'lm_farm', name: 'Quiet Acre', mapId: 'farm_life', kind: 'route', unlockedBy: 'game_cleared' },
 ];
 
 export interface TrainerDef {
@@ -402,5 +406,65 @@ export const trainers: Record<string, TrainerDef> = {
     rewardMoney: 5000,
     winDialogueTreeId: 'sam_intro',
     winDialogueId: 'sam_win',
+  },
+  trainer_layoff_pip: {
+    id: 'trainer_layoff_pip',
+    name: 'PIP Coach',
+    party: [
+      { technologyId: 'java', level: 28 },
+      { technologyId: 'salesforce', level: 29 },
+      { technologyId: 'angular', level: 30 },
+    ],
+    rewardMoney: 2200,
+  },
+  trainer_layoff_rto: {
+    id: 'trainer_layoff_rto',
+    name: 'RTO Enforcer',
+    party: [
+      { technologyId: 'aws', level: 29 },
+      { technologyId: 'docker', level: 30 },
+      { technologyId: 'kubernetes', level: 31 },
+    ],
+    rewardMoney: 2400,
+  },
+  trainer_div_lead: {
+    id: 'trainer_div_lead',
+    name: 'Lead Architect Neha',
+    party: [
+      { technologyId: 'typescript', level: 18 },
+      { technologyId: 'react', level: 19 },
+      { technologyId: 'kubernetes', level: 20 },
+    ],
+    rewardMoney: 1200,
+  },
+  trainer_div_sre: {
+    id: 'trainer_div_sre',
+    name: 'SRE Kavya',
+    party: [
+      { technologyId: 'go', level: 18 },
+      { technologyId: 'redis', level: 19 },
+      { technologyId: 'terraform', level: 20 },
+    ],
+    rewardMoney: 1200,
+  },
+  trainer_farm_a: {
+    id: 'trainer_farm_a',
+    name: 'Weekend Warrior',
+    party: [
+      { technologyId: 'python', level: 50 },
+      { technologyId: 'rust', level: 52 },
+      { technologyId: 'pytorch', level: 55 },
+    ],
+    rewardMoney: 3000,
+  },
+  trainer_farm_b: {
+    id: 'trainer_farm_b',
+    name: 'Homestead Hacker',
+    party: [
+      { technologyId: 'javascript', level: 50 },
+      { technologyId: 'docker', level: 53 },
+      { technologyId: 'aws', level: 55 },
+    ],
+    rewardMoney: 3000,
   },
 };

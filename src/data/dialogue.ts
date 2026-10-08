@@ -816,34 +816,109 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'lg_2',
       speaker: 'Exit Interviewer',
-      text: 'Oracle and Amazon wings have "synergy jokes." Summit floor: Dario Amodei and Sam Altman — they disrupted tech with techs you can\'t catch anywhere else.',
+      text: 'Climb past Oracle, Amazon, Meta, Google jokes. Mid floors: PIP Coach and RTO Enforcer. Summit: Dario (Claude) and Sam (Codex). Beat both to unlock Farming Life upstairs.',
+    },
+  ],
+  layoff_guide_cleared: [
+    {
+      id: 'lgc_1',
+      speaker: 'Exit Interviewer',
+      text: 'You cleared the tower. HR is… impressed. And slightly unemployed.',
+      nextId: 'lgc_2',
+    },
+    {
+      id: 'lgc_2',
+      speaker: 'Exit Interviewer',
+      text: 'Quiet Acre Farming Life is live — endless tall grass, no standups. Portal north of the summit, or I can warp you.',
+      choices: [
+        {
+          label: 'Warp to Quiet Acre',
+          action: { kind: 'teleport', mapId: 'farm_life', x: 14, y: 12 },
+        },
+        { label: 'I\'ll walk', nextId: 'lgc_walk' },
+      ],
+    },
+    {
+      id: 'lgc_walk',
+      speaker: 'Exit Interviewer',
+      text: 'North door at the summit. Pack snacks. Leave your badge.',
     },
   ],
   layoff_oracle_hr: [
     {
       id: 'oh_1',
       speaker: 'Oracle HR Bot',
-      text: 'Your role has been deprecated. Please renew support for your career — list price only.',
+      text: 'Your role was depreciated. Renew career support — list price, no discounts, evergreen contract.',
       nextId: 'oh_2',
     },
     {
       id: 'oh_2',
       speaker: 'Oracle HR Bot',
-      text: 'Larry says hi. Also your badge stops working at 5pm. Cloud time.',
+      text: 'Larry says hi from the yacht. Your badge expires at 5pm. Cloud time. Also Java.',
     },
   ],
   layoff_amazon_hr: [
     {
       id: 'ah_1',
       speaker: 'Amazon HR Bot',
-      text: 'Customer obsession update: customers love lower headcount costs.',
+      text: 'Customer obsession update: customers love lower headcount costs. Leadership Principles™ apply.',
       nextId: 'ah_2',
     },
     {
       id: 'ah_2',
       speaker: 'Amazon HR Bot',
-      text: 'Your PIP includes a two-pizza team. The pizzas already left. So did half the org chart.',
+      text: 'Your PIP includes a two-pizza team. The pizzas left. So did half the org chart. Day one!',
     },
+  ],
+  layoff_meta_hr: [
+    {
+      id: 'mh_1',
+      speaker: 'Meta Efficiency Bot',
+      text: 'Year of Efficiency means fewer humans, more "move fast." Your team moved — out.',
+      nextId: 'mh_2',
+    },
+    {
+      id: 'mh_2',
+      speaker: 'Meta Efficiency Bot',
+      text: 'We\'re connecting the world. Just not your laptop to corp Wi‑Fi anymore.',
+    },
+  ],
+  layoff_google_hr: [
+    {
+      id: 'gh_1',
+      speaker: 'Google Perf Bot',
+      text: 'Your perf packet said "exceeds." Finance said "exceeds budget." Guess who won?',
+      nextId: 'gh_2',
+    },
+    {
+      id: 'gh_2',
+      speaker: 'Google Perf Bot',
+      text: 'Don\'t be evil. Do be efficient. Free snacks remain. Jobs optional.',
+    },
+  ],
+  trainer_layoff_pip: [
+    {
+      id: 'pip_1',
+      speaker: 'PIP Coach',
+      text: 'Welcome to your Performance Improvement Plan. Step 1: battle me. Step 2: cry. Step 3: LinkedIn.',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_layoff_pip' } },
+        { label: 'Decline PIP', nextId: 'pip_no' },
+      ],
+    },
+    { id: 'pip_no', speaker: 'PIP Coach', text: 'Refusal noted. Escalating to calendar spam.' },
+  ],
+  trainer_layoff_rto: [
+    {
+      id: 'rto_1',
+      speaker: 'RTO Enforcer',
+      text: 'Return to office. The badge reader misses you. Also the empty floors. Battle for hybrid?',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_layoff_rto' } },
+        { label: 'I\'m remote forever', nextId: 'rto_no' },
+      ],
+    },
+    { id: 'rto_no', speaker: 'RTO Enforcer', text: 'Camera on. Mute yourself. We\'ll "circle back."' },
   ],
 
   dario_intro: [
@@ -856,7 +931,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'dario_2',
       speaker: 'Dario Amodei',
-      text: 'Constitutional, careful, and absolutely about to ship your job into an artifact. Battle?',
+      text: 'Constitutional, careful, and about to ship your job into an artifact. Battle?',
       choices: [
         { label: 'Challenge Claude', action: { kind: 'start_battle', trainerId: 'villain_dario' } },
         { label: 'Not yet', nextId: 'dario_wait' },
@@ -870,7 +945,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'dario_win',
       speaker: 'Dario Amodei',
-      text: 'Impressive. Anthropic will blog about this with footnotes. Flag: disruptor_dario_down.',
+      text: 'Impressive. If Sam falls too, the Quiet Acre portal opens — go farm in peace.',
       action: { kind: 'set_flag', flag: 'defeated_dario', value: true },
     },
   ],
@@ -884,7 +959,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'sam_2',
       speaker: 'Sam Altman',
-      text: 'OpenAI Codex isn\'t wild-catchable. It\'s exclusive. Like a board seat. Ready?',
+      text: 'OpenAI Codex isn\'t wild-catchable. Exclusive. Like a board seat. Ready?',
       choices: [
         { label: 'Challenge Codex', action: { kind: 'start_battle', trainerId: 'villain_sam' } },
         { label: 'Later', nextId: 'sam_wait' },
@@ -898,9 +973,215 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'sam_win',
       speaker: 'Sam Altman',
-      text: 'You win. We\'ll call it a partnership. Disruptors disrupted — for now.',
+      text: 'You win. Partnership terms: you get Farming Life. We get a blog post. Fair.',
       action: { kind: 'set_flag', flag: 'defeated_sam', value: true },
     },
+  ],
+
+  // ——— Data-center protests ———
+  protest_byteburg: [
+    {
+      id: 'pb_1',
+      speaker: 'Water Watcher',
+      text: 'NO DATA CENTER WITHOUT WATER STUDY! GPUs drink like a stadium. Our taps do not.',
+      nextId: 'pb_2',
+    },
+    {
+      id: 'pb_2',
+      speaker: 'Water Watcher',
+      text: 'They promise "community benefits." Translation: a picnic table and a whitepaper.',
+    },
+  ],
+  protest_byteburg_2: [
+    {
+      id: 'pb2_1',
+      speaker: 'Sign Painter',
+      text: 'My sign says "SERVERS NEED KILOWATTS, KIDS NEED SCHOOLS." HR offered me free cloud credits.',
+      nextId: 'pb2_2',
+    },
+    {
+      id: 'pb2_2',
+      speaker: 'Sign Painter',
+      text: 'I said no. Then they offered a hoodie. Still no. Principles > merch.',
+    },
+  ],
+  protest_stackhaven: [
+    {
+      id: 'ps_1',
+      speaker: 'Noise Protester',
+      text: 'That "low hum" is a diesel backup farm practicing for the apocalypse. And for AI training runs.',
+      nextId: 'ps_2',
+    },
+    {
+      id: 'ps_2',
+      speaker: 'Noise Protester',
+      text: 'Build libraries. Build transit. Don\'t build another windowless temple to latency.',
+    },
+  ],
+  protest_cove: [
+    {
+      id: 'pc_1',
+      speaker: 'Grid Guardian',
+      text: 'Container Cove already orchestrates enough. We don\'t need a hyperscale box sucking the grid dry.',
+      nextId: 'pc_2',
+    },
+    {
+      id: 'pc_2',
+      speaker: 'Grid Guardian',
+      text: 'Pods scale. Power plants do not — overnight. Tell your cloud vendor: not in my bay.',
+    },
+  ],
+
+  // ——— Diversity Arena / POSH ———
+  div_priya: [
+    {
+      id: 'dp_1',
+      speaker: 'Priya',
+      text: 'Welcome to the Diversity Arena. We ship code and standards. POSH is law — not a vibe.',
+      nextId: 'dp_2',
+    },
+    {
+      id: 'dp_2',
+      speaker: 'Priya',
+      text: 'POSH = Prevention of Sexual Harassment at Workplace (India). Every office needs an ICC. Ignorance isn\'t a defense.',
+      nextId: 'dp_3',
+    },
+    {
+      id: 'dp_3',
+      speaker: 'Priya',
+      text: 'Joke: the only mandatory training where people mute AND take notes. Because consequences beat quizzes.',
+    },
+  ],
+  div_aisha: [
+    {
+      id: 'da_1',
+      speaker: 'Aisha',
+      text: 'Consent isn\'t a "culture deck." It\'s: ask, respect the no, don\'t retaliate.',
+      nextId: 'da_2',
+    },
+    {
+      id: 'da_2',
+      speaker: 'Aisha',
+      text: 'If someone reports, believe the process — not the rumor mill. HR gossip is not due diligence.',
+      nextId: 'da_3',
+    },
+    {
+      id: 'da_3',
+      speaker: 'Aisha',
+      text: 'Joke: "We\'re like a family" is not a security model. Families don\'t need ICCs. Companies do.',
+    },
+  ],
+  div_mei: [
+    {
+      id: 'dm_1',
+      speaker: 'Mei',
+      text: 'I debug prod and bias in hiring loops. "Culture fit" often means "clone the interviewer."',
+      nextId: 'dm_2',
+    },
+    {
+      id: 'dm_2',
+      speaker: 'Mei',
+      text: 'POSH tip: screenshots help. So does knowing your ICC contacts before you need them.',
+      nextId: 'dm_3',
+    },
+    {
+      id: 'dm_3',
+      speaker: 'Mei',
+      text: 'Joke: my least favorite sprint goal is "fix harassment training by Friday." Ship respect continuously.',
+    },
+  ],
+  div_sofia: [
+    {
+      id: 'ds_1',
+      speaker: 'Sofia',
+      text: 'Women write kernels, compilers, and incident reports. We also write the complaint when lines are crossed.',
+      nextId: 'ds_2',
+    },
+    {
+      id: 'ds_2',
+      speaker: 'Sofia',
+      text: 'Bystanders matter. If you see it, say it — or you\'re part of the outage.',
+      nextId: 'ds_3',
+    },
+    {
+      id: 'ds_3',
+      speaker: 'Sofia',
+      text: 'Joke: "It was just a joke" is the worst incident postmortem title in history.',
+    },
+  ],
+  trainer_div_lead: [
+    {
+      id: 'tdl_1',
+      speaker: 'Lead Architect Neha',
+      text: 'I design systems that fail gracefully. Harassment should fail closed. Battle after the lesson?',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_div_lead' } },
+        { label: 'Just listening', nextId: 'tdl_no' },
+      ],
+    },
+    {
+      id: 'tdl_no',
+      speaker: 'Lead Architect Neha',
+      text: 'Good. Listening is a seniority signal.',
+    },
+  ],
+  trainer_div_sre: [
+    {
+      id: 'tds_1',
+      speaker: 'SRE Kavya',
+      text: 'On-call taught me escalation paths. POSH has them too — use them. Ready to page me in battle?',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_div_sre' } },
+        { label: 'Not now', nextId: 'tds_no' },
+      ],
+    },
+    { id: 'tds_no', speaker: 'SRE Kavya', text: 'Ack. I\'ll be on standby.' },
+  ],
+
+  // ——— Farming life ———
+  farm_rancher: [
+    {
+      id: 'fr_1',
+      speaker: 'Retired SRE',
+      text: 'You beat the disruptors. Congrats. Out here we farm wild tech — no PIPs, no RTO, no "quick sync."',
+      nextId: 'fr_2',
+    },
+    {
+      id: 'fr_2',
+      speaker: 'Retired SRE',
+      text: 'Tall grass is dense. Levels run high. Heal in the Rest Hut. Stay as long as you want — this is the credits sequence that never ends.',
+    },
+  ],
+  farm_nurse_spot: [
+    {
+      id: 'fns_1',
+      speaker: 'Crop Scout',
+      text: 'Best drop rates after rain. We don\'t have weather yet. Pretend. Walk the grass. Profit.',
+    },
+  ],
+  trainer_farm_a: [
+    {
+      id: 'tfa_1',
+      speaker: 'Weekend Warrior',
+      text: 'I left FAANG for tomatoes and TypeScript. Battle keeps the reflexes sharp.',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_farm_a' } },
+        { label: 'Maybe later', nextId: 'tfa_no' },
+      ],
+    },
+    { id: 'tfa_no', speaker: 'Weekend Warrior', text: 'The compost heap will wait.' },
+  ],
+  trainer_farm_b: [
+    {
+      id: 'tfb_1',
+      speaker: 'Homestead Hacker',
+      text: 'My CI is a scarecrow. My CD is "did the chickens escape." Still want to fight?',
+      choices: [
+        { label: 'Battle', action: { kind: 'start_battle', trainerId: 'trainer_farm_b' } },
+        { label: 'No', nextId: 'tfb_no' },
+      ],
+    },
+    { id: 'tfb_no', speaker: 'Homestead Hacker', text: 'Wise. Chickens have merge conflicts.' },
   ],
 };
 

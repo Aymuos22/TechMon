@@ -393,7 +393,7 @@ export function createContainerCove(): MapData {
         color: '#326CE5',
       },
     ],
-    npcIds: ['cove_sre', 'cove_nurse_spot', 'trainer_cove_yaml'],
+    npcIds: ['cove_sre', 'cove_nurse_spot', 'trainer_cove_yaml', 'protest_cove'],
     encounters: {
       chance: 0.12,
       entries: [
@@ -533,8 +533,8 @@ export function createFaangHeights(): MapData {
     west: { mapId: 'route_faang', x: 34, y: 5 },
     east: {
       mapId: 'layoff_tower',
-      x: 6,
-      y: 20,
+      x: 7,
+      y: 26,
       flag: 'badge_faang',
       message: 'LayOff Tower is invitation-only. Earn the FAANG Badge.',
     },
@@ -733,92 +733,6 @@ export function createFaangMart(): MapData {
   return smallMart('faang_mart', 'faang_heights', { x: 18, y: 7 }, 'faang_clerk');
 }
 
-/** Final dungeon — LayOff Tower */
-export function createLayoffTower(): MapData {
-  const W = 13;
-  const H = 22;
-  const tiles = createGrid(W, H, TILE.WALL_ALT);
-  fillRect(tiles, 1, 1, W - 2, H - 2, TILE.FLOOR_DARK);
-  fillRect(tiles, 5, 1, 3, H - 3, TILE.PATH);
-  setTile(tiles, 6, H - 1, TILE.DOOR);
-  // "floors"
-  for (const y of [5, 9, 13, 17]) {
-    fillRect(tiles, 2, y, 9, 1, TILE.COUNTER);
-    setTile(tiles, 6, y, TILE.PATH);
-  }
-  setTile(tiles, 6, 2, TILE.MACHINE);
-  setTile(tiles, 3, 3, TILE.COMPUTER);
-  setTile(tiles, 9, 3, TILE.COMPUTER);
-
-  return {
-    id: 'layoff_tower',
-    name: 'LayOff Tower',
-    width: W,
-    height: H,
-    tiles,
-    collision: buildCollision(tiles),
-    transitions: [
-      {
-        id: 'layoff_exit',
-        from: { x: 6, y: H - 1 },
-        toMapId: 'faang_heights',
-        toPosition: { x: 26, y: 9 },
-        toFacing: 'down',
-      },
-    ],
-    interactions: [
-      {
-        id: 'oracle_plaque',
-        position: { x: 2, y: 6 },
-        kind: 'sign',
-        text: 'Oracle Wing: "Your job was depreciated. Please renew support."',
-      },
-      {
-        id: 'amazon_plaque',
-        position: { x: 10, y: 6 },
-        kind: 'sign',
-        text: 'Amazon Wing: "Customer obsession includes obsessing over headcount charts."',
-      },
-      {
-        id: 'meta_plaque',
-        position: { x: 2, y: 10 },
-        kind: 'sign',
-        text: 'Meta Wing: "We\'re flattening the org. Also the morale."',
-      },
-      {
-        id: 'google_plaque',
-        position: { x: 10, y: 10 },
-        kind: 'sign',
-        text: 'Google Wing: "Don\'t be evil. Do be efficient. Synonyms TBD."',
-      },
-      {
-        id: 'msft_plaque',
-        position: { x: 2, y: 14 },
-        kind: 'sign',
-        text: 'Microsoft Wing: "Teams will notify you of your exit interview."',
-      },
-      {
-        id: 'summit_sign',
-        position: { x: 6, y: 3 },
-        kind: 'sign',
-        text: 'Summit: Disruptors only. Claude left. Codex right.',
-      },
-    ],
-    buildings: [],
-    npcIds: [
-      'layoff_guide',
-      'layoff_oracle_hr',
-      'layoff_amazon_hr',
-      'villain_dario',
-      'villain_sam',
-    ],
-    music: 'battle',
-    isInterior: true,
-    parentMapId: 'faang_heights',
-    theme: 'interior',
-  };
-}
-
 export const expansionMaps: MapData[] = [
   createRouteOps(),
   createContainerCove(),
@@ -840,5 +754,4 @@ export const expansionMaps: MapData[] = [
   createFaangCenter(),
   createFaangMart(),
   createFaangGym(),
-  createLayoffTower(),
 ];

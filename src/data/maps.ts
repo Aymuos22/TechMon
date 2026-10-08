@@ -433,7 +433,13 @@ export function createByteburg(): MapData {
         { technologyId: 'java', weight: 1, minLevel: 3, maxLevel: 5 },
       ],
     },
-    npcIds: ['trainer_rookie', 'sre_dana', 'byteburg_walker'],
+    npcIds: [
+      'trainer_rookie',
+      'sre_dana',
+      'byteburg_walker',
+      'protest_byteburg',
+      'protest_byteburg_2',
+    ],
     music: 'city',
     theme: 'byteburg',
   };
@@ -768,6 +774,10 @@ export function createStackhaven(): MapData {
   fillRect(tiles, 12, 3, 3, 3, TILE.SAND);
   setTile(tiles, 13, 5, TILE.DOOR);
 
+  // Diversity Arena
+  drawRoom(tiles, 1, 15, 5, 4);
+  setTile(tiles, 3, 18, TILE.DOOR);
+
   // Flowers / district markers
   setTile(tiles, 3, 11, TILE.FLOWER);
   setTile(tiles, 24, 11, TILE.FLOWER);
@@ -835,15 +845,28 @@ export function createStackhaven(): MapData {
         toMapId: 'tournament_arena',
         toPosition: { x: 5, y: 8 },
       },
+      {
+        id: 'to_diversity',
+        from: { x: 3, y: 18 },
+        toMapId: 'diversity_arena',
+        toPosition: { x: 6, y: 10 },
+        toFacing: 'up',
+      },
     ],
     interactions: [
       { id: 'bug_stackhaven', position: { x: 28, y: 20 }, kind: 'bug', flag: 'bug_stackhaven' },
       {
         id: 'chest_sh',
-        position: { x: 3, y: 18 },
+        position: { x: 28, y: 12 },
         kind: 'chest',
         itemId: 'xp_booster',
         flag: 'chest_stackhaven',
+      },
+      {
+        id: 'diversity_sign',
+        position: { x: 6, y: 17 },
+        kind: 'sign',
+        text: 'DIVERSITY ARENA — Women in tech. POSH literacy. Real battles.',
       },
       {
         id: 'district_sign_db',
@@ -940,6 +963,16 @@ export function createStackhaven(): MapData {
         door: { x: 13, y: 5 },
         color: '#c4a574',
       },
+      {
+        id: 'diversity',
+        name: 'Diversity Arena',
+        position: { x: 1, y: 15 },
+        width: 5,
+        height: 4,
+        door: { x: 3, y: 18 },
+        color: '#9B59B6',
+        roofColor: '#6C3483',
+      },
     ],
     encounters: {
       chance: 0.14,
@@ -954,7 +987,13 @@ export function createStackhaven(): MapData {
         { technologyId: 'langchain', weight: 12, minLevel: 13, maxLevel: 17, nightOnly: true },
       ],
     },
-    npcIds: ['oncall_rex', 'trainer_ai', 'trainer_cloud_street', 'trainer_architect'],
+    npcIds: [
+      'oncall_rex',
+      'trainer_ai',
+      'trainer_cloud_street',
+      'trainer_architect',
+      'protest_stackhaven',
+    ],
     music: 'city',
     theme: 'stackhaven',
   };
