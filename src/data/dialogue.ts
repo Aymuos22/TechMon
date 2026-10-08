@@ -1409,6 +1409,32 @@ export const dialogues: Record<string, DialogueNode[]> = {
       text: 'Extramarital offsite: flights booked on corp card, alibi booked on personal. Finance audits receipts. Her open legs get a 200 every time — hearts just get a 404.',
     },
   ],
+  gossip_breakup: [
+    {
+      id: 'gb_1',
+      speaker: 'Watercooler Wei',
+      text: 'Breakups can be brutal…',
+      nextId: 'gb_2',
+    },
+    {
+      id: 'gb_2',
+      speaker: 'Watercooler Wei',
+      text: 'Heard the developer of this game got his heartbroken.',
+    },
+  ],
+  gossip_nandini: [
+    {
+      id: 'gn_1',
+      speaker: 'Tea Tara',
+      text: 'Apparently Nandini was not over her ex and broke the developer\'s heart.',
+      nextId: 'gn_2',
+    },
+    {
+      id: 'gn_2',
+      speaker: 'Tea Tara',
+      text: 'Don\'t look at me like that — I\'m just passing the tea. Wei heard it first.',
+    },
+  ],
 
   // ——— Farming life ———
   farm_rancher: [

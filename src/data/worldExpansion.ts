@@ -551,6 +551,8 @@ export function createServiceSquare(): MapData {
       'service_compliance',
       'joke_standup',
       'joke_affair_2',
+      'gossip_breakup',
+      'gossip_nandini',
     ],
     encounters: {
       chance: 0.1,

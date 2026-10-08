@@ -1197,6 +1197,28 @@ export const npcs: NPCDefinition[] = [
     movement: { kind: 'horizontal', minX: 5, maxX: 9, intervalMs: 1900 },
     interaction: { kind: 'dialogue', dialogueId: 'joke_affair_3' },
   },
+  {
+    id: 'gossip_breakup',
+    name: 'Watercooler Wei',
+    mapId: 'service_square',
+    position: { x: 21, y: 9 },
+    direction: 'right',
+    color: '#C0392B',
+    dialogueId: 'gossip_breakup',
+    movement: { kind: 'static' },
+    interaction: { kind: 'dialogue', dialogueId: 'gossip_breakup' },
+  },
+  {
+    id: 'gossip_nandini',
+    name: 'Tea Tara',
+    mapId: 'service_square',
+    position: { x: 22, y: 9 },
+    direction: 'left',
+    color: '#D35400',
+    dialogueId: 'gossip_nandini',
+    movement: { kind: 'static' },
+    interaction: { kind: 'dialogue', dialogueId: 'gossip_nandini' },
+  },
 ];
 
 export const npcById: Record<string, NPCDefinition> = Object.fromEntries(
