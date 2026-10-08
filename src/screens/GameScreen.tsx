@@ -13,7 +13,7 @@ import { ShopPanel } from '../components/ShopPanel';
 import { ChallengePanel } from '../components/ChallengePanel';
 import { GymPuzzlePanel } from '../components/GymPuzzlePanel';
 import { SettingsPanel } from '../components/SettingsPanel';
-import { MobileControls } from '../components/MobileControls';
+import { MobileControls, shouldShowMobileControls } from '../components/MobileControls';
 import { VictoryPanel } from '../components/VictoryPanel';
 import { HealSequence } from '../components/HealSequence';
 import { EngineerCard } from '../components/EngineerCard';
@@ -46,6 +46,8 @@ export function GameScreen({ game }: Props) {
     swapParty,
     moveToStorage,
     moveToParty,
+    unlearnFromParty,
+    forgetSkill,
     tryUpgrade,
     saveGame,
     resetSave,
@@ -153,6 +155,8 @@ export function GameScreen({ game }: Props) {
             onToStorage={moveToStorage}
             onToParty={moveToParty}
             onUpgrade={tryUpgrade}
+            onUnlearn={unlearnFromParty}
+            onForgetSkill={forgetSkill}
             onClose={closeOverlay}
             allowStorage={false}
           />
@@ -166,6 +170,8 @@ export function GameScreen({ game }: Props) {
             onToStorage={moveToStorage}
             onToParty={moveToParty}
             onUpgrade={tryUpgrade}
+            onUnlearn={unlearnFromParty}
+            onForgetSkill={forgetSkill}
             onClose={closeOverlay}
             allowStorage
           />
@@ -246,10 +252,7 @@ export function GameScreen({ game }: Props) {
 
       <MobileControls
         engine={engineRef.current}
-        visible={
-          settings.showMobileControls ||
-          (typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches)
-        }
+        visible={shouldShowMobileControls(settings.showMobileControls)}
       />
     </div>
   );

@@ -12,6 +12,8 @@ interface Props {
   onToStorage: (index: number) => void;
   onToParty: (index: number) => void;
   onUpgrade: (index: number) => void;
+  onUnlearn: (index: number) => void;
+  onForgetSkill: (partyIndex: number, skillId: string) => void;
   onClose: () => void;
   /** Only true at Code Center Tech Storage terminal */
   allowStorage?: boolean;
@@ -24,6 +26,8 @@ export function TechnologyParty({
   onToStorage,
   onToParty,
   onUpgrade,
+  onUnlearn,
+  onForgetSkill,
   onClose,
   allowStorage = false,
 }: Props) {
@@ -35,6 +39,9 @@ export function TechnologyParty({
           B / Close
         </button>
       </header>
+      <p className="meta party-hint">
+        Tip: click a move to forget it. Unlearn removes the tech from your party.
+      </p>
       <h3>Party ({party.length}/6)</h3>
       <div className="party-grid">
         {party.map((t, i) => {
@@ -57,7 +64,16 @@ export function TechnologyParty({
               <XPBar level={t.level} experience={t.experience} />
               <ul className="skill-mini">
                 {t.skillIds.map((id) => (
-                  <li key={id}>{getSkill(id).name}</li>
+                  <li key={id}>
+                    <button
+                      type="button"
+                      className="skill-forget-btn"
+                      title="Forget this move"
+                      onClick={() => onForgetSkill(i, id)}
+                    >
+                      {getSkill(id).name} ✕
+                    </button>
+                  </li>
                 ))}
               </ul>
               <div className="row-actions">
@@ -73,6 +89,9 @@ export function TechnologyParty({
                 )}
                 <button type="button" onClick={() => onUpgrade(i)}>
                   Upgrade
+                </button>
+                <button type="button" className="danger-btn" onClick={() => onUnlearn(i)}>
+                  Unlearn
                 </button>
               </div>
             </div>

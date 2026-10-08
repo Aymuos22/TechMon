@@ -69,7 +69,7 @@ export function SettingsPanel({ settings, onChange, onClose, onReset }: Props) {
           checked={settings.showMobileControls}
           onChange={(e) => onChange({ ...settings, showMobileControls: e.target.checked })}
         />
-        Show mobile controls
+        Show on-screen buttons (D-pad / A / B / Menu)
       </label>
       {onReset && (
         <button type="button" className="danger" onClick={onReset}>

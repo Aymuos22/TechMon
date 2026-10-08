@@ -345,7 +345,7 @@ function makeCenterMartPair(
 
 /** DevOps town */
 export function createContainerCove(): MapData {
-  return makeTown('container_cove', 'Container Cove', 'stackhaven', {
+  const map = makeTown('container_cove', 'Container Cove', 'stackhaven', {
     west: {
       mapId: 'route_ops',
       x: 34,
@@ -393,7 +393,14 @@ export function createContainerCove(): MapData {
         color: '#326CE5',
       },
     ],
-    npcIds: ['cove_sre', 'cove_nurse_spot', 'trainer_cove_yaml', 'protest_cove'],
+    npcIds: [
+      'cove_sre',
+      'cove_nurse_spot',
+      'trainer_cove_yaml',
+      'protest_cove',
+      'cove_quest_giver',
+      'joke_increment',
+    ],
     encounters: {
       chance: 0.12,
       entries: [
@@ -405,10 +412,18 @@ export function createContainerCove(): MapData {
       ],
     },
   });
+  map.interactions.push({
+    id: 'cove_crash_logs',
+    position: { x: 9, y: 14 },
+    kind: 'inspect',
+    text: 'CrashLoopBackOff × 412. Last state: OOMKilled. heap = 2Gi, limit = 512Mi. Nice.',
+    flag: 'inspected_cove_logs',
+  });
+  return map;
 }
 
 export function createLegacyCrossing(): MapData {
-  return makeTown('legacy_crossing', 'Legacy Crossing', 'byteburg', {
+  const map = makeTown('legacy_crossing', 'Legacy Crossing', 'byteburg', {
     west: { mapId: 'route_legacy', x: 34, y: 5 },
     east: {
       mapId: 'route_service',
@@ -452,7 +467,7 @@ export function createLegacyCrossing(): MapData {
         color: '#005CA5',
       },
     ],
-    npcIds: ['legacy_elder', 'trainer_legacy_batch'],
+    npcIds: ['legacy_elder', 'trainer_legacy_batch', 'legacy_quest_giver', 'joke_weekend'],
     encounters: {
       chance: 0.14,
       entries: [
@@ -463,10 +478,27 @@ export function createLegacyCrossing(): MapData {
       ],
     },
   });
+  map.interactions.push(
+    {
+      id: 'legacy_jcl_board',
+      position: { x: 15, y: 9 },
+      kind: 'inspect',
+      text: 'JCL fragment: //PAYROLL EXEC PGM=COB01  COND=(0,NE)  Last ABEND: S0C7 at offset 0x1A2.',
+      flag: 'inspected_legacy_jcl',
+    },
+    {
+      id: 'legacy_punch_chest',
+      position: { x: 20, y: 15 },
+      kind: 'chest',
+      itemId: 'refactor_token',
+      flag: 'chest_legacy_punch',
+    },
+  );
+  return map;
 }
 
 export function createServiceSquare(): MapData {
-  return makeTown('service_square', 'Service Square', 'byteburg', {
+  const map = makeTown('service_square', 'Service Square', 'byteburg', {
     west: { mapId: 'route_service', x: 34, y: 5 },
     east: {
       mapId: 'route_faang',
@@ -515,6 +547,10 @@ export function createServiceSquare(): MapData {
       'service_cognizant',
       'service_infosys',
       'trainer_service_bench',
+      'service_quest_hr',
+      'service_compliance',
+      'joke_standup',
+      'joke_affair_2',
     ],
     encounters: {
       chance: 0.1,
@@ -526,10 +562,18 @@ export function createServiceSquare(): MapData {
       ],
     },
   });
+  map.interactions.push({
+    id: 'service_timesheet',
+    position: { x: 11, y: 8 },
+    kind: 'inspect',
+    text: 'Timesheet draft: "Architecture alignment — 40h. Deliverable: README.md (1 paragraph)."',
+    flag: 'inspected_timesheet',
+  });
+  return map;
 }
 
 export function createFaangHeights(): MapData {
-  return makeTown('faang_heights', 'FAANG Heights', 'stackhaven', {
+  const map = makeTown('faang_heights', 'FAANG Heights', 'stackhaven', {
     west: { mapId: 'route_faang', x: 34, y: 5 },
     east: {
       mapId: 'layoff_tower',
@@ -573,7 +617,15 @@ export function createFaangHeights(): MapData {
         color: '#FF9900',
       },
     ],
-    npcIds: ['faang_meta', 'faang_amazon', 'faang_google', 'trainer_faang_lc'],
+    npcIds: [
+      'faang_meta',
+      'faang_amazon',
+      'faang_google',
+      'trainer_faang_lc',
+      'faang_quest_giver',
+      'joke_equity',
+      'joke_affair_3',
+    ],
     encounters: {
       chance: 0.12,
       entries: [
@@ -585,6 +637,14 @@ export function createFaangHeights(): MapData {
       ],
     },
   });
+  map.interactions.push({
+    id: 'faang_whiteboard',
+    position: { x: 8, y: 11 },
+    kind: 'inspect',
+    text: 'Whiteboard: "Merge k sorted lists." Marker squeaks. Interviewer: "Yeah, just optimal."',
+    flag: 'inspected_faang_board',
+  });
+  return map;
 }
 
 export function createRouteOps(): MapData {

@@ -15,7 +15,11 @@ export const quests: QuestDefinition[] = [
     reward: {
       xp: 80,
       money: 500,
-      items: [{ itemId: 'api_key', quantity: 1 }, { itemId: 'debug_patch', quantity: 3 }],
+      items: [
+        { itemId: 'api_key', quantity: 1 },
+        { itemId: 'debug_patch', quantity: 3 },
+        { itemId: 'copium', quantity: 2 },
+      ],
     },
   },
   {
@@ -46,7 +50,10 @@ export const quests: QuestDefinition[] = [
     reward: {
       xp: 150,
       money: 1000,
-      items: [{ itemId: 'cloud_credit', quantity: 2 }],
+      items: [
+        { itemId: 'cloud_credit', quantity: 2 },
+        { itemId: 'instant_noodles', quantity: 3 },
+      ],
     },
   },
   {
@@ -63,6 +70,178 @@ export const quests: QuestDefinition[] = [
       xp: 100,
       money: 600,
       items: [{ itemId: 'architecture_token', quantity: 1 }],
+    },
+  },
+
+  // ——— One unique side quest per city ———
+  {
+    id: 'rolling_chaos',
+    name: 'Rolling Chaos',
+    description: 'Container Cove: a Deployment is CrashLoopBackOff. Read logs, diagnose, remediate.',
+    startDialogueId: 'quest_rolling_chaos',
+    steps: [
+      {
+        id: 'read_pod_logs',
+        description: 'Inspect the CrashLoop logs near the gym',
+        kind: 'inspect',
+        targetId: 'cove_crash_logs',
+      },
+      {
+        id: 'diagnose_loop',
+        description: 'Diagnose the CrashLoop cause',
+        kind: 'quiz',
+        quizId: 'crashloop_cause',
+      },
+      {
+        id: 'fix_rollout',
+        description: 'Choose a safe remediation',
+        kind: 'quiz',
+        quizId: 'crashloop_fix',
+      },
+      {
+        id: 'report_mira',
+        description: 'Report back to Cluster Cadet',
+        kind: 'talk',
+        targetId: 'cove_quest_giver',
+      },
+    ],
+    reward: {
+      xp: 160,
+      money: 1200,
+      items: [
+        { itemId: 'cloud_credit', quantity: 2 },
+        { itemId: 'debug_patch', quantity: 3 },
+        { itemId: 'copium', quantity: 3 },
+      ],
+    },
+  },
+  {
+    id: 'green_screen_ghost',
+    name: 'Green Screen Ghost',
+    description: 'Legacy Crossing: recover a lost punch card and calm an ABEND-ing batch.',
+    startDialogueId: 'quest_green_screen',
+    steps: [
+      {
+        id: 'find_punch_card',
+        description: 'Collect the lost punch card from the chest',
+        kind: 'collect',
+        targetId: 'chest_legacy_punch',
+      },
+      {
+        id: 'read_jcl',
+        description: 'Inspect the JCL board in town',
+        kind: 'inspect',
+        targetId: 'legacy_jcl_board',
+      },
+      {
+        id: 'abend_quiz',
+        description: 'Decode the ABEND code',
+        kind: 'quiz',
+        quizId: 'jcl_abend',
+      },
+      {
+        id: 'return_librarian',
+        description: 'Return the card to the Tape Librarian',
+        kind: 'talk',
+        targetId: 'legacy_quest_giver',
+      },
+    ],
+    reward: {
+      xp: 180,
+      money: 1400,
+      items: [
+        { itemId: 'refactor_token', quantity: 2 },
+        { itemId: 'memory_cache', quantity: 2 },
+        { itemId: 'instant_noodles', quantity: 2 },
+      ],
+    },
+  },
+  {
+    id: 'utilization_audit',
+    name: 'Utilization Audit',
+    description: 'Service Square: interview the big-three benches, then pass the billing quiz.',
+    startDialogueId: 'quest_utilization',
+    steps: [
+      {
+        id: 'talk_tcs',
+        description: 'Interview the TCS Associate',
+        kind: 'talk',
+        targetId: 'service_tcs',
+      },
+      {
+        id: 'talk_cog',
+        description: 'Interview the Cognizant Lead',
+        kind: 'talk',
+        targetId: 'service_cognizant',
+      },
+      {
+        id: 'talk_inf',
+        description: 'Interview the Infosys Architect',
+        kind: 'talk',
+        targetId: 'service_infosys',
+      },
+      {
+        id: 'billing_quiz',
+        description: 'Complete the utilization quiz',
+        kind: 'quiz',
+        quizId: 'util_audit',
+      },
+      {
+        id: 'file_audit',
+        description: 'File the audit with Compliance Clerk',
+        kind: 'talk',
+        targetId: 'service_compliance',
+      },
+    ],
+    reward: {
+      xp: 200,
+      money: 1600,
+      items: [
+        { itemId: 'xp_booster', quantity: 1 },
+        { itemId: 'api_key', quantity: 1 },
+        { itemId: 'copium', quantity: 5 },
+      ],
+    },
+  },
+  {
+    id: 'onsite_revenge',
+    name: 'Onsite Revenge',
+    description: 'FAANG Heights: ace the whiteboard, then beat the LC Grinder in battle.',
+    startDialogueId: 'quest_onsite',
+    steps: [
+      {
+        id: 'read_board',
+        description: 'Inspect the outdoor whiteboard',
+        kind: 'inspect',
+        targetId: 'faang_whiteboard',
+      },
+      {
+        id: 'complexity_quiz',
+        description: 'Solve the complexity question',
+        kind: 'quiz',
+        quizId: 'faang_complexity',
+      },
+      {
+        id: 'beat_grinder',
+        description: 'Defeat the LC Grinder in battle',
+        kind: 'battle',
+        targetId: 'trainer_faang_lc',
+      },
+      {
+        id: 'report_host',
+        description: 'Report success to the Shadow Host',
+        kind: 'talk',
+        targetId: 'faang_quest_giver',
+      },
+    ],
+    reward: {
+      xp: 240,
+      money: 2000,
+      items: [
+        { itemId: 'architecture_token', quantity: 1 },
+        { itemId: 'performance_boost', quantity: 2 },
+        { itemId: 'instant_noodles', quantity: 4 },
+      ],
     },
   },
 ];
@@ -143,6 +322,61 @@ export const quizzes: Record<string, QuizQuestion> = {
     ],
     correctIndex: 1,
     explanation: 'Restore capacity, then ship the real fix.',
+  },
+  crashloop_cause: {
+    id: 'crashloop_cause',
+    question: 'Pod logs: OOMKilled every 47s. Most likely cause?',
+    options: [
+      'Wrong CSS theme',
+      'Memory limit too low for the JVM heap',
+      'DNS is case-sensitive',
+      'Helm chart has too many emojis',
+    ],
+    correctIndex: 1,
+    explanation: 'OOMKilled means the container exceeded its memory limit.',
+  },
+  crashloop_fix: {
+    id: 'crashloop_fix',
+    question: 'Safest next step for a CrashLooping rollout?',
+    options: [
+      'kubectl delete cluster',
+      'Rollback the Deployment / raise memory + fix leak',
+      'Ignore and hope',
+      'Scale to 10,000 replicas immediately',
+    ],
+    correctIndex: 1,
+    explanation: 'Rollback restores service; then fix limits and leaks.',
+  },
+  jcl_abend: {
+    id: 'jcl_abend',
+    question: 'Classic ABEND S0C7 usually means?',
+    options: [
+      'Wi-Fi password wrong',
+      'Data exception (bad numeric data)',
+      'Too many microservices',
+      'CSS specificity war',
+    ],
+    correctIndex: 1,
+    explanation: 'S0C7 is a data exception — often bad packed decimal / numeric data.',
+  },
+  util_audit: {
+    id: 'util_audit',
+    question: 'Utilization audit red flag?',
+    options: [
+      'Documented vacation',
+      '40 billable hours on a README rewrite with no ticket',
+      'Pair programming',
+      'Code review time',
+    ],
+    correctIndex: 1,
+    explanation: 'Billing without a ticket / deliverable is the classic red flag.',
+  },
+  faang_complexity: {
+    id: 'faang_complexity',
+    question: 'Merging k sorted lists of total n elements — best typical complexity?',
+    options: ['O(n²)', 'O(n log k)', 'O(k!)', 'O(1) with vibes'],
+    correctIndex: 1,
+    explanation: 'A heap of size k yields O(n log k).',
   },
 };
 

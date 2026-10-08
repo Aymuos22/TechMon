@@ -7,11 +7,16 @@ import { createOwnedTechnology, ensureSkillEP } from '../technologies/Technology
 const LEGACY_SAVE_KEY = 'techmon_save_v1';
 
 export function defaultSettings(): GameSettings {
+  const touchy =
+    typeof window !== 'undefined' &&
+    (window.matchMedia('(pointer: coarse)').matches ||
+      window.matchMedia('(max-width: 900px)').matches ||
+      navigator.maxTouchPoints > 0);
   return {
     musicVolume: 0.5,
     sfxVolume: 0.6,
     textSpeed: 'normal',
-    showMobileControls: false,
+    showMobileControls: touchy,
   };
 }
 

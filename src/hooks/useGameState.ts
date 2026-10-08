@@ -25,7 +25,11 @@ import {
 import { executePlayerAction, resolveEnemyTurn, applyStatStage } from '../game/battle/BattleEngine';
 import type { BattleAction } from '../types/battle';
 import { getTechnology } from '../data/technologies';
-import { completeQuestStep, startQuest } from '../game/quests/QuestEngine';
+import {
+  completeQuestStep,
+  startQuest,
+  formatQuestReward,
+} from '../game/quests/QuestEngine';
 import { gymPuzzles, quizzes, questById } from '../data/quests';
 import { trainers } from '../data/cities';
 import { GYM_LEADERS } from '../data/gymConfig';
@@ -86,6 +90,8 @@ export function useGameState() {
     setToasts((t) => [...t, { id, text }]);
     setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 2800);
   }, []);
+
+  const cheatBuffer = useRef('');
 
   const persist = useCallback(
     (p: PlayerState, w: WorldState, s: GameSettings) => {
@@ -234,6 +240,38 @@ export function useGameState() {
     setPlayer(p);
     engineRef.current?.setPlayer(p);
   }, []);
+
+  /** Cheat: type "darshan" anywhere in-game → party all Lv80 */
+  useEffect(() => {
+    if (!player) return;
+    const onKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key.length !== 1) return;
+      const ch = e.key.toLowerCase();
+      if (!/[a-z]/.test(ch)) {
+        cheatBuffer.current = '';
+        return;
+      }
+      cheatBuffer.current = (cheatBuffer.current + ch).slice(-16);
+      if (!cheatBuffer.current.endsWith('darshan')) return;
+      cheatBuffer.current = '';
+      const boosted = player.party.map((t) => setTechnologyLevel(fullHeal(t), 80));
+      syncPlayerToEngine({ ...player, party: boosted });
+      pushToast('Cheat accepted: party set to Lv80.');
+      audioManager.playSfx('ui');
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [player, pushToast, syncPlayerToEngine]);
 
   const handleBattleAction = useCallback(
     (action: BattleAction) => {
@@ -758,6 +796,59 @@ export function useGameState() {
     [player, pushToast, syncPlayerToEngine],
   );
 
+  /** Permanently remove a technology from the party */
+  const unlearnFromParty = useCallback(
+    (index: number) => {
+      if (!player) return;
+      if (player.party.length <= 1) {
+        pushToast('Keep at least one technology!');
+        return;
+      }
+      const tech = player.party[index];
+      if (!tech) return;
+      const name = getTechnology(tech.definitionId).name;
+      if (
+        typeof window !== 'undefined' &&
+        !window.confirm(`Unlearn ${name} from your party? This cannot be undone.`)
+      ) {
+        return;
+      }
+      const party = player.party.filter((_, i) => i !== index);
+      syncPlayerToEngine({ ...player, party });
+      pushToast(`Unlearned ${name}.`);
+    },
+    [player, pushToast, syncPlayerToEngine],
+  );
+
+  /** Forget one skill / move (keep at least one) */
+  const forgetSkill = useCallback(
+    (partyIndex: number, skillId: string) => {
+      if (!player) return;
+      const tech = player.party[partyIndex];
+      if (!tech) return;
+      if (tech.skillIds.length <= 1) {
+        pushToast('A technology must keep at least one move.');
+        return;
+      }
+      if (!tech.skillIds.includes(skillId)) return;
+      const skillName = skillId.replace(/_/g, ' ');
+      if (
+        typeof window !== 'undefined' &&
+        !window.confirm(`Forget move "${skillName}"?`)
+      ) {
+        return;
+      }
+      const skillIds = tech.skillIds.filter((id) => id !== skillId);
+      const skillEP = { ...tech.skillEP };
+      delete skillEP[skillId];
+      const party = [...player.party];
+      party[partyIndex] = { ...tech, skillIds, skillEP };
+      syncPlayerToEngine({ ...player, party });
+      pushToast(`Forgot ${skillName}.`);
+    },
+    [player, pushToast, syncPlayerToEngine],
+  );
+
   const healParty = useCallback(() => {
     if (!player) return;
     syncPlayerToEngine({
@@ -828,7 +919,9 @@ export function useGameState() {
             p = { ...p, party: [applyXp(p.party[0], result.rewardXp).tech, ...p.party.slice(1)] };
           }
           syncPlayerToEngine(p);
-          if (result.questCompleted) pushToast('Quest complete!');
+          if (result.questCompleted) {
+            pushToast(`Quest complete! Reward: ${formatQuestReward(result)}`);
+          }
           break;
         }
       }
@@ -883,6 +976,8 @@ export function useGameState() {
     swapParty,
     moveToStorage,
     moveToParty,
+    unlearnFromParty,
+    forgetSkill,
     healParty,
     tryUpgrade,
     saveGame,

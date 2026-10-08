@@ -662,6 +662,35 @@ button {
   color: var(--muted);
 }
 
+.skill-mini li {
+  margin: 2px 0;
+}
+
+.skill-forget-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.skill-forget-btn:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.row-actions .danger-btn {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.party-hint {
+  font-size: 11px;
+  margin: 0 0 8px;
+}
+
 .type-tags {
   display: flex;
   flex-wrap: wrap;
@@ -1315,20 +1344,43 @@ button {
 
 /* ===== MOBILE ===== */
 .mobile-controls {
-  display: none;
+  display: flex;
   width: min(960px, 100%);
   justify-content: space-between;
-  align-items: center;
-  padding: 8px 4px;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 6px 14px;
   user-select: none;
+  -webkit-user-select: none;
   touch-action: none;
+  position: relative;
+  z-index: 40;
+}
+
+.mobile-controls-collapsed {
+  justify-content: center;
+  padding-bottom: 10px;
+}
+
+.mobile-show-btn,
+.mobile-hide-btn {
+  min-height: 36px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  background: rgba(20, 28, 46, 0.95);
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
 }
 
 .mobile-controls .dpad {
   display: grid;
+  grid-template-columns: repeat(3, 56px);
+  grid-template-rows: repeat(3, 56px);
   grid-template-areas:
     '. up .'
-    'left . right'
+    'left mid right'
     '. down .';
   gap: 4px;
 }
@@ -1345,32 +1397,93 @@ button {
 .mobile-controls .down {
   grid-area: down;
 }
+.mobile-controls .dpad-center {
+  grid-area: mid;
+  border-radius: 10px;
+  background: rgba(30, 40, 60, 0.55);
+  border: 2px solid rgba(61, 79, 111, 0.5);
+}
 
-.mobile-controls button {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  border: 2px solid var(--border);
-  background: rgba(20, 28, 46, 0.95);
+.mobile-controls .dpad-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  border: 3px solid #2a3a55;
+  background: linear-gradient(180deg, #2a3858, #141c2e);
   color: var(--text);
-  font-size: 16px;
+  font-size: 18px;
+  box-shadow: 0 3px 0 #0a1020;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-controls .dpad-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #0a1020;
+  background: linear-gradient(180deg, #1a2438, #0f1628);
+}
+
+.mobile-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+.mobile-controls .btn-menu {
+  min-width: 64px;
+  height: 36px;
+  border-radius: 999px;
+  border: 2px solid #8a7040;
+  background: linear-gradient(180deg, #f0d78a, #c9a227);
+  color: #2a1e08;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  box-shadow: 0 2px 0 #5a4a20;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-controls .btn-menu:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #5a4a20;
 }
 
 .action-btns {
   display: flex;
-  gap: 12px;
+  gap: 14px;
+  align-items: flex-end;
+  padding-right: 4px;
+}
+
+.action-btns .btn-a,
+.action-btns .btn-b {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid rgba(0, 0, 0, 0.35);
+  font-size: 22px;
+  font-weight: bold;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35);
+  -webkit-tap-highlight-color: transparent;
 }
 
 .action-btns .btn-a {
-  background: #3ecf8e;
+  background: radial-gradient(circle at 35% 30%, #6ef0b0, #2aaa6a 55%, #1d7a4c);
   color: #04120a;
-  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .action-btns .btn-b {
-  background: #5dade2;
+  background: radial-gradient(circle at 35% 30%, #8ec8f0, #3a8fc4 55%, #25648a);
   color: #041018;
-  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.action-btns .btn-a:active,
+.action-btns .btn-b:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
 }
 
 /* ===== GBA-STYLE POLISH ===== */
@@ -1550,18 +1663,30 @@ button {
   padding: 2px 0;
 }
 
-@media (max-width: 768px) {
-  .mobile-controls {
-    display: flex;
-  }
-
+@media (max-width: 900px) {
   .app-shell {
     padding: 8px;
     align-items: start;
   }
 
   .game-frame {
-    max-height: 55vh;
+    max-height: 52vh;
+  }
+
+  .mobile-controls .dpad {
+    grid-template-columns: repeat(3, 52px);
+    grid-template-rows: repeat(3, 52px);
+  }
+
+  .mobile-controls .dpad-btn {
+    width: 52px;
+    height: 52px;
+  }
+
+  .action-btns .btn-a,
+  .action-btns .btn-b {
+    width: 60px;
+    height: 60px;
   }
 
   .split-view {

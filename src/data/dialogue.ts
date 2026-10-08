@@ -390,7 +390,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'api_1',
       speaker: 'SRE Dana',
-      text: 'The checkout API went dark! Inspect the logs near Pipeline Route and fix it.',
+      text: 'Byteburg side quest: the checkout API went dark! Inspect Pipeline Route logs, ace the quizzes, then restart with Nurse Byte.',
       action: { kind: 'start_quest', questId: 'missing_api' },
     },
   ],
@@ -399,10 +399,55 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'out_1',
       speaker: 'On-Call Rex',
-      text: 'Production outage in Stackhaven! Trace CPU, memory, logs, network, and DB.',
+      text: 'Stackhaven side quest: production is on fire! Diagnose the signals, pick a mitigation. No blameless postmortem until you finish.',
       action: { kind: 'start_quest', questId: 'production_outage' },
     },
   ],
+
+  quest_rolling_chaos: [
+    {
+      id: 'rc_1',
+      speaker: 'Cluster Cadet',
+      text: 'Container Cove side quest: payments-api is CrashLoopBackOff. Inspect logs by the gym, answer the quizzes in the Quest menu, then talk to me again.',
+      action: { kind: 'start_quest', questId: 'rolling_chaos' },
+    },
+  ],
+
+  quest_green_screen: [
+    {
+      id: 'gs_1',
+      speaker: 'Tape Librarian',
+      text: 'Legacy Crossing side quest: punch card in the south chest, JCL board in town, ABEND quiz in Quests, then return to me.',
+      action: { kind: 'start_quest', questId: 'green_screen_ghost' },
+    },
+  ],
+
+  quest_utilization: [
+    {
+      id: 'ua_1',
+      speaker: 'Bench HR',
+      text: 'Service Square side quest: interview TCS → Cognizant → Infosys, pass the Quest quiz, then file with the Compliance Clerk.',
+      action: { kind: 'start_quest', questId: 'utilization_audit' },
+    },
+  ],
+
+  quest_onsite: [
+    {
+      id: 'os_1',
+      speaker: 'Shadow Host',
+      text: 'FAANG Heights side quest: inspect the whiteboard, solve complexity in Quests, beat the LC Grinder, then talk to me.',
+      action: { kind: 'start_quest', questId: 'onsite_revenge' },
+    },
+  ],
+
+  service_compliance: [
+    {
+      id: 'sc_1',
+      speaker: 'Compliance Clerk',
+      text: 'If you finished the utilization interviews and quiz, talk to me to file the audit. Otherwise I\'m just a spreadsheet with legs.',
+    },
+  ],
+
 
   route_sign: [
     {
@@ -1136,6 +1181,177 @@ export const dialogues: Record<string, DialogueNode[]> = {
       ],
     },
     { id: 'tds_no', speaker: 'SRE Kavya', text: 'Ack. I\'ll be on standby.' },
+  ],
+
+  // ——— Dev jokes throughout the world ———
+  joke_gf: [
+    {
+      id: 'jgf_1',
+      speaker: 'Relatable Raj',
+      text: 'My girlfriend asked if I love her or the laptop more. I said "it depends on the sprint." She left. Laptop stayed. Reliable.',
+      nextId: 'jgf_2',
+    },
+    {
+      id: 'jgf_2',
+      speaker: 'Relatable Raj',
+      text: 'She wanted a weekend trip. I had a "quick deploy." Relationship status: 502 Bad Gateway.',
+    },
+  ],
+  joke_hair: [
+    {
+      id: 'jh_1',
+      speaker: 'Senior Thinning',
+      text: 'My hairline is doing continuous delivery — always shipping north. Receding like a deprecated API.',
+      nextId: 'jh_2',
+    },
+    {
+      id: 'jh_2',
+      speaker: 'Senior Thinning',
+      text: 'HR said "we value seniority." My mirror said "we value scalp visibility." Both correct.',
+    },
+  ],
+  joke_manager: [
+    {
+      id: 'jm_1',
+      speaker: 'Sync Stan',
+      text: 'My manager schedules a sync to schedule a sync about the sync. Calendar is the real product.',
+      nextId: 'jm_2',
+    },
+    {
+      id: 'jm_2',
+      speaker: 'Sync Stan',
+      text: '"Let\'s take this offline" means "I forgot what I asked." "Circle back" means never. "Thoughts?" means do my job.',
+    },
+  ],
+  joke_physique: [
+    {
+      id: 'jp_1',
+      speaker: 'Ergonomic Ed',
+      text: 'My physique is cloud-native: horizontally scaled waist, vertically challenged cardio. Legs are cold starts.',
+      nextId: 'jp_2',
+    },
+    {
+      id: 'jp_2',
+      speaker: 'Ergonomic Ed',
+      text: 'Gym membership? Unused feature flag. Standing desk? I sit on the floor of despair. Abs are in backlog.',
+    },
+  ],
+  joke_social: [
+    {
+      id: 'js_1',
+      speaker: 'Muted Maya',
+      text: 'Social life went to production once. Then we rolled it back. Friends are now Slack reactions only.',
+      nextId: 'js_2',
+    },
+    {
+      id: 'js_2',
+      speaker: 'Muted Maya',
+      text: 'Party invite: declined. Reason: "monitoring a canary." The canary was my sleep schedule.',
+    },
+  ],
+  joke_increment: [
+    {
+      id: 'ji_1',
+      speaker: 'Banded Bala',
+      text: 'Appraisal: "meets expectations." Increment: meets inflation... halfway. My raise needs a retry with exponential backoff.',
+      nextId: 'ji_2',
+    },
+    {
+      id: 'ji_2',
+      speaker: 'Banded Bala',
+      text: 'They said "we\'re a family." Families don\'t put love in RSUs with a 4-year cliff.',
+    },
+  ],
+  joke_weekend: [
+    {
+      id: 'jw_1',
+      speaker: 'Oncall Oscar',
+      text: 'Weekend plans: pager, noodles, existential dread. My girlfriend thinks "on-call" is a personality. She\'s not wrong.',
+      nextId: 'jw_2',
+    },
+    {
+      id: 'jw_2',
+      speaker: 'Oncall Oscar',
+      text: 'Hairline, physique, social life — all P0s. Manager says prioritize the Jira board. Board says prioritize my tears.',
+    },
+  ],
+  joke_standup: [
+    {
+      id: 'jst_1',
+      speaker: 'Agile Amit',
+      text: 'Standup update: yesterday I worked, today I work, blockers are my will to live. Also manager wants a deck by EOD.',
+      nextId: 'jst_2',
+    },
+    {
+      id: 'jst_2',
+      speaker: 'Agile Amit',
+      text: 'Increment rumor: 4%. My landlord incremented 12%. Diff is my lifestyle.',
+    },
+  ],
+  joke_equity: [
+    {
+      id: 'je_1',
+      speaker: 'Vested Vik',
+      text: 'My social life vested after 4 years — into loneliness with refresh grants. Girlfriend left during lockup. Stock went down. Perfect hedge.',
+      nextId: 'je_2',
+    },
+    {
+      id: 'je_2',
+      speaker: 'Vested Vik',
+      text: 'Manager said "crush your onsite." I crushed my sleep. Hairline filed an RFC to migrate south.',
+    },
+  ],
+  joke_pip: [
+    {
+      id: 'jpip_1',
+      speaker: 'Severed Sam',
+      text: 'PIP stands for Please Ignore Physique — or Performance Improvement Plan. Same ending: LinkedIn "open to work."',
+      nextId: 'jpip_2',
+    },
+    {
+      id: 'jpip_2',
+      speaker: 'Severed Sam',
+      text: 'They took my badge, not my jokes. Girlfriend, hairline, manager, gym, friends, raise — all deprecated. Humor is my LTS.',
+    },
+  ],
+  joke_affair: [
+    {
+      id: 'ja_1',
+      speaker: 'Offsite Omar',
+      text: 'Corporate romance tip: if the junior dev keeps "syncing" after 7pm and never puts it on the calendar, HR already has a ticket. Priority: P0 — she\'s been riding half the eng org since the last offsite.',
+      nextId: 'ja_2',
+    },
+    {
+      id: 'ja_2',
+      speaker: 'Offsite Omar',
+      text: 'She said it was a "working dinner." Expense report said sushi. Husband said "we need to talk." Status: merger blocked by legal… and by every other guy she\'s already fucked in the open floor plan.',
+    },
+  ],
+  joke_affair_2: [
+    {
+      id: 'ja2_1',
+      speaker: 'Slack Sarah',
+      text: 'The company affairs channel isn\'t a Slack channel — it\'s the late-night DMs, the conference hotel, and the wedding ring she leaves in the laptop bag while she\'s getting railed by the next staff eng.',
+      nextId: 'ja2_2',
+    },
+    {
+      id: 'ja2_2',
+      speaker: 'Slack Sarah',
+      text: 'Her LinkedIn: "passionate about mentoring." Mentoring who? Spoiler: every guy with a pulse and a badge. Culture deck still says "integrity." Her body count says otherwise.',
+    },
+  ],
+  joke_affair_3: [
+    {
+      id: 'ja3_1',
+      speaker: 'Policy Priya',
+      text: 'Our handbook bans conflicts of interest. Translation: don\'t date your skip-level unless Legal renames it "strategic partnership." She already fucked her way past three of them.',
+      nextId: 'ja3_2',
+    },
+    {
+      id: 'ja3_2',
+      speaker: 'Policy Priya',
+      text: 'Extramarital offsite: flights booked on corp card, alibi booked on personal. Finance audits receipts. Her open legs get a 200 every time — hearts just get a 404.',
+    },
   ],
 
   // ——— Farming life ———

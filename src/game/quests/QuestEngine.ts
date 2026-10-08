@@ -1,6 +1,23 @@
 import type { PlayerState } from '../../types/player';
 import type { QuestProgress } from '../../types/quest';
 import { questById } from '../../data/quests';
+import { getItem } from '../../data/items';
+
+/** Human-readable reward line for toasts / HUD */
+export function formatQuestReward(result: {
+  rewardXp: number;
+  rewardMoney: number;
+  rewardItems: Array<{ itemId: string; quantity: number }>;
+}): string {
+  const parts: string[] = [];
+  if (result.rewardMoney > 0) parts.push(`₿${result.rewardMoney}`);
+  if (result.rewardXp > 0) parts.push(`${result.rewardXp} XP`);
+  for (const it of result.rewardItems) {
+    const name = getItem(it.itemId).name;
+    parts.push(it.quantity > 1 ? `${name} ×${it.quantity}` : name);
+  }
+  return parts.length > 0 ? parts.join(' · ') : 'bragging rights';
+}
 
 export function startQuest(player: PlayerState, questId: string): PlayerState {
   if (player.completedQuests.includes(questId)) return player;
@@ -102,6 +119,48 @@ export function tryAdvanceQuestByTalk(player: PlayerState, npcId: string): Retur
     if (!def) continue;
     const step = def.steps[aq.stepIndex];
     if (step && step.kind === 'talk' && step.targetId === npcId) {
+      return completeQuestStep(player, aq.questId, step.id);
+    }
+  }
+  return {
+    player,
+    questCompleted: false,
+    rewardXp: 0,
+    rewardMoney: 0,
+    rewardItems: [],
+  };
+}
+
+export function tryAdvanceQuestByCollect(
+  player: PlayerState,
+  collectId: string,
+): ReturnType<typeof completeQuestStep> {
+  for (const aq of player.activeQuests) {
+    const def = questById[aq.questId];
+    if (!def) continue;
+    const step = def.steps[aq.stepIndex];
+    if (step && step.kind === 'collect' && step.targetId === collectId) {
+      return completeQuestStep(player, aq.questId, step.id);
+    }
+  }
+  return {
+    player,
+    questCompleted: false,
+    rewardXp: 0,
+    rewardMoney: 0,
+    rewardItems: [],
+  };
+}
+
+export function tryAdvanceQuestByBattle(
+  player: PlayerState,
+  trainerId: string,
+): ReturnType<typeof completeQuestStep> {
+  for (const aq of player.activeQuests) {
+    const def = questById[aq.questId];
+    if (!def) continue;
+    const step = def.steps[aq.stepIndex];
+    if (step && step.kind === 'battle' && step.targetId === trainerId) {
       return completeQuestStep(player, aq.questId, step.id);
     }
   }

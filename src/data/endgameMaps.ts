@@ -143,6 +143,7 @@ export function createLayoffTower(): MapData {
       'trainer_layoff_rto',
       'villain_dario',
       'villain_sam',
+      'joke_pip',
     ],
     music: 'battle',
     isInterior: true,

@@ -1,3 +1,5 @@
+import { useCallback, useEffect, useState, type MouseEvent, type TouchEvent } from 'react';
+
 interface Props {
   engine: {
     input: {
@@ -8,78 +10,106 @@ interface Props {
   visible: boolean;
 }
 
+type VirtualKey = 'up' | 'down' | 'left' | 'right' | 'confirm' | 'cancel' | 'menu';
+
+function bindHandlers(
+  engine: NonNullable<Props['engine']>,
+  key: VirtualKey,
+) {
+  const onStart = (e: TouchEvent | MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    engine.input.virtualPress(key);
+  };
+  const onEnd = (e: TouchEvent | MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    engine.input.virtualRelease(key);
+  };
+  return {
+    onTouchStart: onStart,
+    onTouchEnd: onEnd,
+    onTouchCancel: onEnd,
+    onMouseDown: onStart,
+    onMouseUp: onEnd,
+    onMouseLeave: onEnd,
+    onContextMenu: (e: MouseEvent) => e.preventDefault(),
+  };
+}
+
 export function MobileControls({ engine, visible }: Props) {
+  const [collapsed, setCollapsed] = useState(false);
+
+  // Release all held keys if controls hide mid-press
+  useEffect(() => {
+    if (!visible || collapsed || !engine) return;
+    return () => {
+      for (const key of ['up', 'down', 'left', 'right', 'confirm', 'cancel', 'menu'] as const) {
+        engine.input.virtualRelease(key);
+      }
+    };
+  }, [visible, collapsed, engine]);
+
+  const toggle = useCallback(() => setCollapsed((c) => !c), []);
+
   if (!visible || !engine) return null;
 
-  const press = (key: string) => () => engine.input.virtualPress(key);
-  const release = (key: string) => () => engine.input.virtualRelease(key);
+  if (collapsed) {
+    return (
+      <div className="mobile-controls mobile-controls-collapsed">
+        <button type="button" className="mobile-show-btn" onClick={toggle}>
+          Show Controls
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="mobile-controls">
-      <div className="dpad">
-        <button
-          type="button"
-          className="up"
-          onTouchStart={press('up')}
-          onTouchEnd={release('up')}
-          onMouseDown={press('up')}
-          onMouseUp={release('up')}
-        >
+    <div className="mobile-controls" aria-label="Touch controls">
+      <div className="dpad" role="group" aria-label="D-pad">
+        <button type="button" className="dpad-btn up" aria-label="Up" {...bindHandlers(engine, 'up')}>
           ▲
         </button>
-        <button
-          type="button"
-          className="left"
-          onTouchStart={press('left')}
-          onTouchEnd={release('left')}
-          onMouseDown={press('left')}
-          onMouseUp={release('left')}
-        >
+        <button type="button" className="dpad-btn left" aria-label="Left" {...bindHandlers(engine, 'left')}>
           ◀
         </button>
-        <button
-          type="button"
-          className="right"
-          onTouchStart={press('right')}
-          onTouchEnd={release('right')}
-          onMouseDown={press('right')}
-          onMouseUp={release('right')}
-        >
+        <span className="dpad-center" aria-hidden />
+        <button type="button" className="dpad-btn right" aria-label="Right" {...bindHandlers(engine, 'right')}>
           ▶
         </button>
-        <button
-          type="button"
-          className="down"
-          onTouchStart={press('down')}
-          onTouchEnd={release('down')}
-          onMouseDown={press('down')}
-          onMouseUp={release('down')}
-        >
+        <button type="button" className="dpad-btn down" aria-label="Down" {...bindHandlers(engine, 'down')}>
           ▼
         </button>
       </div>
-      <div className="action-btns">
-        <button
-          type="button"
-          className="btn-b"
-          onTouchStart={press('cancel')}
-          onTouchEnd={release('cancel')}
-          onMouseDown={press('cancel')}
-          onMouseUp={release('cancel')}
-        >
+
+      <div className="mobile-mid">
+        <button type="button" className="btn-menu" aria-label="Menu" {...bindHandlers(engine, 'menu')}>
+          MENU
+        </button>
+        <button type="button" className="mobile-hide-btn" onClick={toggle}>
+          Hide
+        </button>
+      </div>
+
+      <div className="action-btns" role="group" aria-label="Actions">
+        <button type="button" className="btn-b" aria-label="B / Cancel" {...bindHandlers(engine, 'cancel')}>
           B
         </button>
-        <button
-          type="button"
-          className="btn-a"
-          onTouchStart={press('confirm')}
-          onTouchEnd={release('confirm')}
-          onMouseDown={press('confirm')}
-          onMouseUp={release('confirm')}
-        >
+        <button type="button" className="btn-a" aria-label="A / Confirm" {...bindHandlers(engine, 'confirm')}>
           A
         </button>
       </div>
     </div>
+  );
+}
+
+/** Prefer touch controls on phones / coarse pointers */
+export function shouldShowMobileControls(forced: boolean): boolean {
+  if (forced) return true;
+  if (typeof window === 'undefined') return false;
+  return (
+    window.matchMedia('(max-width: 900px)').matches ||
+    window.matchMedia('(pointer: coarse)').matches ||
+    navigator.maxTouchPoints > 0
   );
 }

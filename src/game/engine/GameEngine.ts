@@ -27,7 +27,10 @@ import {
 import {
   tryAdvanceQuestByFlag,
   tryAdvanceQuestByTalk,
+  tryAdvanceQuestByCollect,
+  tryAdvanceQuestByBattle,
   startQuest,
+  formatQuestReward,
 } from '../quests/QuestEngine';
 
 export type GameMode = 'world' | 'dialogue' | 'battle' | 'menu' | 'transition';
@@ -412,7 +415,9 @@ export class GameEngine {
 
     // Quest talk advance (e.g. Missing API restart step with Nurse Byte)
     const talkResult = tryAdvanceQuestByTalk(this.player, def.id);
-    if (talkResult.player !== this.player || talkResult.questCompleted) {
+    const talkAdvanced =
+      talkResult.player !== this.player || talkResult.questCompleted;
+    if (talkAdvanced) {
       this.applyQuestResult(talkResult);
       if (!talkResult.questCompleted) {
         this.events.onMessage?.('Quest progress updated.');
@@ -426,6 +431,26 @@ export class GameEngine {
 
     if (def.id === 'layoff_guide' && this.player.flags.game_cleared) {
       this.startDialogue('layoff_guide_cleared');
+      return;
+    }
+
+    if (def.interaction?.kind === 'quest_giver') {
+      // Turn-in talk already handled above
+      if (talkAdvanced) return;
+      const qid = def.interaction.questId;
+      if (this.player.completedQuests.includes(qid)) {
+        this.events.onMessage?.(
+          `${def.name}: Side quest already cleared. Go touch grass — or tall grass.`,
+        );
+        return;
+      }
+      if (this.player.activeQuests.some((q) => q.questId === qid)) {
+        this.events.onMessage?.(
+          `${def.name}: Check your Quest menu for the next step.`,
+        );
+        return;
+      }
+      this.startDialogue(def.dialogueId);
       return;
     }
 
@@ -525,6 +550,13 @@ export class GameEngine {
             collectedItems: [...(this.world.collectedItems ?? []), point.flag],
           };
           this.events.onWorldUpdate?.(this.world);
+          const collectResult = tryAdvanceQuestByCollect(this.player, point.flag);
+          if (collectResult.player !== this.player || collectResult.questCompleted) {
+            this.applyQuestResult(collectResult);
+            if (!collectResult.questCompleted) {
+              this.events.onMessage?.('Quest progress updated.');
+            }
+          }
         }
         this.showSign(`You found a ${point.itemId.replace(/_/g, ' ')}!`, 'Item');
       }
@@ -583,7 +615,8 @@ export class GameEngine {
       this.addItem(item.itemId, item.quantity);
     }
     if (result.questCompleted) {
-      this.events.onMessage?.('Quest complete!');
+      const loot = formatQuestReward(result);
+      this.events.onMessage?.(`Quest complete! Reward: ${loot}`);
       if (result.rewardXp > 0 && this.player.party.length > 0) {
         const lead = this.player.party[0];
         const xpResult = applyXp(lead, result.rewardXp);
@@ -993,6 +1026,14 @@ export class GameEngine {
         defeatedTrainers: [...new Set([...this.world.defeatedTrainers, result.trainerId])],
       };
       this.events.onWorldUpdate?.(this.world);
+
+      const battleQuest = tryAdvanceQuestByBattle(this.player, result.trainerId);
+      if (battleQuest.player !== this.player || battleQuest.questCompleted) {
+        this.applyQuestResult(battleQuest);
+        if (!battleQuest.questCompleted) {
+          this.events.onMessage?.('Quest progress updated.');
+        }
+      }
 
       const trainer = trainers[result.trainerId];
       if (trainer?.winDialogueId) {
