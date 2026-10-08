@@ -1,6 +1,18 @@
 import type { OwnedTechnology, TechnologyStats } from '../../types/technology';
 import { getTechnology } from '../../data/technologies';
 import { getSkill, getSkillMaxEP } from '../../data/skills';
+import { MAX_SKILLS } from '../../types/common';
+
+export function clampSkillIds(skillIds: string[]): string[] {
+  return skillIds.slice(0, MAX_SKILLS);
+}
+
+/** Skills unlocked by level, never more than MAX_SKILLS */
+export function skillsForLevel(definitionSkillIds: string[], level: number): string[] {
+  const slots = Math.min(MAX_SKILLS, Math.max(1, 1 + Math.floor(level / 5)));
+  const picked = definitionSkillIds.slice(0, slots);
+  return picked.length > 0 ? picked : definitionSkillIds.slice(0, 1);
+}
 
 export function xpForLevel(level: number): number {
   return Math.floor(level * level * 12 + level * 20);
@@ -41,16 +53,44 @@ export function restoreSkillEP(tech: OwnedTechnology): OwnedTechnology {
   };
 }
 
-/** Migrate older saves missing skillEP */
+/** Migrate older saves missing skillEP; always clamp to MAX_SKILLS */
 export function ensureSkillEP(tech: OwnedTechnology): OwnedTechnology {
-  if (tech.skillEP && Object.keys(tech.skillEP).length > 0) {
-    const ep = { ...tech.skillEP };
-    for (const id of tech.skillIds) {
-      if (ep[id] === undefined) ep[id] = getSkillMaxEP(getSkill(id));
+  const skillIds = clampSkillIds(tech.skillIds);
+  const base = skillIds === tech.skillIds ? tech : { ...tech, skillIds };
+  if (base.skillEP && Object.keys(base.skillEP).length > 0) {
+    const ep: Record<string, number> = {};
+    for (const id of skillIds) {
+      ep[id] = base.skillEP[id] ?? getSkillMaxEP(getSkill(id));
     }
-    return { ...tech, skillEP: ep };
+    return { ...base, skillIds, skillEP: ep };
   }
-  return restoreSkillEP(tech);
+  return restoreSkillEP({ ...base, skillIds });
+}
+
+/** Set level and rescale stats; fills moves up to MAX_SKILLS from the definition. */
+export function setTechnologyLevel(tech: OwnedTechnology, level: number): OwnedTechnology {
+  const def = getTechnology(tech.definitionId);
+  const capped = Math.max(1, Math.min(100, level));
+  const stats = scaleStats(def.baseStats, capped);
+  const existing = clampSkillIds(tech.skillIds);
+  const target = skillsForLevel(def.skillIds, capped);
+  const skillIds = clampSkillIds(
+    existing.length >= target.length
+      ? existing
+      : [...existing, ...target.filter((id) => !existing.includes(id))],
+  );
+  return {
+    ...tech,
+    level: capped,
+    experience: 0,
+    stats,
+    maxHp: stats.hp,
+    currentHp: stats.hp,
+    skillIds,
+    skillEP: buildSkillEP(skillIds),
+    status: undefined,
+    statusTurns: undefined,
+  };
 }
 
 export function createOwnedTechnology(
@@ -60,8 +100,7 @@ export function createOwnedTechnology(
 ): OwnedTechnology {
   const def = getTechnology(definitionId);
   const stats = scaleStats(def.baseStats, level);
-  const unlockedSkills = def.skillIds.slice(0, Math.min(4, 1 + Math.floor(level / 5)));
-  const skillIds = unlockedSkills.length > 0 ? unlockedSkills : def.skillIds.slice(0, 1);
+  const skillIds = skillsForLevel(def.skillIds, level);
   return {
     instanceId: `tech_${instanceCounter++}_${definitionId}`,
     definitionId,
@@ -84,11 +123,12 @@ export interface LevelUpResult {
 }
 
 export function applyXp(tech: OwnedTechnology, amount: number): LevelUpResult {
+  const ensured = ensureSkillEP(tech);
   const updated = {
-    ...ensureSkillEP(tech),
-    stats: { ...tech.stats },
-    skillIds: [...tech.skillIds],
-    skillEP: { ...(tech.skillEP ?? {}) },
+    ...ensured,
+    stats: { ...ensured.stats },
+    skillIds: clampSkillIds([...ensured.skillIds]),
+    skillEP: { ...(ensured.skillEP ?? {}) },
   };
   updated.experience += amount;
   let leveled = false;
@@ -114,10 +154,14 @@ export function applyXp(tech: OwnedTechnology, amount: number): LevelUpResult {
     updated.maxHp = newStats.hp;
     updated.currentHp = Math.min(updated.maxHp, updated.currentHp + Math.max(0, hpGain));
 
-    const skillSlots = Math.min(4, 1 + Math.floor(updated.level / 5));
-    if (skillSlots > updated.skillIds.length && def.skillIds[updated.skillIds.length]) {
+    const skillSlots = Math.min(MAX_SKILLS, 1 + Math.floor(updated.level / 5));
+    if (
+      updated.skillIds.length < MAX_SKILLS &&
+      skillSlots > updated.skillIds.length &&
+      def.skillIds[updated.skillIds.length]
+    ) {
       unlockedSkill = def.skillIds[updated.skillIds.length];
-      updated.skillIds.push(unlockedSkill);
+      updated.skillIds = clampSkillIds([...updated.skillIds, unlockedSkill]);
       updated.skillEP[unlockedSkill] = getSkillMaxEP(getSkill(unlockedSkill));
     }
   }

@@ -20,6 +20,7 @@ import {
   canUpgrade,
   performUpgrade,
   ensureSkillEP,
+  setTechnologyLevel,
 } from '../game/technologies/TechnologyEngine';
 import { executePlayerAction, resolveEnemyTurn, applyStatStage } from '../game/battle/BattleEngine';
 import type { BattleAction } from '../types/battle';
@@ -176,10 +177,21 @@ export function useGameState() {
       return;
     }
     void audioManager.resume();
+    let party = save.player.party.map(ensureSkillEP);
+    let storage = save.player.storage.map(ensureSkillEP);
+    let flags = { ...save.player.flags };
+    const justBoosted = !flags.boost_lv80;
+    // One-shot: boost owned techs to Lv80 for endgame testing
+    if (justBoosted) {
+      party = party.map((t) => setTechnologyLevel(t, 80));
+      storage = storage.map((t) => setTechnologyLevel(t, 80));
+      flags = { ...flags, boost_lv80: true };
+    }
     const migrated: PlayerState = {
       ...save.player,
-      party: save.player.party.map(ensureSkillEP),
-      storage: save.player.storage.map(ensureSkillEP),
+      party,
+      storage,
+      flags,
     };
     setPlayer(migrated);
     setWorld(save.worldState);
@@ -190,7 +202,8 @@ export function useGameState() {
     engineRef.current = engine;
     bindEngine(engine);
     setEngineVersion((v) => v + 1);
-    pushToast('Welcome back!');
+    if (justBoosted) saveManager.save(migrated, save.worldState, save.settings);
+    pushToast(justBoosted ? 'Welcome back! All techs set to Lv80.' : 'Welcome back!');
   }, [bindEngine, pushToast]);
 
   const completeHealSequence = useCallback(() => {
