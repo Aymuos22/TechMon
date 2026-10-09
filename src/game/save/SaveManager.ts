@@ -85,16 +85,25 @@ function migratePlayer(player: PlayerState): PlayerState {
   };
 }
 
+export function normalizeSave(save: SaveGame): SaveGame {
+  const ws = save.worldState as WorldState;
+  return {
+    ...save,
+    version: SAVE_VERSION,
+    player: migratePlayer(save.player),
+    worldState: {
+      ...defaultWorldState(),
+      ...ws,
+      collectedItems: ws.collectedItems ?? ws.openedChests ?? [],
+      unlockedAreas: ws.unlockedAreas ?? [],
+    },
+  };
+}
+
 export class SaveManager {
   save(player: PlayerState, worldState: WorldState, settings: GameSettings): boolean {
     try {
-      const payload: SaveGame = {
-        version: SAVE_VERSION,
-        timestamp: Date.now(),
-        player,
-        worldState,
-        settings,
-      };
+      const payload = createSavePayload(player, worldState, settings);
       localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
       return true;
     } catch {
@@ -111,18 +120,7 @@ export class SaveManager {
         console.warn('Corrupted or incompatible save data');
         return null;
       }
-      const ws = parsed.worldState as WorldState;
-      return {
-        ...parsed,
-        version: SAVE_VERSION,
-        player: migratePlayer(parsed.player),
-        worldState: {
-          ...defaultWorldState(),
-          ...ws,
-          collectedItems: ws.collectedItems ?? ws.openedChests ?? [],
-          unlockedAreas: ws.unlockedAreas ?? [],
-        },
-      };
+      return normalizeSave(parsed);
     } catch {
       console.warn('Failed to parse save data');
       return null;
@@ -139,6 +137,20 @@ export class SaveManager {
 }
 
 export const saveManager = new SaveManager();
+
+export function createSavePayload(
+  player: PlayerState,
+  worldState: WorldState,
+  settings: GameSettings,
+): SaveGame {
+  return {
+    version: SAVE_VERSION,
+    timestamp: Date.now(),
+    player,
+    worldState,
+    settings,
+  };
+}
 
 /** Helper for tests / debugging */
 export function grantStarter(player: PlayerState, techId: string): PlayerState {

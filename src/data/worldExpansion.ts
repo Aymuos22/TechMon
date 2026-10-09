@@ -400,6 +400,7 @@ export function createContainerCove(): MapData {
       'protest_cove',
       'cove_quest_giver',
       'joke_increment',
+      'bhavika',
     ],
     encounters: {
       chance: 0.12,
@@ -467,7 +468,7 @@ export function createLegacyCrossing(): MapData {
         color: '#005CA5',
       },
     ],
-    npcIds: ['legacy_elder', 'trainer_legacy_batch', 'legacy_quest_giver', 'joke_weekend'],
+    npcIds: ['legacy_elder', 'trainer_legacy_batch', 'legacy_quest_giver', 'joke_weekend', 'shrey'],
     encounters: {
       chance: 0.14,
       entries: [
@@ -553,6 +554,8 @@ export function createServiceSquare(): MapData {
       'joke_affair_2',
       'gossip_breakup',
       'gossip_nandini',
+      'priyanshu',
+      'nikita',
     ],
     encounters: {
       chance: 0.1,
@@ -627,6 +630,7 @@ export function createFaangHeights(): MapData {
       'faang_quest_giver',
       'joke_equity',
       'joke_affair_3',
+      'soumya_gupta',
     ],
     encounters: {
       chance: 0.12,
@@ -956,6 +960,7 @@ export function createCuckCoder(): MapData {
       'ankur',
       'chirag',
       'madhusudhan',
+      'sajal',
       'trainer_cuck_street',
     ],
     encounters: {

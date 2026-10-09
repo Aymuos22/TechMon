@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import { audioManager } from '../game/audio/AudioManager';
+import { type CloudUser, signInWithGitHub } from '../game/save/CloudSaveClient';
 
 interface Props {
   hasSave: boolean;
+  cloudUser: CloudUser | null;
+  cloudChecking: boolean;
   onNewGame: (name: string) => void;
   onContinue: () => void;
+  onSignOut: () => void;
   onTechDex: () => void;
   onSettings: () => void;
   onCredits: () => void;
@@ -12,8 +16,11 @@ interface Props {
 
 export function TitleScreen({
   hasSave,
+  cloudUser,
+  cloudChecking,
   onNewGame,
   onContinue,
+  onSignOut,
   onTechDex,
   onSettings,
   onCredits,
@@ -113,6 +120,23 @@ export function TitleScreen({
             </div>
           </form>
         )}
+        <div className="cloud-auth">
+          {cloudUser ? (
+            <>
+              <span>Cloud save: {cloudUser.name}</span>
+              <button type="button" onClick={onSignOut}>
+                SIGN OUT
+              </button>
+            </>
+          ) : (
+            <>
+              <span>{cloudChecking ? 'Checking cloud save...' : 'Cloud save optional'}</span>
+              <button type="button" onClick={signInWithGitHub}>
+                SIGN IN WITH GITHUB
+              </button>
+            </>
+          )}
+        </div>
       </div>
       <div className="title-scanlines" />
     </div>

@@ -15,8 +15,11 @@ function App() {
       <div className="app-shell">
         <TitleScreen
           hasSave={game.hasSave}
+          cloudUser={game.cloudUser}
+          cloudChecking={game.cloudChecking}
           onNewGame={game.startNewGame}
           onContinue={game.continueGame}
+          onSignOut={game.signOut}
           onTechDex={() => game.setScreen('techdex')}
           onSettings={() => game.setScreen('settings')}
           onCredits={() => game.setScreen('credits')}

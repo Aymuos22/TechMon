@@ -6,10 +6,19 @@ import type { OwnedTechnology } from '../types/technology';
 import { GameEngine } from '../game/engine/GameEngine';
 import {
   saveManager,
+  createSavePayload,
   createNewPlayer,
   defaultSettings,
   defaultWorldState,
 } from '../game/save/SaveManager';
+import {
+  type CloudUser,
+  deleteCloudSave,
+  getCloudUser,
+  loadCloudSave,
+  saveCloudGame,
+  signOutCloud,
+} from '../game/save/CloudSaveClient';
 import { audioManager } from '../game/audio/AudioManager';
 import { VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from '../types/common';
 import { getItem } from '../data/items';
@@ -70,6 +79,8 @@ export function useGameState() {
   const [pendingVictoryBattle, setPendingVictoryBattle] = useState<BattleState | null>(null);
   const [battleTransition, setBattleTransition] = useState(false);
   const [hasSave, setHasSave] = useState(false);
+  const [cloudUser, setCloudUser] = useState<CloudUser | null>(null);
+  const [cloudChecking, setCloudChecking] = useState(true);
   const [engineVersion, setEngineVersion] = useState(0);
   const engineRef = useRef<GameEngine | null>(null);
   const toastId = useRef(0);
@@ -82,7 +93,24 @@ export function useGameState() {
   >(() => undefined);
 
   useEffect(() => {
+    let active = true;
     setHasSave(saveManager.hasSave());
+    void (async () => {
+      try {
+        const user = await getCloudUser();
+        if (!active) return;
+        setCloudUser(user);
+        if (user) {
+          const save = await loadCloudSave();
+          if (active && save) setHasSave(true);
+        }
+      } finally {
+        if (active) setCloudChecking(false);
+      }
+    })();
+    return () => {
+      active = false;
+    };
   }, []);
 
   const pushToast = useCallback((text: string) => {
@@ -97,9 +125,16 @@ export function useGameState() {
     (p: PlayerState, w: WorldState, s: GameSettings) => {
       saveManager.save(p, w, s);
       setHasSave(true);
-      pushToast('Game saved!');
+      if (cloudUser) {
+        const payload = createSavePayload(p, w, s);
+        void saveCloudGame(payload).then((ok) => {
+          pushToast(ok ? 'Game saved locally + cloud!' : 'Game saved locally. Cloud sync failed.');
+        });
+        return;
+      }
+      pushToast('Game saved locally!');
     },
-    [pushToast],
+    [cloudUser, pushToast],
   );
 
   const bindEngine = useCallback(
@@ -176,8 +211,8 @@ export function useGameState() {
     [bindEngine, pushToast, settings],
   );
 
-  const continueGame = useCallback(() => {
-    const save = saveManager.load();
+  const continueGame = useCallback(async () => {
+    const save = (cloudUser ? await loadCloudSave() : null) ?? saveManager.load();
     if (!save) {
       pushToast('No valid save found.');
       return;
@@ -209,8 +244,33 @@ export function useGameState() {
     bindEngine(engine);
     setEngineVersion((v) => v + 1);
     if (justBoosted) saveManager.save(migrated, save.worldState, save.settings);
-    pushToast(justBoosted ? 'Welcome back! All techs set to Lv80.' : 'Welcome back!');
-  }, [bindEngine, pushToast]);
+    pushToast(
+      justBoosted
+        ? 'Welcome back! All techs set to Lv80.'
+        : cloudUser
+          ? 'Welcome back from cloud save!'
+          : 'Welcome back!',
+    );
+  }, [bindEngine, cloudUser, pushToast]);
+
+  const refreshCloudUser = useCallback(async () => {
+    setCloudChecking(true);
+    try {
+      const user = await getCloudUser();
+      setCloudUser(user);
+      if (user && (await loadCloudSave())) setHasSave(true);
+      else setHasSave(saveManager.hasSave());
+    } finally {
+      setCloudChecking(false);
+    }
+  }, []);
+
+  const signOut = useCallback(async () => {
+    await signOutCloud();
+    setCloudUser(null);
+    setHasSave(saveManager.hasSave());
+    pushToast('Signed out.');
+  }, [pushToast]);
 
   const completeHealSequence = useCallback(() => {
     engineRef.current?.healPartyFully();
@@ -886,9 +946,10 @@ export function useGameState() {
 
   const resetSave = useCallback(() => {
     saveManager.reset();
+    if (cloudUser) void deleteCloudSave();
     setHasSave(false);
     pushToast('Save data cleared.');
-  }, [pushToast]);
+  }, [cloudUser, pushToast]);
 
   const submitQuiz = useCallback(
     (quizId: string, optionIndex: number) => {
@@ -958,11 +1019,15 @@ export function useGameState() {
     victorySummary,
     battleTransition,
     hasSave,
+    cloudUser,
+    cloudChecking,
     engineRef,
     engineVersion,
     viewport: { width: VIEWPORT_WIDTH, height: VIEWPORT_HEIGHT },
     startNewGame,
     continueGame,
+    refreshCloudUser,
+    signOut,
     openMenu,
     resumeGame,
     handleBattleAction,

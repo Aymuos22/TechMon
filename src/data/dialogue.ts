@@ -1322,6 +1322,62 @@ export const dialogues: Record<string, DialogueNode[]> = {
       text: 'You know you can generate photos on telegram bots?? try it',
     },
   ],
+  priyanshu: [
+    {
+      id: 'priyanshu_1',
+      speaker: 'Priyanshu',
+      text: 'Yaar uska mujhse zyada ka package kaise lg gya',
+    },
+  ],
+  soumya_gupta: [
+    {
+      id: 'soumya_gupta_1',
+      speaker: 'Soumya Gupta',
+      text: 'Aaram se padho!!! ho jayega DSA',
+    },
+  ],
+  adya: [
+    {
+      id: 'adya_1',
+      speaker: 'Adya',
+      text: 'Woh toh bura hai par mai toh achi hun',
+    },
+  ],
+  nikita: [
+    {
+      id: 'nikita_1',
+      speaker: 'Nikita',
+      text: 'Yaar Shivansh!!!!',
+    },
+  ],
+  vansh: [
+    {
+      id: 'vansh_1',
+      speaker: 'Vansh',
+      text: 'Yaar fir se REST api',
+    },
+  ],
+  bhavika: [
+    {
+      id: 'bhavika_1',
+      speaker: 'Bhavika',
+      text: 'I can defend myself',
+    },
+  ],
+  shrey: [
+    {
+      id: 'shrey_1',
+      speaker: 'Shrey',
+      text: 'Ye  Switch kya hota hai',
+    },
+  ],
+  sajal: [
+    {
+      id: 'sajal_1',
+      speaker: 'Sajal',
+      text: 'Women are AI....coz if they were real i wud have one',
+    },
+  ],
   joke_manager: [
     {
       id: 'jm_1',
