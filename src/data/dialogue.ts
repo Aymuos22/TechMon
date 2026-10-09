@@ -1266,6 +1266,48 @@ export const dialogues: Record<string, DialogueNode[]> = {
       text: 'HR said "we value seniority." My mirror said "we value scalp visibility." Both correct.',
     },
   ],
+  ujjwal_blocker: [
+    {
+      id: 'ujjwal_1',
+      speaker: 'UJJWAL',
+      text: 'My friends grab my titties coz they are big but ladies dw I am straight. Now learn coding to get past here',
+    },
+  ],
+  yashasvi: [
+    {
+      id: 'yashasvi_1',
+      speaker: 'Yashasvi',
+      text: 'I am Yashasvi or maybe aashna but do we truly ever know who we are? But anyways you dont need to know so much as a random guy',
+    },
+  ],
+  jai: [
+    {
+      id: 'jai_1',
+      speaker: 'Jai',
+      text: 'Sameekshya Bhadvi meri coffee pee gyi aur puff bhi kha gyi',
+    },
+  ],
+  utkarsh: [
+    {
+      id: 'utkarsh_1',
+      speaker: 'Utkarsh',
+      text: 'Do you know coding? Ahh I see you are a Woman of your words',
+    },
+  ],
+  ankur: [
+    {
+      id: 'ankur_1',
+      speaker: 'Ankur',
+      text: 'Kal Tanya se 4 ghante baat kari hai!!! kya ??? I am not attached!!!',
+    },
+  ],
+  chirag: [
+    {
+      id: 'chirag_1',
+      speaker: 'Chirag',
+      text: 'Deepanshi se kbhi bhi baat nhi krunga....YC i am coming!!!',
+    },
+  ],
   joke_manager: [
     {
       id: 'jm_1',

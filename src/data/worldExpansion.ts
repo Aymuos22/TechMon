@@ -953,6 +953,8 @@ export function createCuckCoder(): MapData {
       'nocode_nikhil',
       'saas_sofia',
       'prompt_perry',
+      'ankur',
+      'chirag',
       'trainer_cuck_street',
     ],
     encounters: {

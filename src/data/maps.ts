@@ -272,9 +272,7 @@ export function createByteburg(): MapData {
 
   // Exit to Pipeline Route (east)
   setTile(tiles, W - 1, 13, TILE.PATH);
-  setTile(tiles, W - 1, 14, TILE.PATH);
   setTile(tiles, W - 2, 13, TILE.PATH);
-  setTile(tiles, W - 2, 14, TILE.PATH);
 
   // Hidden bug in flowers
   setTile(tiles, 3, 24, TILE.FLOWER);
@@ -327,15 +325,6 @@ export function createByteburg(): MapData {
         from: { x: W - 1, y: 13 },
         toMapId: 'pipeline_route',
         toPosition: { x: 1, y: 6 },
-        toFacing: 'right',
-        requiresFlag: 'starter_chosen',
-        message: 'You should choose a starter at the Tech Lab first!',
-      },
-      {
-        id: 'to_route2',
-        from: { x: W - 1, y: 14 },
-        toMapId: 'pipeline_route',
-        toPosition: { x: 1, y: 7 },
         toFacing: 'right',
         requiresFlag: 'starter_chosen',
         message: 'You should choose a starter at the Tech Lab first!',
@@ -441,6 +430,9 @@ export function createByteburg(): MapData {
       'protest_byteburg_2',
       'joke_gf',
       'joke_hair',
+      'ujjwal_blocker',
+      'yashasvi',
+      'jai',
     ],
     music: 'city',
     theme: 'byteburg',
@@ -1028,6 +1020,7 @@ export function createStackhaven(): MapData {
       'joke_physique',
       'joke_social',
       'joke_affair',
+      'utkarsh',
     ],
     music: 'city',
     theme: 'stackhaven',
