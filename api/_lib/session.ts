@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { jwtVerify, SignJWT } from 'jose';
-import { readCookie, setCookie } from './http';
+import { readCookie, setCookie } from './http.js';
 
 const SESSION_COOKIE = 'techmon_session';
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30;

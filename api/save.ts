@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { ensureSchema, getSql } from './_lib/db';
-import { methodNotAllowed, readJsonBody, sendJson } from './_lib/http';
-import { getSessionUser } from './_lib/session';
+import { ensureSchema, getSql } from './_lib/db.js';
+import { methodNotAllowed, readJsonBody, sendJson } from './_lib/http.js';
+import { getSessionUser } from './_lib/session.js';
 
 export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {
   const user = await getSessionUser(req);

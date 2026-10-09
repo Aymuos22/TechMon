@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { ensureSchema, getSql } from '../../_lib/db';
-import { getBaseUrl, readCookie, redirect, sendJson, setCookie } from '../../_lib/http';
-import { setSessionCookie } from '../../_lib/session';
+import { ensureSchema, getSql } from '../../_lib/db.js';
+import { getBaseUrl, readCookie, redirect, sendJson, setCookie } from '../../_lib/http.js';
+import { setSessionCookie } from '../../_lib/session.js';
 
 interface GoogleUser {
   sub: string;
