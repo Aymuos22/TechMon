@@ -1294,6 +1294,63 @@ export const dialogues: Record<string, DialogueNode[]> = {
       text: 'Sameekshya meri coffee pee gyi aur puff bhi kha gyi',
     },
   ],
+  arya: [
+    {
+      id: 'arya_1',
+      speaker: 'Arya',
+      text: 'Byteburg talks too much. One coffee, one laugh, one unread message, and suddenly I have a whole reputation arc.',
+      nextId: 'arya_2',
+    },
+    {
+      id: 'arya_2',
+      speaker: 'Arya',
+      text: 'Anant was sweet, but sweet is not a full-stack relationship. Mukund showed up with confidence and terrible timing.',
+      nextId: 'arya_3',
+    },
+    {
+      id: 'arya_3',
+      speaker: 'Arya',
+      text: 'People call me promiscuous. I call it exploratory testing. Some test cases simply fail in production.',
+    },
+  ],
+  mukund: [
+    {
+      id: 'mukund_1',
+      speaker: 'Mukund',
+      text: 'Yes, Arya and I are together now. No, I am not taking questions from the town standup.',
+      nextId: 'mukund_2',
+    },
+    {
+      id: 'mukund_2',
+      speaker: 'Mukund',
+      text: 'Anant keeps looking at me like I deleted his database. Bro, I was his best friend, not his backup policy.',
+      nextId: 'mukund_3',
+    },
+    {
+      id: 'mukund_3',
+      speaker: 'Mukund',
+      text: 'And if Arya is with a girl tomorrow? I am still adamant. I will ship this relationship with maximum stubbornness.',
+    },
+  ],
+  anant: [
+    {
+      id: 'anant_1',
+      speaker: 'Anant',
+      text: 'Arya dated me, then patched her heart straight into Mukund. My best friend became the merge conflict.',
+      nextId: 'anant_2',
+    },
+    {
+      id: 'anant_2',
+      speaker: 'Anant',
+      text: 'Now they stand together in Byteburg like a live demo of betrayal. I am not depressed, I am just running in dark mode.',
+      nextId: 'anant_3',
+    },
+    {
+      id: 'anant_3',
+      speaker: 'Anant',
+      text: 'If heartbreak gave XP, I would already be level 100.',
+    },
+  ],
   utkarsh: [
     {
       id: 'utkarsh_1',
