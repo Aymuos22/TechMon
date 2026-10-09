@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { audioManager } from '../game/audio/AudioManager';
-import { type CloudUser, signInWithGitHub } from '../game/save/CloudSaveClient';
+import { type CloudUser, signInWithGoogle } from '../game/save/CloudSaveClient';
 
 interface Props {
   hasSave: boolean;
@@ -131,8 +131,8 @@ export function TitleScreen({
           ) : (
             <>
               <span>{cloudChecking ? 'Checking cloud save...' : 'Cloud save optional'}</span>
-              <button type="button" onClick={signInWithGitHub}>
-                SIGN IN WITH GITHUB
+              <button type="button" onClick={signInWithGoogle}>
+                SIGN IN WITH GOOGLE
               </button>
             </>
           )}

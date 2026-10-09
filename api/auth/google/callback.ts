@@ -1,13 +1,13 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { ensureSchema, getSql } from '../_lib/db';
-import { getBaseUrl, readCookie, redirect, sendJson, setCookie } from '../_lib/http';
-import { setSessionCookie } from '../_lib/session';
+import { ensureSchema, getSql } from '../../_lib/db';
+import { getBaseUrl, readCookie, redirect, sendJson, setCookie } from '../../_lib/http';
+import { setSessionCookie } from '../../_lib/session';
 
-interface GitHubUser {
-  id: number;
-  login: string;
-  name: string | null;
-  avatar_url: string | null;
+interface GoogleUser {
+  sub: string;
+  name?: string;
+  email?: string;
+  picture?: string;
 }
 
 export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {
@@ -22,54 +22,45 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     sendJson(res, 400, { error: 'invalid_oauth_state' });
     return;
   }
-  const clientId = process.env.GITHUB_CLIENT_ID;
-  const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
   if (!clientId || !clientSecret) {
-    sendJson(res, 500, { error: 'github_oauth_not_configured' });
+    sendJson(res, 500, { error: 'google_oauth_not_configured' });
     return;
   }
 
-  const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
+  const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
-    headers: { accept: 'application/json', 'content-type': 'application/json' },
-    body: JSON.stringify({
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
       client_id: clientId,
       client_secret: clientSecret,
       code,
-      redirect_uri: `${getBaseUrl(req)}/api/auth/callback`,
+      grant_type: 'authorization_code',
+      redirect_uri: `${getBaseUrl(req)}/api/auth/google/callback`,
     }),
   });
   const tokenData = (await tokenResponse.json()) as { access_token?: string };
-  if (!tokenData.access_token) {
+  if (!tokenResponse.ok || !tokenData.access_token) {
     sendJson(res, 401, { error: 'oauth_exchange_failed' });
     return;
   }
 
-  const userResponse = await fetch('https://api.github.com/user', {
-    headers: {
-      authorization: `Bearer ${tokenData.access_token}`,
-      accept: 'application/vnd.github+json',
-      'user-agent': 'techmon-code-frontier',
-    },
+  const userResponse = await fetch('https://openidconnect.googleapis.com/v1/userinfo', {
+    headers: { authorization: `Bearer ${tokenData.access_token}` },
   });
   if (!userResponse.ok) {
-    sendJson(res, 401, { error: 'github_profile_failed' });
+    sendJson(res, 401, { error: 'google_profile_failed' });
     return;
   }
-  const githubUser = (await userResponse.json()) as GitHubUser;
-  const user = {
-    id: crypto.randomUUID(),
-    provider: 'github',
-    oauthId: String(githubUser.id),
-    name: githubUser.name ?? githubUser.login,
-    avatarUrl: githubUser.avatar_url ?? undefined,
-  };
+  const googleUser = (await userResponse.json()) as GoogleUser;
+  const name = googleUser.name ?? googleUser.email ?? 'Google Player';
 
   await ensureSchema();
   const sql = getSql();
   const rows = await sql<{ id: string; display_name: string; avatar_url: string | null }[]>`
     insert into users (id, oauth_provider, oauth_id, display_name, avatar_url)
-    values (${user.id}, ${user.provider}, ${user.oauthId}, ${user.name}, ${user.avatarUrl ?? null})
+    values (${crypto.randomUUID()}, ${'google'}, ${googleUser.sub}, ${name}, ${googleUser.picture ?? null})
     on conflict (oauth_provider, oauth_id)
     do update set
       display_name = excluded.display_name,

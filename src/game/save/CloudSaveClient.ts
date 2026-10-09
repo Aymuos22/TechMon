@@ -22,7 +22,7 @@ export async function getCloudUser(): Promise<CloudUser | null> {
   return data?.user ?? null;
 }
 
-export function signInWithGitHub(): void {
+export function signInWithGoogle(): void {
   window.location.href = '/api/auth/login';
 }
 

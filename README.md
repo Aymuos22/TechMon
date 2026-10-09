@@ -39,20 +39,20 @@ React · TypeScript · Vite · Vercel Functions · Postgres · HTML5 Canvas · C
 
 ## Cloud Saves on Vercel
 
-The app keeps LocalStorage saves as a fallback. When the following Vercel environment variables are set, the title screen enables GitHub OAuth and cloud save sync:
+The app keeps LocalStorage saves as a fallback. When the following Vercel environment variables are set, the title screen enables Google OAuth and cloud save sync:
 
 ```bash
 DATABASE_URL="postgres://user:password@host/database?sslmode=require"
 AUTH_SECRET="generate-at-least-32-random-characters"
-GITHUB_CLIENT_ID="..."
-GITHUB_CLIENT_SECRET="..."
+GOOGLE_CLIENT_ID="..."
+GOOGLE_CLIENT_SECRET="..."
 APP_URL="https://your-vercel-app.vercel.app"
 ```
 
-Create a GitHub OAuth app with callback URL:
+Create a Google OAuth web client with callback URL:
 
 ```text
-https://your-vercel-app.vercel.app/api/auth/callback
+https://your-vercel-app.vercel.app/api/auth/google/callback
 ```
 
 For local API testing, use a Vercel-style dev server and set `APP_URL` to that local URL.
