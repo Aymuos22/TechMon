@@ -490,11 +490,16 @@ export class Renderer {
     this.ctx.fillStyle = '#f5d0a9';
     this.ctx.fillRect(sx + 9, sy + 1 - bob, 14, 11);
 
-    // Hair cap
+    // Half-bald hairline
+    this.ctx.fillStyle = '#f5d0a9';
+    this.ctx.fillRect(sx + 11, sy + 0 - bob, 10, 4);
     this.ctx.fillStyle = '#1a1a1a';
-    this.ctx.fillRect(sx + 8, sy + 0 - bob, 16, 4);
+    this.ctx.fillRect(sx + 8, sy + 0 - bob, 4, 4);
+    this.ctx.fillRect(sx + 20, sy + 0 - bob, 4, 4);
     this.ctx.fillRect(sx + 8, sy + 3 - bob, 3, 3);
     this.ctx.fillRect(sx + 21, sy + 3 - bob, 3, 3);
+    this.ctx.fillStyle = 'rgba(255,255,255,0.28)';
+    this.ctx.fillRect(sx + 14, sy + 1 - bob, 4, 1);
 
     // Eyes facing direction
     this.ctx.fillStyle = '#1a1a1a';
