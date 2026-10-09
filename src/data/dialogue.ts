@@ -1273,6 +1273,13 @@ export const dialogues: Record<string, DialogueNode[]> = {
       text: 'My friends grab my titties coz they are big but ladies dw I am straight. Now learn coding to get past here',
     },
   ],
+  ujjwal_blocker_cleared: [
+    {
+      id: 'ujjwal_clear_1',
+      speaker: 'UJJWAL',
+      text: 'Bhai 5 kilo ka difference hai abb',
+    },
+  ],
   yashasvi: [
     {
       id: 'yashasvi_1',

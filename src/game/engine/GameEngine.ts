@@ -166,7 +166,19 @@ export class GameEngine {
 
   private loadNpcs(): void {
     const defs = getNpcsForMap(this.player.mapId);
-    this.npcs = defs.map((d) => new NPCEntity(d));
+    this.npcs = defs.map((d) => {
+      if (d.id !== 'ujjwal_blocker' || !this.player.flags.badge_frontend) {
+        return new NPCEntity(d);
+      }
+
+      return new NPCEntity({
+        ...d,
+        position: { x: 31, y: 13 },
+        direction: 'right',
+        dialogueId: 'ujjwal_blocker_cleared',
+        interaction: { kind: 'dialogue', dialogueId: 'ujjwal_blocker_cleared' },
+      });
+    });
   }
 
   private emitPlayer(): void {

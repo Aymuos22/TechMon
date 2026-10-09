@@ -461,29 +461,29 @@ export class Renderer {
 
     // Wider footprint, but still centered on the same tile for collision.
     this.ctx.fillStyle = 'rgba(0,0,0,0.32)';
-    this.ctx.fillRect(sx + 3, sy + 28, 26, 5);
+    this.ctx.fillRect(sx + 0, sy + 28, 32, 5);
 
     // Broad body / shirt
     this.ctx.fillStyle = actor.color;
-    this.ctx.fillRect(sx + 4, sy + 11 - bob, 24, 14);
+    this.ctx.fillRect(sx + 1, sy + 10 - bob, 30, 15);
     this.ctx.fillStyle = '#a86a38';
-    this.ctx.fillRect(sx + 7, sy + 17 - bob, 18, 7);
+    this.ctx.fillRect(sx + 4, sy + 16 - bob, 24, 9);
 
     // Rounded belly highlight
     this.ctx.fillStyle = 'rgba(255,255,255,0.18)';
-    this.ctx.fillRect(sx + 10, sy + 16 - bob, 12, 5);
+    this.ctx.fillRect(sx + 7, sy + 15 - bob, 18, 7);
 
     // Arms
     this.ctx.fillStyle = '#f5d0a9';
     if (actor.direction === 'left') {
-      this.ctx.fillRect(sx + 1, sy + 14 - bob, 6, 9);
-      this.ctx.fillRect(sx + 24, sy + 15 - bob, 5, 8);
+      this.ctx.fillRect(sx - 1, sy + 14 - bob, 7, 10);
+      this.ctx.fillRect(sx + 26, sy + 15 - bob, 6, 9);
     } else if (actor.direction === 'right') {
-      this.ctx.fillRect(sx + 3, sy + 15 - bob, 5, 8);
-      this.ctx.fillRect(sx + 25, sy + 14 - bob, 6, 9);
+      this.ctx.fillRect(sx + 0, sy + 15 - bob, 6, 9);
+      this.ctx.fillRect(sx + 27, sy + 14 - bob, 7, 10);
     } else {
-      this.ctx.fillRect(sx + 1, sy + 14 - bob, 6, 9);
-      this.ctx.fillRect(sx + 25, sy + 14 - bob, 6, 9);
+      this.ctx.fillRect(sx - 1, sy + 14 - bob, 7, 10);
+      this.ctx.fillRect(sx + 27, sy + 14 - bob, 7, 10);
     }
 
     // Larger head
@@ -513,11 +513,11 @@ export class Renderer {
     // Short legs
     this.ctx.fillStyle = '#2c3e50';
     const legOffset = actor.walkFrame % 2 === 0 ? 0 : 1;
-    this.ctx.fillRect(sx + 9, sy + 25, 6, 5 + (legOffset ? 0 : 1));
-    this.ctx.fillRect(sx + 17, sy + 25, 6, 5 + (legOffset ? 1 : 0));
+    this.ctx.fillRect(sx + 7, sy + 25, 7, 5 + (legOffset ? 0 : 1));
+    this.ctx.fillRect(sx + 18, sy + 25, 7, 5 + (legOffset ? 1 : 0));
     this.ctx.fillStyle = '#202a36';
-    this.ctx.fillRect(sx + 8, sy + 30, 7, 2);
-    this.ctx.fillRect(sx + 17, sy + 30, 7, 2);
+    this.ctx.fillRect(sx + 6, sy + 30, 8, 2);
+    this.ctx.fillRect(sx + 18, sy + 30, 8, 2);
   }
 
   renderLocationLabel(name: string): void {
