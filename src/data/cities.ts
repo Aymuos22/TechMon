@@ -18,6 +18,9 @@ import {
 } from './maps';
 import { expansionMaps } from './worldExpansion';
 import { endgameMaps } from './endgameMaps';
+import { ALL_BADGE_IDS } from './gymConfig';
+
+const ALL_BADGE_FLAGS = ALL_BADGE_IDS.map((badgeId) => `badge_${badgeId}`);
 
 const allMaps: MapData[] = [
   createByteburg(),
@@ -66,7 +69,7 @@ export const minimapLandmarks: MinimapLandmark[] = [
   { id: 'lm_sgym', name: 'Billing Gym', mapId: 'service_gym', kind: 'gym', unlockedBy: 'badge_legacy' },
   { id: 'lm_faang', name: 'FAANG Heights', mapId: 'faang_heights', kind: 'city', unlockedBy: 'badge_service' },
   { id: 'lm_leet', name: 'Leetcode Gym', mapId: 'faang_gym', kind: 'gym', unlockedBy: 'badge_service' },
-  { id: 'lm_layoff', name: 'LayOff Tower', mapId: 'layoff_tower', kind: 'building', unlockedBy: 'badge_faang' },
+  { id: 'lm_layoff', name: 'LayOff Tower', mapId: 'layoff_tower', kind: 'building', unlockedByAll: ALL_BADGE_FLAGS },
   { id: 'lm_div', name: 'Diversity Arena', mapId: 'diversity_arena', kind: 'building', unlockedBy: 'badge_frontend' },
   { id: 'lm_vibe', name: 'Vibe Causeway', mapId: 'route_vibe', kind: 'route', unlockedBy: 'badge_frontend' },
   { id: 'lm_cuck', name: 'CuckCoder', mapId: 'cuckcoder', kind: 'city', unlockedBy: 'badge_frontend' },

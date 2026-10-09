@@ -1360,6 +1360,39 @@ button {
   font-size: 12px;
 }
 
+.journey-list {
+  margin-top: 12px;
+}
+
+.journey-list h3 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--gold);
+}
+
+.journey-list ol {
+  list-style: decimal;
+  padding-left: 18px;
+  margin: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.journey-list li {
+  color: var(--text);
+}
+
+.journey-list li.done {
+  color: var(--muted);
+}
+
+.journey-list small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+}
+
 .badge-chip {
   display: inline-block;
   margin-left: 6px;

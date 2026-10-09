@@ -8,14 +8,17 @@ import {
   drawBorder,
   drawRoom,
 } from './tiles';
+import { ALL_BADGE_IDS } from './gymConfig';
+
+const ALL_BADGE_FLAGS = ALL_BADGE_IDS.map((badgeId) => `badge_${badgeId}`);
 
 function makeTown(
   id: string,
   name: string,
   theme: MapData['theme'],
   opts: {
-    west?: { mapId: string; x: number; y: number; flag?: string; message?: string };
-    east?: { mapId: string; x: number; y: number; flag?: string; message?: string };
+    west?: { mapId: string; x: number; y: number; flag?: string; flags?: string[]; message?: string };
+    east?: { mapId: string; x: number; y: number; flag?: string; flags?: string[]; message?: string };
     buildings: Array<{
       bx: number;
       by: number;
@@ -62,6 +65,7 @@ function makeTown(
         toPosition: { x: opts.west.x, y: opts.west.y },
         toFacing: 'left',
         requiresFlag: opts.west.flag,
+        requiresAllFlags: opts.west.flags,
         message: opts.west.message,
       },
       {
@@ -71,6 +75,7 @@ function makeTown(
         toPosition: { x: opts.west.x, y: opts.west.y },
         toFacing: 'left',
         requiresFlag: opts.west.flag,
+        requiresAllFlags: opts.west.flags,
         message: opts.west.message,
       },
     );
@@ -86,6 +91,7 @@ function makeTown(
         toPosition: { x: opts.east.x, y: opts.east.y },
         toFacing: 'right',
         requiresFlag: opts.east.flag,
+        requiresAllFlags: opts.east.flags,
         message: opts.east.message,
       },
       {
@@ -95,6 +101,7 @@ function makeTown(
         toPosition: { x: opts.east.x, y: opts.east.y },
         toFacing: 'right',
         requiresFlag: opts.east.flag,
+        requiresAllFlags: opts.east.flags,
         message: opts.east.message,
       },
     );
@@ -596,8 +603,8 @@ export function createFaangHeights(): MapData {
       mapId: 'layoff_tower',
       x: 7,
       y: 26,
-      flag: 'badge_faang',
-      message: 'LayOff Tower is invitation-only. Earn the FAANG Badge.',
+      flags: ALL_BADGE_FLAGS,
+      message: 'LayOff Tower is the final battle. Earn every badge before entering.',
     },
     buildings: [
       {

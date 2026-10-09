@@ -55,6 +55,7 @@ export interface MapTransition {
   /** Facing after arrival */
   toFacing?: Direction;
   requiresFlag?: string;
+  requiresAllFlags?: string[];
   message?: string;
   /** If true, only enter via A (not walk-on). Buildings use false so both work. */
   interactOnly?: boolean;
@@ -121,4 +122,5 @@ export interface MinimapLandmark {
   mapId: string;
   kind: 'city' | 'gym' | 'building' | 'route';
   unlockedBy?: string;
+  unlockedByAll?: string[];
 }

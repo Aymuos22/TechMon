@@ -1,6 +1,17 @@
 import type { PlayerState } from '../types/player';
 import { minimapLandmarks, getMap } from '../data/cities';
 
+const journeyStops = [
+  { name: 'Byteburg', detail: 'Frontend Gym', flag: 'badge_frontend' },
+  { name: 'Stackhaven', detail: 'Production Gym', flag: 'badge_production' },
+  { name: 'Container Cove', detail: 'DevOps Gym', flag: 'badge_devops' },
+  { name: 'Legacy Crossing', detail: 'Legacy Gym', flag: 'badge_legacy' },
+  { name: 'Service Square', detail: 'Billing Gym', flag: 'badge_service' },
+  { name: 'FAANG Heights', detail: 'Leetcode Gym', flag: 'badge_faang' },
+  { name: 'CuckCoder', detail: 'Vibe Gym via Stackhaven south', flag: 'badge_vibe' },
+  { name: 'LayOff Tower', detail: 'Final battle', flag: 'game_cleared' },
+];
+
 interface Props {
   player: PlayerState;
   onClose: () => void;
@@ -9,8 +20,9 @@ interface Props {
 export function MiniMap({ player, onClose }: Props) {
   const map = getMap(player.mapId);
   const unlocked = minimapLandmarks.filter((lm) => {
-    if (!lm.unlockedBy) return true;
-    return player.flags[lm.unlockedBy];
+    if (lm.unlockedBy && !player.flags[lm.unlockedBy]) return false;
+    if (lm.unlockedByAll?.some((flag) => !player.flags[flag])) return false;
+    return true;
   });
 
   return (
@@ -50,6 +62,20 @@ export function MiniMap({ player, onClose }: Props) {
           </li>
         ))}
       </ul>
+      <section className="journey-list" aria-label="Journey order">
+        <h3>Journey</h3>
+        <ol>
+          {journeyStops.map((stop) => {
+            const done = player.flags[stop.flag];
+            return (
+              <li key={stop.name} className={done ? 'done' : ''}>
+                <span>{stop.name}</span>
+                <small>{done ? 'Done' : stop.detail}</small>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
       <div className="badge-row">
         Badges:{' '}
         {player.badges.length === 0

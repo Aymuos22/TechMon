@@ -906,7 +906,11 @@ export class GameEngine {
   }
 
   private tryWarp(t: import('../../types/map').MapTransition): void {
-    if (t.requiresFlag && !this.player.flags[t.requiresFlag]) {
+    const missingRequiredFlag = t.requiresFlag && !this.player.flags[t.requiresFlag];
+    const missingRequiredFlags =
+      t.requiresAllFlags?.some((flag) => !this.player.flags[flag]) ?? false;
+
+    if (missingRequiredFlag || missingRequiredFlags) {
       const back = opposite(this.playerEntity.direction);
       const d = directionDelta(back);
       this.playerEntity.setTile({
