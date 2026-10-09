@@ -1260,8 +1260,37 @@ export const npcs: NPCDefinition[] = [
     direction: 'left',
     color: '#E84393',
     dialogueId: 'adya',
-    movement: { kind: 'static' },
+    movement: {
+      kind: 'patrol',
+      points: [
+        { x: 29, y: 11 },
+        { x: 29, y: 12 },
+        { x: 27, y: 12 },
+        { x: 27, y: 11 },
+      ],
+      waitMs: 150,
+    },
     interaction: { kind: 'dialogue', dialogueId: 'adya' },
+  },
+  {
+    id: 'aman',
+    name: 'Aman',
+    mapId: 'stackhaven',
+    position: { x: 27, y: 11 },
+    direction: 'right',
+    color: '#34495E',
+    dialogueId: 'aman',
+    movement: {
+      kind: 'patrol',
+      points: [
+        { x: 27, y: 11 },
+        { x: 29, y: 11 },
+        { x: 29, y: 12 },
+        { x: 27, y: 12 },
+      ],
+      waitMs: 150,
+    },
+    interaction: { kind: 'dialogue', dialogueId: 'aman' },
   },
   {
     id: 'dock_diya',

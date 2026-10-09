@@ -1072,6 +1072,7 @@ export function createStackhaven(): MapData {
       'utkarsh',
       'rishabh',
       'adya',
+      'aman',
       'dock_diya',
     ],
     music: 'city',

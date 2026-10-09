@@ -1450,7 +1450,14 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'adya_1',
       speaker: 'Adya',
-      text: 'Woh toh bura hai par mai toh achi hun',
+      text: 'Leave Me Alone',
+    },
+  ],
+  aman: [
+    {
+      id: 'aman_1',
+      speaker: 'Aman',
+      text: 'Mai toh bura hun tum toh achi ho na',
     },
   ],
   nikita: [
