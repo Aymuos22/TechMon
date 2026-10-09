@@ -1,4 +1,4 @@
-import type { OwnedTechnology, TechnologyStats } from '../../types/technology';
+import type { OwnedTechnology, TechnologyStats, TechnologyUpgrade } from '../../types/technology';
 import { getTechnology } from '../../data/technologies';
 import { getSkill, getSkillMaxEP } from '../../data/skills';
 import { MAX_SKILLS } from '../../types/common';
@@ -196,25 +196,36 @@ export function canUpgrade(
   tech: OwnedTechnology,
   inventoryItemIds: string[],
   completedQuests: string[],
+  targetTechnologyId?: string,
 ): boolean {
-  const def = getTechnology(tech.definitionId);
-  if (!def.upgrade) return false;
-  if (tech.level < def.upgrade.requiredLevel) return false;
-  if (def.upgrade.requiredQuest && !completedQuests.includes(def.upgrade.requiredQuest)) {
+  const upgrade = getAvailableUpgrades(tech).find(
+    (candidate) => !targetTechnologyId || candidate.targetTechnologyId === targetTechnologyId,
+  );
+  if (!upgrade) return false;
+  if (tech.level < upgrade.requiredLevel) return false;
+  if (upgrade.requiredQuest && !completedQuests.includes(upgrade.requiredQuest)) {
     return false;
   }
-  if (def.upgrade.requiredItems) {
-    for (const itemId of def.upgrade.requiredItems) {
+  if (upgrade.requiredItems) {
+    for (const itemId of upgrade.requiredItems) {
       if (!inventoryItemIds.includes(itemId)) return false;
     }
   }
   return true;
 }
 
-export function performUpgrade(tech: OwnedTechnology): OwnedTechnology {
+export function getAvailableUpgrades(tech: OwnedTechnology): TechnologyUpgrade[] {
   const def = getTechnology(tech.definitionId);
-  if (!def.upgrade) throw new Error('No upgrade available');
-  const next = createOwnedTechnology(def.upgrade.targetTechnologyId, tech.level, tech.experience);
+  if (!def.upgrade) return [];
+  return Array.isArray(def.upgrade) ? def.upgrade : [def.upgrade];
+}
+
+export function performUpgrade(tech: OwnedTechnology, targetTechnologyId?: string): OwnedTechnology {
+  const upgrade = getAvailableUpgrades(tech).find(
+    (candidate) => !targetTechnologyId || candidate.targetTechnologyId === targetTechnologyId,
+  );
+  if (!upgrade) throw new Error('No upgrade available');
+  const next = createOwnedTechnology(upgrade.targetTechnologyId, tech.level, tech.experience);
   next.nickname = tech.nickname;
   return next;
 }

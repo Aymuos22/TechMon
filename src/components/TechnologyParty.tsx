@@ -4,6 +4,7 @@ import { HealthBar } from './HealthBar';
 import { XPBar } from './XPBar';
 import { getSkill } from '../data/skills';
 import { TechLogo } from './TechLogo';
+import { getAvailableUpgrades } from '../game/technologies/TechnologyEngine';
 
 interface Props {
   party: OwnedTechnology[];
@@ -11,7 +12,7 @@ interface Props {
   onSwap: (a: number, b: number) => void;
   onToStorage: (index: number) => void;
   onToParty: (index: number) => void;
-  onUpgrade: (index: number) => void;
+  onUpgrade: (index: number, targetTechnologyId?: string) => void;
   onUnlearn: (index: number) => void;
   onForgetSkill: (partyIndex: number, skillId: string) => void;
   onClose: () => void;
@@ -46,6 +47,7 @@ export function TechnologyParty({
       <div className="party-grid">
         {party.map((t, i) => {
           const def = getTechnology(t.definitionId);
+          const upgrades = getAvailableUpgrades(t);
           return (
             <div key={t.instanceId} className="party-card" style={{ borderColor: def.color }}>
               <div className="party-card-head">
@@ -87,9 +89,20 @@ export function TechnologyParty({
                     Deposit
                   </button>
                 )}
-                <button type="button" onClick={() => onUpgrade(i)}>
-                  Upgrade
-                </button>
+                {upgrades.length === 0 && (
+                  <button type="button" onClick={() => onUpgrade(i)}>
+                    Upgrade
+                  </button>
+                )}
+                {upgrades.map((upgrade) => (
+                  <button
+                    key={upgrade.targetTechnologyId}
+                    type="button"
+                    onClick={() => onUpgrade(i, upgrade.targetTechnologyId)}
+                  >
+                    {getTechnology(upgrade.targetTechnologyId).name} Lv{upgrade.requiredLevel}
+                  </button>
+                ))}
                 <button type="button" className="danger-btn" onClick={() => onUnlearn(i)}>
                   Unlearn
                 </button>

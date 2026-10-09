@@ -69,7 +69,7 @@ export interface TechnologyDefinition {
   baseStats: TechnologyStats;
   rarity: Rarity;
   skillIds: string[];
-  upgrade?: TechnologyUpgrade;
+  upgrade?: TechnologyUpgrade | TechnologyUpgrade[];
   challenges: TechnologyChallenge[];
   dexNumber: number;
   difficulty: string;

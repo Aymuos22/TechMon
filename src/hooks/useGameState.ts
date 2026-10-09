@@ -919,16 +919,16 @@ export function useGameState() {
   }, [player, pushToast, syncPlayerToEngine]);
 
   const tryUpgrade = useCallback(
-    (index: number) => {
+    (index: number, targetTechnologyId?: string) => {
       if (!player) return;
       const tech = player.party[index];
       if (!tech) return;
       const itemIds = player.inventory.flatMap((i) => Array(i.quantity).fill(i.itemId) as string[]);
-      if (!canUpgrade(tech, itemIds, player.completedQuests)) {
+      if (!canUpgrade(tech, itemIds, player.completedQuests, targetTechnologyId)) {
         pushToast('Upgrade requirements not met.');
         return;
       }
-      const upgraded = performUpgrade(tech);
+      const upgraded = performUpgrade(tech, targetTechnologyId);
       const party = [...player.party];
       party[index] = upgraded;
       syncPlayerToEngine({ ...player, party });
