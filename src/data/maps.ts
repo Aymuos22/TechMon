@@ -445,6 +445,7 @@ export function createByteburg(): MapData {
       'ujjwal_blocker',
       'yashasvi',
       'jai',
+      'sameekshya',
       'arya',
       'mukund',
       'anant',

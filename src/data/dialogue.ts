@@ -1294,6 +1294,13 @@ export const dialogues: Record<string, DialogueNode[]> = {
       text: 'Sameekshya meri coffee pee gyi aur puff bhi kha gyi',
     },
   ],
+  sameekshya: [
+    {
+      id: 'sameekshya_1',
+      speaker: 'Sameekshya',
+      text: 'Jai Coffee Pee Rahe ho.......Jai Puff kha rahe ho...Idhar aao.....😘',
+    },
+  ],
   arya: [
     {
       id: 'arya_1',
