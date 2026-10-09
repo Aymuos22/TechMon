@@ -1270,7 +1270,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'ujjwal_1',
       speaker: 'UJJWAL',
-      text: 'My friends grab my titties coz they are big but ladies dw I am straight. Now learn coding to get past here',
+      text: 'Mera weight kam kyun nahi ho rha',
     },
   ],
   ujjwal_blocker_cleared: [
@@ -1291,7 +1291,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'jai_1',
       speaker: 'Jai',
-      text: 'Sameekshya Bhadvi meri coffee pee gyi aur puff bhi kha gyi',
+      text: 'Sameekshya meri coffee pee gyi aur puff bhi kha gyi',
     },
   ],
   utkarsh: [
