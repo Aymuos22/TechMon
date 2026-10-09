@@ -1035,6 +1035,7 @@ export class GameEngine {
         pixelY: Math.round(n.pixelY),
         direction: n.direction,
         color: n.def.color,
+        gender: n.def.gender,
         name: n.def.name,
         walkFrame: n.moving ? n.walkFrame : 0,
       })),

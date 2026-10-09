@@ -1633,6 +1633,64 @@ export const npcById: Record<string, NPCDefinition> = Object.fromEntries(
   npcs.map((n) => [n.id, n]),
 );
 
+const FEMALE_NPC_IDS = new Set([
+  'parent',
+  'professor_ada',
+  'nurse_byte',
+  'maya',
+  'sre_dana',
+  'nurse_stack',
+  'ai_researcher',
+  'db_admin',
+  'cove_nurse_spot',
+  'cove_nurse',
+  'legacy_nurse',
+  'service_nurse',
+  'faang_nurse',
+  'farm_nurse_spot',
+  'farm_nurse',
+  'cuck_nurse',
+  'yashasvi',
+  'joke_social',
+  'adya',
+  'bhavika',
+  'joke_affair_2',
+  'joke_affair_3',
+  'gossip_breakup',
+  'gossip_nandini',
+  'nikita',
+  'saas_sofia',
+]);
+
+const FEMALE_NAME_HINTS = [
+  'aisha',
+  'adya',
+  'ada',
+  'bhavika',
+  'dana',
+  'kira',
+  'maya',
+  'mei',
+  'mom',
+  'nandini',
+  'nikita',
+  'nurse',
+  'priya',
+  'sarah',
+  'sofia',
+  'tara',
+  'yashasvi',
+];
+
+function inferNpcGender(npc: NPCDefinition): NonNullable<NPCDefinition['gender']> {
+  if (npc.gender) return npc.gender;
+  if (FEMALE_NPC_IDS.has(npc.id)) return 'female';
+  const normalizedName = npc.name.toLowerCase();
+  return FEMALE_NAME_HINTS.some((hint) => normalizedName.includes(hint)) ? 'female' : 'male';
+}
+
 export function getNpcsForMap(mapId: string): NPCDefinition[] {
-  return npcs.filter((n) => n.mapId === mapId);
+  return npcs
+    .filter((n) => n.mapId === mapId)
+    .map((n) => ({ ...n, gender: inferNpcGender(n) }));
 }

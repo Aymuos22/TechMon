@@ -11,6 +11,7 @@ export interface RenderActor {
   pixelY: number;
   direction: Direction;
   color: string;
+  gender?: 'male' | 'female';
   name?: string;
   walkFrame: number;
   isPlayer?: boolean;
@@ -423,17 +424,35 @@ export class Renderer {
     this.ctx.fillStyle = 'rgba(0,0,0,0.25)';
     this.ctx.fillRect(sx + 8, sy + 28, 16, 4);
 
+    const isFemale = actor.gender === 'female';
+
     // body
     this.ctx.fillStyle = actor.color;
-    this.ctx.fillRect(sx + 8, sy + 10 - bob, 16, 14);
+    if (isFemale) {
+      this.ctx.fillRect(sx + 9, sy + 10 - bob, 14, 10);
+      this.ctx.fillRect(sx + 7, sy + 20 - bob, 18, 5);
+    } else {
+      this.ctx.fillRect(sx + 7, sy + 10 - bob, 18, 14);
+      this.ctx.fillStyle = 'rgba(0,0,0,0.16)';
+      this.ctx.fillRect(sx + 8, sy + 10 - bob, 16, 3);
+    }
 
     // head
     this.ctx.fillStyle = '#f5d0a9';
     this.ctx.fillRect(sx + 10, sy + 2 - bob, 12, 10);
 
-    // short dark hair
-    this.ctx.fillStyle = '#1a1a1a';
-    this.ctx.fillRect(sx + 10, sy + 1 - bob, 12, 3);
+    // hair
+    this.ctx.fillStyle = isFemale ? '#4b2418' : '#1a1a1a';
+    if (isFemale) {
+      this.ctx.fillRect(sx + 9, sy + 0 - bob, 14, 5);
+      this.ctx.fillRect(sx + 8, sy + 4 - bob, 4, 9);
+      this.ctx.fillRect(sx + 20, sy + 4 - bob, 4, 9);
+      this.ctx.fillStyle = '#6b3322';
+      this.ctx.fillRect(sx + 14, sy + 1 - bob, 5, 2);
+    } else {
+      this.ctx.fillRect(sx + 10, sy + 1 - bob, 12, 3);
+      this.ctx.fillRect(sx + 9, sy + 3 - bob, 3, 3);
+    }
 
     // eyes facing direction
     this.ctx.fillStyle = '#1a1a1a';
@@ -449,11 +468,29 @@ export class Renderer {
       this.ctx.fillRect(sx + 18, sy + 6 - bob, 2, 2);
     }
 
+    if (isFemale && actor.direction !== 'up') {
+      this.ctx.fillStyle = '#f6d365';
+      this.ctx.fillRect(sx + 9, sy + 8 - bob, 1, 2);
+      this.ctx.fillRect(sx + 22, sy + 8 - bob, 1, 2);
+    }
+
     // legs
-    this.ctx.fillStyle = '#2c3e50';
     const legOffset = actor.walkFrame % 2 === 0 ? 0 : 2;
-    this.ctx.fillRect(sx + 10, sy + 24, 5, 6 + (legOffset ? 0 : 1));
-    this.ctx.fillRect(sx + 17, sy + 24, 5, 6 + (legOffset ? 1 : 0));
+    if (isFemale) {
+      this.ctx.fillStyle = '#2c3e50';
+      this.ctx.fillRect(sx + 10, sy + 25, 4, 5 + (legOffset ? 0 : 1));
+      this.ctx.fillRect(sx + 18, sy + 25, 4, 5 + (legOffset ? 1 : 0));
+      this.ctx.fillStyle = '#202a36';
+      this.ctx.fillRect(sx + 9, sy + 30, 5, 2);
+      this.ctx.fillRect(sx + 18, sy + 30, 5, 2);
+    } else {
+      this.ctx.fillStyle = '#2c3e50';
+      this.ctx.fillRect(sx + 9, sy + 24, 6, 6 + (legOffset ? 0 : 1));
+      this.ctx.fillRect(sx + 17, sy + 24, 6, 6 + (legOffset ? 1 : 0));
+      this.ctx.fillStyle = '#202a36';
+      this.ctx.fillRect(sx + 8, sy + 30, 7, 2);
+      this.ctx.fillRect(sx + 17, sy + 30, 7, 2);
+    }
   }
 
   private drawLargeNpc(sx: number, sy: number, actor: RenderActor): void {

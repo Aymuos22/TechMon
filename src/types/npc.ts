@@ -21,6 +21,7 @@ export interface NPCDefinition {
   mapId: string;
   position: Position;
   direction: Direction;
+  gender?: 'male' | 'female';
   color: string;
   dialogueId: string;
   movement?: MovementPattern;
