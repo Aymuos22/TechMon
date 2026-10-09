@@ -1308,6 +1308,20 @@ export const dialogues: Record<string, DialogueNode[]> = {
       text: 'Deepanshi se kbhi bhi baat nhi krunga....YC i am coming!!!',
     },
   ],
+  rishabh: [
+    {
+      id: 'rishabh_1',
+      speaker: 'Rishabh',
+      text: 'Real coding is patience with management',
+    },
+  ],
+  madhusudhan: [
+    {
+      id: 'madhusudhan_1',
+      speaker: 'Madhusudhan',
+      text: 'You know you can generate photos on telegram bots?? try it',
+    },
+  ],
   joke_manager: [
     {
       id: 'jm_1',

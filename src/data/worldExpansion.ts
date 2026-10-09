@@ -955,6 +955,7 @@ export function createCuckCoder(): MapData {
       'prompt_perry',
       'ankur',
       'chirag',
+      'madhusudhan',
       'trainer_cuck_street',
     ],
     encounters: {

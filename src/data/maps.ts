@@ -1021,6 +1021,7 @@ export function createStackhaven(): MapData {
       'joke_social',
       'joke_affair',
       'utkarsh',
+      'rishabh',
     ],
     music: 'city',
     theme: 'stackhaven',
