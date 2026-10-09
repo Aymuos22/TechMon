@@ -1294,6 +1294,19 @@ export const dialogues: Record<string, DialogueNode[]> = {
       text: 'Sameekshya meri coffee pee gyi aur puff bhi kha gyi',
     },
   ],
+  pond_pari: [
+    {
+      id: 'pond_pari_1',
+      speaker: 'Pond Pari',
+      text: 'I sit by this pond to cool down after hearing one more guy explain CSS specificity like he invented water.',
+      nextId: 'pond_pari_2',
+    },
+    {
+      id: 'pond_pari_2',
+      speaker: 'Pond Pari',
+      text: 'If confidence compiled, half the men in Byteburg would be senior architects. Unfortunately, the code still fails.',
+    },
+  ],
   sameekshya: [
     {
       id: 'sameekshya_1',
@@ -1356,6 +1369,32 @@ export const dialogues: Record<string, DialogueNode[]> = {
       id: 'anant_3',
       speaker: 'Anant',
       text: 'If heartbreak gave XP, I would already be level 100.',
+    },
+  ],
+  river_rhea: [
+    {
+      id: 'river_rhea_1',
+      speaker: 'River Rhea',
+      text: 'This river has better flow control than most men in sprint planning.',
+      nextId: 'river_rhea_2',
+    },
+    {
+      id: 'river_rhea_2',
+      speaker: 'River Rhea',
+      text: 'I am not anti-men. I am anti-"let me play devil\'s advocate" during a five-minute standup.',
+    },
+  ],
+  dock_diya: [
+    {
+      id: 'dock_diya_1',
+      speaker: 'Dock Diya',
+      text: 'I guard this water feature from unsolicited advice and "quick thoughts" from men with no tickets assigned.',
+      nextId: 'dock_diya_2',
+    },
+    {
+      id: 'dock_diya_2',
+      speaker: 'Dock Diya',
+      text: 'Misandry? Please. I just believe every pond deserves a firewall against fragile egos.',
     },
   ],
   utkarsh: [
