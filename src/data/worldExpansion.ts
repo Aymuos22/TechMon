@@ -220,6 +220,11 @@ function makeRoute(
   };
 }
 
+function rebuild(map: MapData): MapData {
+  map.collision = buildCollision(map.tiles);
+  return map;
+}
+
 function makeInteriorGym(
   id: string,
   name: string,
@@ -441,7 +446,32 @@ export function createContainerCove(): MapData {
     text: 'CrashLoopBackOff × 412. Last state: OOMKilled. heap = 2Gi, limit = 512Mi. Nice.',
     flag: 'inspected_cove_logs',
   });
-  return map;
+  // Coastal industrial port: water channel, metal piers, stacked containers, ops consoles.
+  fillRect(map.tiles, 1, 14, 8, 4, TILE.WATER);
+  fillRect(map.tiles, 1, 11, 8, 2, TILE.SAND);
+  fillRect(map.tiles, 6, 13, 2, 5, TILE.BRIDGE);
+  fillRect(map.tiles, 18, 5, 7, 3, TILE.WALL_ALT);
+  fillRect(map.tiles, 19, 6, 5, 1, TILE.MACHINE);
+  fillRect(map.tiles, 2, 3, 2, 5, TILE.FENCE);
+  fillRect(map.tiles, 23, 12, 3, 5, TILE.FENCE);
+  setTile(map.tiles, 20, 4, TILE.COMPUTER);
+  setTile(map.tiles, 24, 4, TILE.COMPUTER);
+  setTile(map.tiles, 13, 11, TILE.MACHINE);
+  map.interactions.push(
+    {
+      id: 'cove_port_sign',
+      position: { x: 6, y: 12 },
+      kind: 'sign',
+      text: 'CONTAINER COVE — Salt air, YAML, and pods waiting at the dock.',
+    },
+    {
+      id: 'cove_console',
+      position: { x: 20, y: 4 },
+      kind: 'computer',
+      text: 'Harbor cluster dashboard: 87 containers waiting for rollout.',
+    },
+  );
+  return rebuild(map);
 }
 
 export function createLegacyCrossing(): MapData {
@@ -524,7 +554,25 @@ export function createLegacyCrossing(): MapData {
       flag: 'chest_legacy_punch',
     },
   );
-  return map;
+  // A cracked old mainframe settlement: dead terminals, punch-card fences, and broken asphalt.
+  fillRect(map.tiles, 3, 2, 6, 2, TILE.FLOOR_DARK);
+  fillRect(map.tiles, 18, 2, 6, 2, TILE.FLOOR_DARK);
+  fillRect(map.tiles, 2, 13, 7, 4, TILE.SAND);
+  fillRect(map.tiles, 18, 13, 6, 4, TILE.SAND);
+  fillRect(map.tiles, 11, 5, 4, 1, TILE.COMPUTER);
+  fillRect(map.tiles, 11, 6, 4, 1, TILE.MACHINE);
+  fillRect(map.tiles, 4, 11, 20, 1, TILE.FENCE);
+  setTile(map.tiles, 13, 11, TILE.PATH);
+  setTile(map.tiles, 14, 11, TILE.PATH);
+  setTile(map.tiles, 15, 9, TILE.SHELF);
+  setTile(map.tiles, 16, 9, TILE.SHELF);
+  map.interactions.push({
+    id: 'legacy_terminal_row',
+    position: { x: 12, y: 5 },
+    kind: 'computer',
+    text: 'Green-screen terminal: cursor blinking since 1987. Still mission critical.',
+  });
+  return rebuild(map);
 }
 
 export function createServiceSquare(): MapData {
@@ -608,7 +656,25 @@ export function createServiceSquare(): MapData {
     text: 'Timesheet draft: "Architecture alignment — 40h. Deliverable: README.md (1 paragraph)."',
     flag: 'inspected_timesheet',
   });
-  return map;
+  // Downtrodden service village: dusty lanes, cramped cubicle rows, half-broken benches.
+  fillRect(map.tiles, 1, 6, 26, 2, TILE.SAND);
+  fillRect(map.tiles, 1, 12, 26, 2, TILE.SAND);
+  fillRect(map.tiles, 4, 14, 5, 3, TILE.FENCE);
+  fillRect(map.tiles, 18, 3, 7, 5, TILE.FENCE);
+  setTile(map.tiles, 6, 8, TILE.BENCH);
+  setTile(map.tiles, 7, 8, TILE.BENCH);
+  setTile(map.tiles, 20, 11, TILE.BENCH);
+  fillRect(map.tiles, 11, 8, 6, 1, TILE.COUNTER);
+  fillRect(map.tiles, 11, 11, 6, 1, TILE.COUNTER);
+  setTile(map.tiles, 15, 8, TILE.PATH);
+  setTile(map.tiles, 15, 11, TILE.PATH);
+  map.interactions.push({
+    id: 'service_notice',
+    position: { x: 15, y: 8 },
+    kind: 'inspect',
+    text: 'Notice board: "Bench allocation pending. Please continue looking busy."',
+  });
+  return rebuild(map);
 }
 
 export function createFaangHeights(): MapData {
@@ -696,11 +762,28 @@ export function createFaangHeights(): MapData {
     text: 'Whiteboard: "Merge k sorted lists." Marker squeaks. Interviewer: "Yeah, just optimal."',
     flag: 'inspected_faang_board',
   });
-  return map;
+  // Hi-tech city grid: glass plazas, data-center strips, interview fountains.
+  fillRect(map.tiles, 2, 4, 24, 1, TILE.FLOOR_DARK);
+  fillRect(map.tiles, 2, 15, 24, 1, TILE.FLOOR_DARK);
+  fillRect(map.tiles, 8, 2, 2, 16, TILE.FLOOR_DARK);
+  fillRect(map.tiles, 18, 2, 2, 16, TILE.FLOOR_DARK);
+  fillRect(map.tiles, 11, 7, 6, 5, TILE.SAND);
+  setTile(map.tiles, 14, 9, TILE.FOUNTAIN);
+  fillRect(map.tiles, 22, 5, 3, 6, TILE.COMPUTER);
+  fillRect(map.tiles, 3, 13, 4, 4, TILE.MACHINE);
+  setTile(map.tiles, 24, 9, TILE.PATH);
+  setTile(map.tiles, 23, 9, TILE.PATH);
+  map.interactions.push({
+    id: 'faang_city_grid',
+    position: { x: 14, y: 9 },
+    kind: 'info',
+    text: 'Glass plaza: free snacks west, whiteboard anxiety east, stock refresh north.',
+  });
+  return rebuild(map);
 }
 
 export function createRouteOps(): MapData {
-  return makeRoute(
+  const map = makeRoute(
     'route_ops',
     'Orchestration Road',
     { mapId: 'stackhaven', x: 30, y: 11 },
@@ -731,10 +814,25 @@ export function createRouteOps(): MapData {
     },
     ['trainer_ops_road'],
   );
+  // Container yard geography: service road broken by pipe bridges and machine racks.
+  fillRect(map.tiles, 5, 1, 26, 2, TILE.WALL_ALT);
+  fillRect(map.tiles, 7, 2, 4, 1, TILE.MACHINE);
+  fillRect(map.tiles, 18, 2, 4, 1, TILE.MACHINE);
+  fillRect(map.tiles, 3, 8, 8, 2, TILE.SAND);
+  fillRect(map.tiles, 24, 8, 7, 2, TILE.FENCE);
+  setTile(map.tiles, 17, 5, TILE.COMPUTER);
+  setTile(map.tiles, 17, 6, TILE.COMPUTER);
+  map.interactions.push({
+    id: 'ops_pipeline_sign',
+    position: { x: 17, y: 4 },
+    kind: 'sign',
+    text: 'ORCHESTRATION ROAD — Containers stacked north. Deployments staged south.',
+  });
+  return rebuild(map);
 }
 
 export function createRouteLegacy(): MapData {
-  return makeRoute(
+  const map = makeRoute(
     'route_legacy',
     'Cobol Causeway',
     { mapId: 'container_cove', x: 26, y: 9 },
@@ -755,10 +853,25 @@ export function createRouteLegacy(): MapData {
     },
     ['trainer_legacy_road'],
   );
+  // Old cobblestone causeway: sparse grass, broken fences, and abandoned batch consoles.
+  fillRect(map.tiles, 1, 4, 34, 4, TILE.SAND);
+  fillRect(map.tiles, 1, 5, 34, 2, TILE.PATH);
+  fillRect(map.tiles, 6, 2, 8, 2, TILE.FENCE);
+  fillRect(map.tiles, 22, 8, 8, 2, TILE.FENCE);
+  setTile(map.tiles, 14, 4, TILE.COMPUTER);
+  setTile(map.tiles, 15, 4, TILE.COMPUTER);
+  setTile(map.tiles, 20, 7, TILE.SHELF);
+  map.interactions.push({
+    id: 'legacy_route_sign',
+    position: { x: 17, y: 4 },
+    kind: 'sign',
+    text: 'COBOL CAUSEWAY — Mind the cracked road and the untouched payroll batch.',
+  });
+  return rebuild(map);
 }
 
 export function createRouteService(): MapData {
-  return makeRoute(
+  const map = makeRoute(
     'route_service',
     'Bench Boulevard',
     { mapId: 'legacy_crossing', x: 26, y: 9 },
@@ -778,10 +891,24 @@ export function createRouteService(): MapData {
     },
     ['trainer_service_road'],
   );
+  // Downtrodden bench road: dusty detours, cubicle barricades, and no shade.
+  fillRect(map.tiles, 1, 3, 34, 6, TILE.SAND);
+  fillRect(map.tiles, 1, 5, 34, 2, TILE.PATH);
+  fillRect(map.tiles, 8, 2, 5, 2, TILE.BENCH);
+  fillRect(map.tiles, 22, 8, 6, 2, TILE.COUNTER);
+  fillRect(map.tiles, 30, 2, 4, 3, TILE.FENCE);
+  setTile(map.tiles, 18, 4, TILE.SIGN);
+  map.interactions.push({
+    id: 'bench_route_sign',
+    position: { x: 18, y: 4 },
+    kind: 'sign',
+    text: 'BENCH BOULEVARD — Villages of idle talent and timesheet dust.',
+  });
+  return rebuild(map);
 }
 
 export function createRouteFaang(): MapData {
-  return makeRoute(
+  const map = makeRoute(
     'route_faang',
     'Onsite Approach',
     { mapId: 'service_square', x: 26, y: 9 },
@@ -803,27 +930,82 @@ export function createRouteFaang(): MapData {
     },
     ['trainer_faang_road'],
   );
+  // Onsite approach: sleek campus promenade with water, glass, and interview stations.
+  fillRect(map.tiles, 1, 4, 34, 4, TILE.FLOOR_DARK);
+  fillRect(map.tiles, 1, 5, 34, 2, TILE.PATH);
+  fillRect(map.tiles, 6, 1, 5, 3, TILE.WATER);
+  fillRect(map.tiles, 7, 4, 3, 1, TILE.BRIDGE);
+  fillRect(map.tiles, 22, 1, 7, 3, TILE.COMPUTER);
+  fillRect(map.tiles, 13, 8, 5, 2, TILE.MACHINE);
+  setTile(map.tiles, 31, 6, TILE.FOUNTAIN);
+  map.interactions.push({
+    id: 'onsite_route_sign',
+    position: { x: 17, y: 4 },
+    kind: 'sign',
+    text: 'ONSITE APPROACH — Badge swipe, free kombucha, O(n log n) panic.',
+  });
+  return rebuild(map);
 }
 
 export function createDevopsGym(): MapData {
-  return makeInteriorGym('devops_gym', 'DevOps Gym', 'container_cove', { x: 13, y: 17 }, [
+  const map = makeInteriorGym('devops_gym', 'DevOps Gym', 'container_cove', { x: 13, y: 17 }, [
     'gym_helm_npc',
   ]);
+  fillRect(map.tiles, 2, 3, 7, 1, TILE.MACHINE);
+  fillRect(map.tiles, 2, 8, 7, 1, TILE.COMPUTER);
+  setTile(map.tiles, 5, 6, TILE.BRIDGE);
+  map.interactions.push({
+    id: 'devops_cluster_panel',
+    position: { x: 5, y: 3 },
+    kind: 'computer',
+    text: 'Cluster board: green pods, red alerts, one mysterious YAML indentation.',
+  });
+  return rebuild(map);
 }
 export function createLegacyGym(): MapData {
-  return makeInteriorGym('legacy_gym', 'Legacy Gym', 'legacy_crossing', { x: 13, y: 17 }, [
+  const map = makeInteriorGym('legacy_gym', 'Legacy Gym', 'legacy_crossing', { x: 13, y: 17 }, [
     'gym_cobol_npc',
   ]);
+  fillRect(map.tiles, 2, 3, 7, 1, TILE.COMPUTER);
+  fillRect(map.tiles, 2, 8, 7, 1, TILE.SHELF);
+  setTile(map.tiles, 5, 6, TILE.MACHINE);
+  map.interactions.push({
+    id: 'legacy_core_panel',
+    position: { x: 5, y: 3 },
+    kind: 'computer',
+    text: 'Mainframe core: "Do not reboot. Nobody remembers the password."',
+  });
+  return rebuild(map);
 }
 export function createServiceGym(): MapData {
-  return makeInteriorGym('service_gym', 'Billing Gym', 'service_square', { x: 13, y: 17 }, [
+  const map = makeInteriorGym('service_gym', 'Billing Gym', 'service_square', { x: 13, y: 17 }, [
     'gym_billing_npc',
   ]);
+  fillRect(map.tiles, 2, 3, 7, 1, TILE.COUNTER);
+  fillRect(map.tiles, 2, 6, 7, 1, TILE.BENCH);
+  fillRect(map.tiles, 2, 8, 7, 1, TILE.SHELF);
+  map.interactions.push({
+    id: 'service_billing_board',
+    position: { x: 5, y: 3 },
+    kind: 'inspect',
+    text: 'Billing board: 6 hours design, 2 hours meeting, 32 hours waiting for access.',
+  });
+  return rebuild(map);
 }
 export function createFaangGym(): MapData {
-  return makeInteriorGym('faang_gym', 'Leetcode Gym', 'faang_heights', { x: 13, y: 17 }, [
+  const map = makeInteriorGym('faang_gym', 'Leetcode Gym', 'faang_heights', { x: 13, y: 17 }, [
     'gym_leet_npc',
   ]);
+  fillRect(map.tiles, 2, 3, 7, 1, TILE.COMPUTER);
+  fillRect(map.tiles, 2, 8, 7, 1, TILE.MACHINE);
+  setTile(map.tiles, 5, 6, TILE.FOUNTAIN);
+  map.interactions.push({
+    id: 'faang_whiteboard_panel',
+    position: { x: 5, y: 3 },
+    kind: 'computer',
+    text: 'Whiteboard simulator: invert binary tree, then explain leadership principles.',
+  });
+  return rebuild(map);
 }
 
 function smallCenter(id: string, parent: string, exit: { x: number; y: number }, nurse: string): MapData {

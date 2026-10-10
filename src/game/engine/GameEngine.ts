@@ -331,6 +331,7 @@ export class GameEngine {
 
   private checkTrainerSight(): void {
     if (this.trainerEngaging || this.playerEntity.moving) return;
+    if (!this.hasBattleReadyTech()) return;
     const map = getMap(this.player.mapId);
     const playerTile = this.playerEntity.tile;
 
@@ -486,7 +487,11 @@ export class GameEngine {
         this.events.onMessage?.(`${def.name}: Nice battle earlier! Keep coding.`);
         return;
       }
-      this.startDialogue(def.dialogueId);
+      if (!this.hasBattleReadyTech()) {
+        this.events.onMessage?.('You need a battle-ready technology first! Visit Professor Ada.');
+        return;
+      }
+      this.beginTrainerBattle(def.interaction.trainerId);
       return;
     }
 
@@ -508,6 +513,10 @@ export class GameEngine {
         this.events.onMessage?.(
           `${def.name}: That badge looks good on you. Keep shipping!`,
         );
+        return;
+      }
+      if (!this.hasBattleReadyTech()) {
+        this.events.onMessage?.('You need a battle-ready technology first! Visit Professor Ada.');
         return;
       }
       this.startDialogue(def.dialogueId);
@@ -773,7 +782,12 @@ export class GameEngine {
         break;
       }
       case 'start_battle': {
-        this.beginTrainerBattle(action.trainerId);
+        if (this.hasBattleReadyTech()) {
+          this.beginTrainerBattle(action.trainerId);
+        } else {
+          this.events.onMessage?.('You need a battle-ready technology first! Visit Professor Ada.');
+          this.trainerEngaging = false;
+        }
         break;
       }
       case 'start_quest': {
@@ -828,10 +842,14 @@ export class GameEngine {
     }
   }
 
+  private hasBattleReadyTech(): boolean {
+    return this.player.party.some((technology) => technology.currentHp > 0);
+  }
+
   beginTrainerBattle(trainerId: string): void {
     const trainer = trainers[trainerId];
     if (!trainer) return;
-    if (this.player.party.length === 0 || this.player.party.every((t) => t.currentHp <= 0)) {
+    if (!this.hasBattleReadyTech()) {
       this.events.onMessage?.('You have no battle-ready technologies!');
       this.trainerEngaging = false;
       return;
@@ -854,7 +872,7 @@ export class GameEngine {
   }
 
   beginWildBattle(technologyId: string, level: number): void {
-    if (this.player.party.length === 0) {
+    if (!this.hasBattleReadyTech()) {
       this.events.onMessage?.('You need a technology first! Visit Professor Ada.');
       return;
     }
@@ -977,7 +995,7 @@ export class GameEngine {
 
   private checkEncounter(): void {
     if (this.encounterCooldown > 0) return;
-    if (this.player.party.length === 0) return;
+    if (!this.hasBattleReadyTech()) return;
     const map = getMap(this.player.mapId);
     if (!map.encounters) return;
     if (!this.collision.isEncounterTile(map, this.playerEntity.tile.x, this.playerEntity.tile.y)) {
