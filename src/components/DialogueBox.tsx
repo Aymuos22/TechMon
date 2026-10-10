@@ -6,6 +6,26 @@ interface Props {
   onClose?: () => void;
 }
 
+const URL_PATTERN = /(https?:\/\/[^\s]+)/g;
+
+function renderLinkedText(text: string) {
+  return text.split(URL_PATTERN).map((part, index) => {
+    if (!part.match(URL_PATTERN)) return part;
+    return (
+      <a
+        key={`${part}-${index}`}
+        className="dialogue-link"
+        href={part}
+        target="_blank"
+        rel="noreferrer"
+        onClick={(event) => event.stopPropagation()}
+      >
+        {part}
+      </a>
+    );
+  });
+}
+
 export function DialogueBox({ dialogue }: Props) {
   const [, setTick] = useState(0);
 
@@ -24,7 +44,7 @@ export function DialogueBox({ dialogue }: Props) {
     <div className="dialogue-box" role="dialog" aria-live="polite">
       <div className="dialogue-speaker">{session.current.speaker}</div>
       <div className="dialogue-text">
-        {session.displayedText}
+        {renderLinkedText(session.displayedText)}
         {!dialogue.isTextComplete() && <span className="cursor-blink">▌</span>}
       </div>
       {showChoices && (

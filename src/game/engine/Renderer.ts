@@ -322,29 +322,56 @@ export class Renderer {
   renderWeather(weather: WeatherState, isInterior?: boolean): void {
     if (isInterior || weather !== 'rain') return;
 
-    this.ctx.fillStyle = 'rgba(30, 60, 90, 0.18)';
+    this.ctx.save();
+    this.ctx.fillStyle = 'rgba(8, 18, 34, 0.18)';
     this.ctx.fillRect(0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-    this.ctx.strokeStyle = 'rgba(170, 215, 255, 0.72)';
-    this.ctx.lineWidth = 1;
 
-    const offset = Math.floor((this.animTime * 220) % 48);
-    for (let x = -48; x < VIEWPORT_WIDTH + 48; x += 16) {
-      for (let y = -48; y < VIEWPORT_HEIGHT + 48; y += 32) {
-        const sx = x + offset * 0.35;
-        const sy = y + offset;
-        this.ctx.beginPath();
-        this.ctx.moveTo(sx, sy);
-        this.ctx.lineTo(sx - 7, sy + 14);
-        this.ctx.stroke();
-      }
+    this.ctx.fillStyle = 'rgba(155, 190, 220, 0.08)';
+    for (let y = 0; y < VIEWPORT_HEIGHT; y += 26) {
+      this.ctx.fillRect(0, y + Math.sin(this.animTime * 1.4 + y) * 2, VIEWPORT_WIDTH, 1);
     }
 
-    this.ctx.fillStyle = 'rgba(185, 225, 255, 0.24)';
-    const rippleOffset = Math.floor(this.animTime * 10) % 32;
-    for (let x = 0; x < VIEWPORT_WIDTH; x += 64) {
-      const y = VIEWPORT_HEIGHT - 12 - ((x + rippleOffset) % 24);
-      this.ctx.fillRect(x + 10, y, 14, 1);
-      this.ctx.fillRect(x + 14, y + 3, 8, 1);
+    this.drawRainLayer(54, 260, 18, 0.34, 0.45);
+    this.drawRainLayer(76, 390, 25, 0.66, 0.8);
+
+    const splashPhase = Math.floor(this.animTime * 18);
+    this.ctx.strokeStyle = 'rgba(190, 225, 255, 0.32)';
+    this.ctx.lineWidth = 1;
+    for (let i = 0; i < 26; i++) {
+      const x = (i * 73 + splashPhase * 11) % VIEWPORT_WIDTH;
+      const y = VIEWPORT_HEIGHT - 18 - ((i * 19 + splashPhase) % 80);
+      const width = 4 + ((i * 7 + splashPhase) % 10);
+      this.ctx.beginPath();
+      this.ctx.moveTo(x - width, y);
+      this.ctx.quadraticCurveTo(x, y - 2, x + width, y);
+      this.ctx.stroke();
+    }
+
+    this.ctx.restore();
+  }
+
+  private drawRainLayer(
+    count: number,
+    speed: number,
+    length: number,
+    alpha: number,
+    width: number,
+  ): void {
+    this.ctx.strokeStyle = `rgba(185, 220, 255, ${alpha})`;
+    this.ctx.lineWidth = width;
+    for (let i = 0; i < count; i++) {
+      const seed = i * 97;
+      const drift = ((seed * 37) % 53) - 26;
+      const localLength = length + (seed % 12);
+      const y = (seed * 29 + this.animTime * speed) % (VIEWPORT_HEIGHT + 80) - 40;
+      const x =
+        (seed * 53 + Math.sin(this.animTime * 1.7 + i) * 18 + drift) %
+        (VIEWPORT_WIDTH + 80);
+      const sx = x - 40;
+      this.ctx.beginPath();
+      this.ctx.moveTo(sx, y);
+      this.ctx.lineTo(sx - localLength * 0.42, y + localLength);
+      this.ctx.stroke();
     }
   }
 
