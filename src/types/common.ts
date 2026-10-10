@@ -8,7 +8,7 @@ export type Direction = 'up' | 'down' | 'left' | 'right';
 export const TILE_SIZE = 32;
 export const VIEWPORT_WIDTH = 480;
 export const VIEWPORT_HEIGHT = 320;
-export const MOVE_DURATION_MS = 180;
+export const MOVE_DURATION_MS = 150;
 export const MAX_PARTY_SIZE = 6;
 /** Max skills / moves a technology may know at once */
 export const MAX_SKILLS = 4;

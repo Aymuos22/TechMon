@@ -21,8 +21,8 @@ export class Camera {
       this.initialized = true;
       return;
     }
-    this.x += (clampedX - this.x) * 0.42;
-    this.y += (clampedY - this.y) * 0.42;
+    this.x += (clampedX - this.x) * 0.72;
+    this.y += (clampedY - this.y) * 0.72;
   }
 
   /** Subtle one-shot shake (overworld events / crits) */
