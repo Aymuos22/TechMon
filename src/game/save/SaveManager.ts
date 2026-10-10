@@ -29,6 +29,7 @@ export function defaultWorldState(): WorldState {
     unlockedAreas: [],
     dayNightMs: 0,
     isNight: false,
+    weather: 'clear',
   };
 }
 
@@ -96,6 +97,7 @@ export function normalizeSave(save: SaveGame): SaveGame {
       ...ws,
       collectedItems: ws.collectedItems ?? ws.openedChests ?? [],
       unlockedAreas: ws.unlockedAreas ?? [],
+      weather: ws.weather ?? 'clear',
     },
   };
 }

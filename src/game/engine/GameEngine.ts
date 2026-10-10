@@ -253,8 +253,17 @@ export class GameEngine {
     const cycle = 8 * 60 * 1000;
     const phase = this.world.dayNightMs % cycle;
     const wasNight = this.world.isNight;
+    const previousWeather = this.world.weather;
     this.world.isNight = phase > cycle * 0.55;
-    if (wasNight !== this.world.isNight && this.dayNightAccum > 1) {
+    this.world.weather =
+      (phase > cycle * 0.18 && phase < cycle * 0.32) ||
+      (phase > cycle * 0.68 && phase < cycle * 0.78)
+        ? 'rain'
+        : 'clear';
+    if (
+      (wasNight !== this.world.isNight || previousWeather !== this.world.weather) &&
+      this.dayNightAccum > 1
+    ) {
       this.events.onWorldUpdate?.(this.world);
     }
   }
@@ -1134,6 +1143,7 @@ export class GameEngine {
     this.renderer.renderActors(actors, this.camera);
     // Tree canopies / roofs in front
     this.renderer.renderMap(map, this.camera, this.world.isNight, 'foreground');
+    this.renderer.renderWeather(this.world.weather, map.isInterior);
     this.renderer.renderLocationLabel(map.name);
 
     if (this.battleFlash > 0) {

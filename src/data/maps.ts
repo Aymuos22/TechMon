@@ -804,7 +804,7 @@ export function createStackhaven(): MapData {
   setTile(tiles, 23, 7, TILE.DOOR);
 
   // Tournament Arena entrance
-  fillRect(tiles, 12, 3, 3, 3, TILE.SAND);
+  drawRoom(tiles, 12, 3, 3, 3);
   setTile(tiles, 13, 5, TILE.DOOR);
 
   // Diversity Arena

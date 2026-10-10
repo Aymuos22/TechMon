@@ -225,21 +225,68 @@ function rebuild(map: MapData): MapData {
   return map;
 }
 
+function isInsideBuilding(map: MapData, x: number, y: number): boolean {
+  return map.buildings.some(
+    (building) =>
+      x >= building.position.x &&
+      x < building.position.x + building.width &&
+      y >= building.position.y &&
+      y < building.position.y + building.height,
+  );
+}
+
+function setPathOutsideBuildings(map: MapData, x: number, y: number): void {
+  if (x <= 0 || y <= 0 || x >= map.width - 1 || y >= map.height - 1) return;
+  if (isInsideBuilding(map, x, y)) return;
+  setTile(map.tiles, x, y, TILE.PATH);
+}
+
+function restoreBuildingFootprints(map: MapData): void {
+  for (const building of map.buildings) {
+    drawRoom(
+      map.tiles,
+      building.position.x,
+      building.position.y,
+      building.width,
+      building.height,
+    );
+    setTile(map.tiles, building.door.x, building.door.y, TILE.DOOR);
+  }
+}
+
 function keepTownAccessOpen(map: MapData): MapData {
-  fillRect(map.tiles, 1, 9, map.width - 2, 2, TILE.PATH);
-  fillRect(map.tiles, 12, 2, 2, map.height - 4, TILE.PATH);
+  restoreBuildingFootprints(map);
+  for (let x = 1; x < map.width - 1; x++) {
+    setPathOutsideBuildings(map, x, 9);
+    setPathOutsideBuildings(map, x, 10);
+  }
+  for (let y = 2; y < map.height - 1; y++) {
+    setPathOutsideBuildings(map, 12, y);
+    setPathOutsideBuildings(map, 13, y);
+  }
 
   for (const building of map.buildings) {
     const { x, y } = building.door;
     setTile(map.tiles, x, y, TILE.DOOR);
-    if (y + 1 < map.height - 1) {
-      setTile(map.tiles, x, y + 1, TILE.PATH);
-    }
+    const frontY = Math.min(map.height - 2, y + 1);
+    setPathOutsideBuildings(map, x, frontY);
 
-    const startY = Math.min(y + 1, 9);
-    const endY = Math.max(y + 1, 10);
-    for (let row = startY; row <= endY; row++) {
-      setTile(map.tiles, x, row, TILE.PATH);
+    if (frontY <= 10) {
+      for (let row = frontY; row <= 10; row++) {
+        setPathOutsideBuildings(map, x, row);
+      }
+    } else {
+      const rightSide = building.position.x + building.width + 1;
+      const leftSide = building.position.x - 1;
+      const sideX = rightSide < map.width - 1 ? rightSide : Math.max(1, leftSide);
+      for (let row = 10; row <= frontY; row++) {
+        setPathOutsideBuildings(map, sideX, row);
+      }
+      const startX = Math.min(x, sideX);
+      const endX = Math.max(x, sideX);
+      for (let col = startX; col <= endX; col++) {
+        setPathOutsideBuildings(map, col, frontY);
+      }
     }
   }
 

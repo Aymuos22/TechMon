@@ -1,5 +1,6 @@
 import type { MapData } from '../../types/map';
 import type { Direction, Position } from '../../types/common';
+import type { WeatherState } from '../../types/save';
 import { TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from '../../types/common';
 import { tileDefs, TILE } from '../../data/tiles';
 import type { Camera } from './Camera';
@@ -314,6 +315,35 @@ export class Renderer {
       const sx = Math.round(actor.pixelX - camX);
       const sy = Math.round(actor.pixelY - camY);
       this.drawCharacter(sx, sy, actor);
+    }
+  }
+
+  renderWeather(weather: WeatherState, isInterior?: boolean): void {
+    if (isInterior || weather !== 'rain') return;
+
+    this.ctx.fillStyle = 'rgba(30, 60, 90, 0.18)';
+    this.ctx.fillRect(0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+    this.ctx.strokeStyle = 'rgba(170, 215, 255, 0.72)';
+    this.ctx.lineWidth = 1;
+
+    const offset = Math.floor((this.animTime * 220) % 48);
+    for (let x = -48; x < VIEWPORT_WIDTH + 48; x += 16) {
+      for (let y = -48; y < VIEWPORT_HEIGHT + 48; y += 32) {
+        const sx = x + offset * 0.35;
+        const sy = y + offset;
+        this.ctx.beginPath();
+        this.ctx.moveTo(sx, sy);
+        this.ctx.lineTo(sx - 7, sy + 14);
+        this.ctx.stroke();
+      }
+    }
+
+    this.ctx.fillStyle = 'rgba(185, 225, 255, 0.24)';
+    const rippleOffset = Math.floor(this.animTime * 10) % 32;
+    for (let x = 0; x < VIEWPORT_WIDTH; x += 64) {
+      const y = VIEWPORT_HEIGHT - 12 - ((x + rippleOffset) % 24);
+      this.ctx.fillRect(x + 10, y, 14, 1);
+      this.ctx.fillRect(x + 14, y + 3, 8, 1);
     }
   }
 

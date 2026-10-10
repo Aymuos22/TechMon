@@ -1,5 +1,7 @@
 import type { PlayerState } from './player';
 
+export type WeatherState = 'clear' | 'rain';
+
 export interface WorldState {
   defeatedTrainers: string[];
   openedChests: string[];
@@ -9,6 +11,7 @@ export interface WorldState {
   unlockedAreas: string[];
   dayNightMs: number;
   isNight: boolean;
+  weather: WeatherState;
 }
 
 export interface GameSettings {
