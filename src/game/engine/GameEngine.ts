@@ -297,16 +297,7 @@ export class GameEngine {
       return;
     }
 
-    const dir = this.input.getDirection();
-    if (dir && !this.playerEntity.moving) {
-      const occupied = this.npcs.map((n) => n.tile);
-      const moved = this.playerEntity.tryStartMove(dir, (x, y) =>
-        !this.collision.blocksEntity(map, x, y, occupied),
-      );
-      if (!moved) {
-        this.playerEntity.direction = dir;
-      }
-    }
+    this.tryStartHeldMove(map);
 
     const arrived = this.playerEntity.update(dt);
     this.emitPlayer();
@@ -328,7 +319,6 @@ export class GameEngine {
       this.playerEntity.pixelY,
       map.width * TILE_SIZE,
       map.height * TILE_SIZE,
-      true,
     );
 
     this.checkTrainerSight();
@@ -340,6 +330,21 @@ export class GameEngine {
       } else {
         this.checkEncounter();
       }
+      if (this.mode === 'world') {
+        this.tryStartHeldMove(map);
+      }
+    }
+  }
+
+  private tryStartHeldMove(map: ReturnType<typeof getMap>): void {
+    const dir = this.input.getDirection();
+    if (!dir || this.playerEntity.moving) return;
+    const occupied = this.npcs.map((n) => n.tile);
+    const moved = this.playerEntity.tryStartMove(dir, (x, y) =>
+      !this.collision.blocksEntity(map, x, y, occupied),
+    );
+    if (!moved) {
+      this.playerEntity.direction = dir;
     }
   }
 
@@ -1051,6 +1056,7 @@ export class GameEngine {
       this.playerEntity.pixelY,
       map.width * TILE_SIZE,
       map.height * TILE_SIZE,
+      true,
     );
     this.playMapMusic(map.music);
     this.emitPlayer();
@@ -1121,8 +1127,8 @@ export class GameEngine {
       {
         x: this.playerEntity.tile.x,
         y: this.playerEntity.tile.y,
-        pixelX: Math.round(this.playerEntity.pixelX),
-        pixelY: Math.round(this.playerEntity.pixelY),
+        pixelX: this.playerEntity.pixelX,
+        pixelY: this.playerEntity.pixelY,
         direction: this.playerEntity.direction,
         color: '#1fa87a',
         walkFrame: this.playerEntity.moving ? this.playerEntity.walkFrame : 0,
@@ -1131,8 +1137,8 @@ export class GameEngine {
       ...this.npcs.map((n) => ({
         x: n.tile.x,
         y: n.tile.y,
-        pixelX: Math.round(n.pixelX),
-        pixelY: Math.round(n.pixelY),
+        pixelX: n.pixelX,
+        pixelY: n.pixelY,
         direction: n.direction,
         color: n.def.color,
         gender: n.def.gender,
