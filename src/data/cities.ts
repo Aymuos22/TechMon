@@ -278,6 +278,24 @@ export const trainers: Record<string, TrainerDef> = {
     ],
     rewardMoney: 900,
   },
+  gym_trainer_manifest: {
+    id: 'gym_trainer_manifest',
+    name: 'Manifest Minder',
+    party: [
+      { technologyId: 'docker', level: 20 },
+      { technologyId: 'helm', level: 21 },
+    ],
+    rewardMoney: 950,
+  },
+  gym_trainer_cluster: {
+    id: 'gym_trainer_cluster',
+    name: 'Cluster Guard',
+    party: [
+      { technologyId: 'terraform', level: 21 },
+      { technologyId: 'kubernetes', level: 22 },
+    ],
+    rewardMoney: 1000,
+  },
   gym_helm: {
     id: 'gym_helm',
     name: 'Helm',
@@ -310,6 +328,24 @@ export const trainers: Record<string, TrainerDef> = {
       { technologyId: 'postgresql', level: 22 },
     ],
     rewardMoney: 1000,
+  },
+  gym_trainer_jcl: {
+    id: 'gym_trainer_jcl',
+    name: 'JCL Clerk',
+    party: [
+      { technologyId: 'cobol', level: 22 },
+      { technologyId: 'mainframe', level: 23 },
+    ],
+    rewardMoney: 1050,
+  },
+  gym_trainer_green_screen: {
+    id: 'gym_trainer_green_screen',
+    name: 'Green Screen Guard',
+    party: [
+      { technologyId: 'java', level: 23 },
+      { technologyId: 'postgresql', level: 24 },
+    ],
+    rewardMoney: 1100,
   },
   gym_cobol: {
     id: 'gym_cobol',
@@ -344,6 +380,24 @@ export const trainers: Record<string, TrainerDef> = {
     ],
     rewardMoney: 1100,
   },
+  gym_trainer_timesheet: {
+    id: 'gym_trainer_timesheet',
+    name: 'Timesheet Auditor',
+    party: [
+      { technologyId: 'java', level: 24 },
+      { technologyId: 'angular', level: 25 },
+    ],
+    rewardMoney: 1150,
+  },
+  gym_trainer_change_request: {
+    id: 'gym_trainer_change_request',
+    name: 'Change Requester',
+    party: [
+      { technologyId: 'salesforce', level: 25 },
+      { technologyId: 'spring_boot', level: 26 },
+    ],
+    rewardMoney: 1200,
+  },
   gym_billing: {
     id: 'gym_billing',
     name: 'Billing',
@@ -376,6 +430,24 @@ export const trainers: Record<string, TrainerDef> = {
       { technologyId: 'rust', level: 28 },
     ],
     rewardMoney: 1400,
+  },
+  gym_trainer_interview_loop: {
+    id: 'gym_trainer_interview_loop',
+    name: 'Interview Loop',
+    party: [
+      { technologyId: 'python', level: 27 },
+      { technologyId: 'react', level: 28 },
+    ],
+    rewardMoney: 1450,
+  },
+  gym_trainer_system_design: {
+    id: 'gym_trainer_system_design',
+    name: 'System Design Panel',
+    party: [
+      { technologyId: 'aws', level: 28 },
+      { technologyId: 'kubernetes', level: 29 },
+    ],
+    rewardMoney: 1500,
   },
   gym_leet: {
     id: 'gym_leet',

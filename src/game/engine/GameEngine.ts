@@ -10,6 +10,7 @@ import { getNpcsForMap } from '../../data/npcs';
 import { getTechnology } from '../../data/technologies';
 import { trainers } from '../../data/cities';
 import { GYM_LEADERS } from '../../data/gymConfig';
+import { getDialogue } from '../../data/dialogue';
 import { GameLoop } from './GameLoop';
 import { InputManager, directionDelta } from './InputManager';
 import { Camera } from './Camera';
@@ -89,6 +90,8 @@ export class GameEngine {
   private battleFlash = 0;
   private pendingBattle: BattleState | null = null;
   private trainerEngaging = false;
+  private trainerApproach: { npc: NPCEntity; trainerId: string } | null = null;
+  private pendingTrainerBattleAfterDialogue: string | null = null;
 
   constructor(
     player: PlayerState,
@@ -275,6 +278,7 @@ export class GameEngine {
 
     if (this.trainerEngaging) {
       this.playerEntity.update(dt);
+      this.updateTrainerApproach(dt, map);
       this.camera.follow(
         this.playerEntity.pixelX,
         this.playerEntity.pixelY,
@@ -360,9 +364,51 @@ export class GameEngine {
         this.playerEntity.direction = opposite(npc.direction);
         this.emitPlayer();
         this.events.onMessage?.(`${npc.def.name} wants to battle!`);
-        this.startDialogue(npc.def.dialogueId);
+        this.trainerApproach = { npc, trainerId: interaction.trainerId };
         return;
       }
+    }
+  }
+
+  private updateTrainerApproach(dt: number, map: ReturnType<typeof getMap>): void {
+    const approach = this.trainerApproach;
+    if (!approach) return;
+
+    const { npc, trainerId } = approach;
+    if (npc.moving) {
+      npc.update(dt, () => true, this.world.isNight);
+      return;
+    }
+
+    const dx = this.playerEntity.tile.x - npc.tile.x;
+    const dy = this.playerEntity.tile.y - npc.tile.y;
+    const distance = Math.abs(dx) + Math.abs(dy);
+    if (distance <= 1) {
+      npc.direction = opposite(this.playerEntity.direction);
+      this.playerEntity.direction = opposite(npc.direction);
+      this.trainerApproach = null;
+      this.emitPlayer();
+      this.startTrainerChallengeDialogue(npc, trainerId);
+      return;
+    }
+
+    let dir: Direction;
+    if (Math.abs(dx) >= Math.abs(dy)) {
+      dir = dx > 0 ? 'right' : 'left';
+    } else {
+      dir = dy > 0 ? 'down' : 'up';
+    }
+    const occupied = [
+      this.playerEntity.tile,
+      ...this.npcs.filter((other) => other !== npc).map((other) => other.tile),
+    ];
+    const moved = npc.tryStep(
+      dir,
+      (x, y) => !this.collision.blocksEntity(map, x, y, occupied, npc.tile),
+    );
+    if (!moved) {
+      this.trainerApproach = null;
+      this.startTrainerChallengeDialogue(npc, trainerId);
     }
   }
 
@@ -491,7 +537,8 @@ export class GameEngine {
         this.events.onMessage?.('You need a battle-ready technology first! Visit Professor Ada.');
         return;
       }
-      this.beginTrainerBattle(def.interaction.trainerId);
+      this.trainerEngaging = true;
+      this.startTrainerChallengeDialogue(npc, def.interaction.trainerId);
       return;
     }
 
@@ -517,6 +564,15 @@ export class GameEngine {
       }
       if (!this.hasBattleReadyTech()) {
         this.events.onMessage?.('You need a battle-ready technology first! Visit Professor Ada.');
+        return;
+      }
+      const remainingTrainerId = cfg?.requiredTrainerIds?.find(
+        (id) => !this.world.defeatedTrainers.includes(id),
+      );
+      if (remainingTrainerId) {
+        this.events.onMessage?.(
+          `${def.name}: Challenge every gym trainer before facing me.`,
+        );
         return;
       }
       this.startDialogue(def.dialogueId);
@@ -678,6 +734,14 @@ export class GameEngine {
     this.events.onDialogue?.(true);
   }
 
+  private startTrainerChallengeDialogue(npc: NPCEntity, trainerId: string): void {
+    const opening = getDialogue(npc.def.dialogueId)[0];
+    this.pendingTrainerBattleAfterDialogue = trainerId;
+    this.dialogue.startEphemeral(opening.speaker || npc.def.name, opening.text);
+    this.setMode('dialogue');
+    this.events.onDialogue?.(true);
+  }
+
   private handleDialogueInput(): void {
     if (this.dialogue.hasChoices()) {
       if (this.input.consumeJustPressed('up')) this.dialogue.moveChoice(-1);
@@ -697,6 +761,14 @@ export class GameEngine {
         this.handleDialogueAction(result.action);
       }
       if (result.done && !keepUi) {
+        const trainerId = this.pendingTrainerBattleAfterDialogue;
+        if (trainerId) {
+          this.pendingTrainerBattleAfterDialogue = null;
+          this.dialogue.end();
+          this.events.onDialogue?.(false);
+          this.beginTrainerBattle(trainerId);
+          return;
+        }
         this.trainerEngaging = false;
         this.setMode('world');
         this.events.onDialogue?.(false);

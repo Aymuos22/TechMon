@@ -6,6 +6,7 @@ export interface GymLeaderConfig {
   dialogueId: string;
   battleNodeId: string;
   winNodeId: string;
+  requiredTrainerIds?: string[];
 }
 
 export const GYM_LEADERS: Record<string, GymLeaderConfig> = {
@@ -32,6 +33,7 @@ export const GYM_LEADERS: Record<string, GymLeaderConfig> = {
     dialogueId: 'helm_intro',
     battleNodeId: 'helm_battle',
     winNodeId: 'helm_win',
+    requiredTrainerIds: ['gym_trainer_manifest', 'gym_trainer_cluster'],
   },
   legacy: {
     gymId: 'legacy',
@@ -40,6 +42,7 @@ export const GYM_LEADERS: Record<string, GymLeaderConfig> = {
     dialogueId: 'cobol_intro',
     battleNodeId: 'cobol_battle',
     winNodeId: 'cobol_win',
+    requiredTrainerIds: ['gym_trainer_jcl', 'gym_trainer_green_screen'],
   },
   service: {
     gymId: 'service',
@@ -48,6 +51,7 @@ export const GYM_LEADERS: Record<string, GymLeaderConfig> = {
     dialogueId: 'billing_intro',
     battleNodeId: 'billing_battle',
     winNodeId: 'billing_win',
+    requiredTrainerIds: ['gym_trainer_timesheet', 'gym_trainer_change_request'],
   },
   faang: {
     gymId: 'faang',
@@ -56,6 +60,7 @@ export const GYM_LEADERS: Record<string, GymLeaderConfig> = {
     dialogueId: 'leet_intro',
     battleNodeId: 'leet_battle',
     winNodeId: 'leet_win',
+    requiredTrainerIds: ['gym_trainer_interview_loop', 'gym_trainer_system_design'],
   },
   vibe: {
     gymId: 'vibe',

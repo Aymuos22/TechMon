@@ -225,6 +225,36 @@ function rebuild(map: MapData): MapData {
   return map;
 }
 
+function keepTownAccessOpen(map: MapData): MapData {
+  fillRect(map.tiles, 1, 9, map.width - 2, 2, TILE.PATH);
+  fillRect(map.tiles, 12, 2, 2, map.height - 4, TILE.PATH);
+
+  for (const building of map.buildings) {
+    const { x, y } = building.door;
+    setTile(map.tiles, x, y, TILE.DOOR);
+    if (y + 1 < map.height - 1) {
+      setTile(map.tiles, x, y + 1, TILE.PATH);
+    }
+
+    const startY = Math.min(y + 1, 9);
+    const endY = Math.max(y + 1, 10);
+    for (let row = startY; row <= endY; row++) {
+      setTile(map.tiles, x, row, TILE.PATH);
+    }
+  }
+
+  return map;
+}
+
+function keepRoutePassageOpen(map: MapData): MapData {
+  fillRect(map.tiles, 1, 5, map.width - 2, 2, TILE.PATH);
+  setTile(map.tiles, 0, 5, TILE.PATH);
+  setTile(map.tiles, 0, 6, TILE.PATH);
+  setTile(map.tiles, map.width - 1, 5, TILE.PATH);
+  setTile(map.tiles, map.width - 1, 6, TILE.PATH);
+  return map;
+}
+
 function makeInteriorGym(
   id: string,
   name: string,
@@ -413,6 +443,7 @@ export function createContainerCove(): MapData {
       'cove_quest_giver',
       'joke_increment',
       'bhavika',
+      'dev_soumya_cove',
     ],
     encounters: {
       chance: 0.12,
@@ -471,7 +502,7 @@ export function createContainerCove(): MapData {
       text: 'Harbor cluster dashboard: 87 containers waiting for rollout.',
     },
   );
-  return rebuild(map);
+  return rebuild(keepTownAccessOpen(map));
 }
 
 export function createLegacyCrossing(): MapData {
@@ -519,7 +550,14 @@ export function createLegacyCrossing(): MapData {
         color: '#005CA5',
       },
     ],
-    npcIds: ['legacy_elder', 'trainer_legacy_batch', 'legacy_quest_giver', 'joke_weekend', 'shrey'],
+    npcIds: [
+      'legacy_elder',
+      'trainer_legacy_batch',
+      'legacy_quest_giver',
+      'joke_weekend',
+      'shrey',
+      'dev_soumya_legacy',
+    ],
     encounters: {
       chance: 0.14,
       entries: [
@@ -572,7 +610,7 @@ export function createLegacyCrossing(): MapData {
     kind: 'computer',
     text: 'Green-screen terminal: cursor blinking since 1987. Still mission critical.',
   });
-  return rebuild(map);
+  return rebuild(keepTownAccessOpen(map));
 }
 
 export function createServiceSquare(): MapData {
@@ -633,6 +671,7 @@ export function createServiceSquare(): MapData {
       'gossip_nandini',
       'priyanshu',
       'nikita',
+      'dev_soumya_service',
     ],
     encounters: {
       chance: 0.1,
@@ -674,7 +713,7 @@ export function createServiceSquare(): MapData {
     kind: 'inspect',
     text: 'Notice board: "Bench allocation pending. Please continue looking busy."',
   });
-  return rebuild(map);
+  return rebuild(keepTownAccessOpen(map));
 }
 
 export function createFaangHeights(): MapData {
@@ -731,6 +770,7 @@ export function createFaangHeights(): MapData {
       'joke_equity',
       'joke_affair_3',
       'soumya_gupta',
+      'dev_soumya_faang',
     ],
     encounters: {
       chance: 0.12,
@@ -779,7 +819,7 @@ export function createFaangHeights(): MapData {
     kind: 'info',
     text: 'Glass plaza: free snacks west, whiteboard anxiety east, stock refresh north.',
   });
-  return rebuild(map);
+  return rebuild(keepTownAccessOpen(map));
 }
 
 export function createRouteOps(): MapData {
@@ -828,7 +868,7 @@ export function createRouteOps(): MapData {
     kind: 'sign',
     text: 'ORCHESTRATION ROAD — Containers stacked north. Deployments staged south.',
   });
-  return rebuild(map);
+  return rebuild(keepRoutePassageOpen(map));
 }
 
 export function createRouteLegacy(): MapData {
@@ -867,7 +907,7 @@ export function createRouteLegacy(): MapData {
     kind: 'sign',
     text: 'COBOL CAUSEWAY — Mind the cracked road and the untouched payroll batch.',
   });
-  return rebuild(map);
+  return rebuild(keepRoutePassageOpen(map));
 }
 
 export function createRouteService(): MapData {
@@ -904,7 +944,7 @@ export function createRouteService(): MapData {
     kind: 'sign',
     text: 'BENCH BOULEVARD — Villages of idle talent and timesheet dust.',
   });
-  return rebuild(map);
+  return rebuild(keepRoutePassageOpen(map));
 }
 
 export function createRouteFaang(): MapData {
@@ -944,11 +984,13 @@ export function createRouteFaang(): MapData {
     kind: 'sign',
     text: 'ONSITE APPROACH — Badge swipe, free kombucha, O(n log n) panic.',
   });
-  return rebuild(map);
+  return rebuild(keepRoutePassageOpen(map));
 }
 
 export function createDevopsGym(): MapData {
   const map = makeInteriorGym('devops_gym', 'DevOps Gym', 'container_cove', { x: 13, y: 17 }, [
+    'gym_trainer_manifest_npc',
+    'gym_trainer_cluster_npc',
     'gym_helm_npc',
   ]);
   fillRect(map.tiles, 2, 3, 7, 1, TILE.MACHINE);
@@ -964,6 +1006,8 @@ export function createDevopsGym(): MapData {
 }
 export function createLegacyGym(): MapData {
   const map = makeInteriorGym('legacy_gym', 'Legacy Gym', 'legacy_crossing', { x: 13, y: 17 }, [
+    'gym_trainer_jcl_npc',
+    'gym_trainer_green_screen_npc',
     'gym_cobol_npc',
   ]);
   fillRect(map.tiles, 2, 3, 7, 1, TILE.COMPUTER);
@@ -979,6 +1023,8 @@ export function createLegacyGym(): MapData {
 }
 export function createServiceGym(): MapData {
   const map = makeInteriorGym('service_gym', 'Billing Gym', 'service_square', { x: 13, y: 17 }, [
+    'gym_trainer_timesheet_npc',
+    'gym_trainer_change_request_npc',
     'gym_billing_npc',
   ]);
   fillRect(map.tiles, 2, 3, 7, 1, TILE.COUNTER);
@@ -994,6 +1040,8 @@ export function createServiceGym(): MapData {
 }
 export function createFaangGym(): MapData {
   const map = makeInteriorGym('faang_gym', 'Leetcode Gym', 'faang_heights', { x: 13, y: 17 }, [
+    'gym_trainer_interview_loop_npc',
+    'gym_trainer_system_design_npc',
     'gym_leet_npc',
   ]);
   fillRect(map.tiles, 2, 3, 7, 1, TILE.COMPUTER);
@@ -1216,6 +1264,7 @@ export function createCuckCoder(): MapData {
       'madhusudhan',
       'sajal',
       'trainer_cuck_street',
+      'dev_soumya_cuckcoder',
     ],
     encounters: {
       chance: 0.12,

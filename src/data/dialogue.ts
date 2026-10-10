@@ -1,5 +1,7 @@
 import type { DialogueNode } from '../types/dialogue';
 
+const SOUMYA_PORTFOLIO = 'https://stackfoliofrontend.vercel.app/p/soumya-darshan';
+
 export const dialogues: Record<string, DialogueNode[]> = {
   professor_ada: [
     {
@@ -55,6 +57,104 @@ export const dialogues: Record<string, DialogueNode[]> = {
       id: 'ada_after',
       speaker: 'Professor Ada',
       text: 'Your Tech Scanner is ready. Explore Byteburg, then take Pipeline Route toward Stackhaven!',
+    },
+  ],
+
+  dev_soumya_byteburg: [
+    {
+      id: 'sdb_1',
+      speaker: 'Soumya Darshan',
+      text: `I am Soumya Darshan, developer of this game. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      nextId: 'sdb_2',
+    },
+    {
+      id: 'sdb_2',
+      speaker: 'Soumya Darshan',
+      text: `Mera career roadmap dekh ke Google Maps bhi bolega bhai destination toh decide kar le. UBS, DSA, AI, backend, startup - sab side quests active hain. Portfolio: ${SOUMYA_PORTFOLIO}`,
+    },
+  ],
+
+  dev_soumya_stackhaven: [
+    {
+      id: 'sdsh_1',
+      speaker: 'Soumya Darshan',
+      text: `Stackhaven mein production jalta hai, aur meri life ka CI bhi. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      nextId: 'sdsh_2',
+    },
+    {
+      id: 'sdsh_2',
+      speaker: 'Soumya Darshan',
+      text: `Code aur meri life mein ek similarity hai: jitna fix karne ki koshish karta hoon, utne naye issues discover hote hain. Portfolio: ${SOUMYA_PORTFOLIO}`,
+    },
+  ],
+
+  dev_soumya_cove: [
+    {
+      id: 'sdc_1',
+      speaker: 'Soumya Darshan',
+      text: `Container Cove mein deploy bhi rolling hai aur mere plans bhi. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      nextId: 'sdc_2',
+    },
+    {
+      id: 'sdc_2',
+      speaker: 'Soumya Darshan',
+      text: `Mere paas ideas ki kami nahi hai, bas ek aisa investor chahiye jo mujhe paise ke saath ADHD ka project manager bhi de. Portfolio: ${SOUMYA_PORTFOLIO}`,
+    },
+  ],
+
+  dev_soumya_legacy: [
+    {
+      id: 'sdl_1',
+      speaker: 'Soumya Darshan',
+      text: `Legacy Crossing reminds me that old code and old overthinking both refuse to die. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      nextId: 'sdl_2',
+    },
+    {
+      id: 'sdl_2',
+      speaker: 'Soumya Darshan',
+      text: `Raat ko ek chhoti si baat sochne baitha tha, subah tak career, relationships aur universe ka postmortem kar diya. Portfolio: ${SOUMYA_PORTFOLIO}`,
+    },
+  ],
+
+  dev_soumya_service: [
+    {
+      id: 'sds_1',
+      speaker: 'Soumya Darshan',
+      text: `Service Square ka vibe: client wants everything yesterday. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      nextId: 'sds_2',
+    },
+    {
+      id: 'sds_2',
+      speaker: 'Soumya Darshan',
+      text: `Khud ki life ka code compile nahi ho raha, lekin doston ko relationship architecture samjha raha hoon. Portfolio: ${SOUMYA_PORTFOLIO}`,
+    },
+  ],
+
+  dev_soumya_faang: [
+    {
+      id: 'sdf_1',
+      speaker: 'Soumya Darshan',
+      text: `FAANG Heights mein confidence Big O notation mein girta hai. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      nextId: 'sdf_2',
+    },
+    {
+      id: 'sdf_2',
+      speaker: 'Soumya Darshan',
+      text: `LeetCode pe ek Medium solve karke main khud ko Google ka future CTO samajhta hoon. Agla question meri aukaat ka production deployment kar deta hai. Portfolio: ${SOUMYA_PORTFOLIO}`,
+    },
+  ],
+
+  dev_soumya_cuckcoder: [
+    {
+      id: 'sdcc_1',
+      speaker: 'Soumya Darshan',
+      text: `CuckCoder mein har pitch billion-dollar lagti hai jab tak SaaS ka bill nahi aata. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      nextId: 'sdcc_2',
+    },
+    {
+      id: 'sdcc_2',
+      speaker: 'Soumya Darshan',
+      text: `Vision mera Silicon Valley ka hai, lekin SaaS ka $20 monthly plan lene se pehle Indian Standard Time mein budget meeting hoti hai. Portfolio: ${SOUMYA_PORTFOLIO}`,
     },
   ],
 
@@ -588,6 +688,22 @@ export const dialogues: Record<string, DialogueNode[]> = {
     },
     { id: 'or_no', speaker: 'Pipeline Intern', text: 'Retry after merge.' },
   ],
+  gym_trainer_manifest: [
+    {
+      id: 'gtm_1',
+      speaker: 'Manifest Minder',
+      text: 'No one reaches Helm without surviving a manifest review.',
+      action: { kind: 'start_battle', trainerId: 'gym_trainer_manifest' },
+    },
+  ],
+  gym_trainer_cluster: [
+    {
+      id: 'gtc_1',
+      speaker: 'Cluster Guard',
+      text: 'This cluster has one rule: beat the guard before the leader.',
+      action: { kind: 'start_battle', trainerId: 'gym_trainer_cluster' },
+    },
+  ],
   helm_intro: [
     {
       id: 'helm_1',
@@ -649,6 +765,22 @@ export const dialogues: Record<string, DialogueNode[]> = {
       ],
     },
     { id: 'lr_no', speaker: 'Punch-Card Dev', text: 'GOTO later.' },
+  ],
+  gym_trainer_jcl: [
+    {
+      id: 'gtj_1',
+      speaker: 'JCL Clerk',
+      text: 'First submit your job. Then submit to battle.',
+      action: { kind: 'start_battle', trainerId: 'gym_trainer_jcl' },
+    },
+  ],
+  gym_trainer_green_screen: [
+    {
+      id: 'gtg_1',
+      speaker: 'Green Screen Guard',
+      text: 'Green screen, red alert. You fight me before Cobol.',
+      action: { kind: 'start_battle', trainerId: 'gym_trainer_green_screen' },
+    },
   ],
   cobol_intro: [
     {
@@ -738,6 +870,22 @@ export const dialogues: Record<string, DialogueNode[]> = {
     },
     { id: 'sr_no', speaker: 'Bench Warmer', text: 'Still waiting.' },
   ],
+  gym_trainer_timesheet: [
+    {
+      id: 'gtt_1',
+      speaker: 'Timesheet Auditor',
+      text: 'Before Billing signs off, I audit your stack.',
+      action: { kind: 'start_battle', trainerId: 'gym_trainer_timesheet' },
+    },
+  ],
+  gym_trainer_change_request: [
+    {
+      id: 'gtcr_1',
+      speaker: 'Change Requester',
+      text: 'Change request: add one mandatory battle before the leader.',
+      action: { kind: 'start_battle', trainerId: 'gym_trainer_change_request' },
+    },
+  ],
   billing_intro: [
     {
       id: 'billing_1',
@@ -825,6 +973,22 @@ export const dialogues: Record<string, DialogueNode[]> = {
       ],
     },
     { id: 'fr_no', speaker: 'Onsite Shadow', text: 'Reject. Soft.' },
+  ],
+  gym_trainer_interview_loop: [
+    {
+      id: 'gtil_1',
+      speaker: 'Interview Loop',
+      text: 'Round one starts now. No skipping the loop.',
+      action: { kind: 'start_battle', trainerId: 'gym_trainer_interview_loop' },
+    },
+  ],
+  gym_trainer_system_design: [
+    {
+      id: 'gtsd_1',
+      speaker: 'System Design Panel',
+      text: 'Scale this battle horizontally before you talk to Leet.',
+      action: { kind: 'start_battle', trainerId: 'gym_trainer_system_design' },
+    },
   ],
   leet_intro: [
     {

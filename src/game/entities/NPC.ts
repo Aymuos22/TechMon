@@ -102,12 +102,12 @@ export class NPCEntity {
     this.tryStep(dir, canMoveTo);
   }
 
-  private tryStep(dir: Direction, canMoveTo: (x: number, y: number) => boolean): void {
+  tryStep(dir: Direction, canMoveTo: (x: number, y: number) => boolean): boolean {
     this.direction = dir;
     const d = directionDelta(dir);
     const nx = this.tile.x + d.x;
     const ny = this.tile.y + d.y;
-    if (!canMoveTo(nx, ny)) return;
+    if (!canMoveTo(nx, ny)) return false;
     this.moving = true;
     this.fromX = this.tile.x * TILE_SIZE;
     this.fromY = this.tile.y * TILE_SIZE;
@@ -115,5 +115,6 @@ export class NPCEntity {
     this.toY = ny * TILE_SIZE;
     this.tile = { x: nx, y: ny };
     this.moveElapsed = 0;
+    return true;
   }
 }
