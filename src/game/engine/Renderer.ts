@@ -13,6 +13,7 @@ export interface RenderActor {
   direction: Direction;
   color: string;
   gender?: 'male' | 'female';
+  appearance?: 'developer';
   name?: string;
   walkFrame: number;
   isPlayer?: boolean;
@@ -448,6 +449,10 @@ export class Renderer {
       this.drawLargeNpc(sx, sy, actor);
       return;
     }
+    if (actor.appearance === 'developer') {
+      this.drawDeveloperNpc(sx, sy, actor);
+      return;
+    }
 
     const bob = actor.walkFrame % 2 === 1 ? 1 : 0;
     // shadow
@@ -521,6 +526,78 @@ export class Renderer {
       this.ctx.fillRect(sx + 8, sy + 30, 7, 2);
       this.ctx.fillRect(sx + 17, sy + 30, 7, 2);
     }
+  }
+
+  private drawDeveloperNpc(sx: number, sy: number, actor: RenderActor): void {
+    const bob = actor.walkFrame % 2 === 1 ? 1 : 0;
+    const coat = '#f7f2df';
+    const shirt = '#1f6feb';
+    const trim = '#f39c12';
+
+    this.ctx.fillStyle = 'rgba(0,0,0,0.32)';
+    this.ctx.fillRect(sx + 6, sy + 28, 20, 4);
+
+    // Laptop backpack / creator kit.
+    if (actor.direction !== 'down') {
+      this.ctx.fillStyle = '#2c3e50';
+      this.ctx.fillRect(sx + 8, sy + 11 - bob, 16, 13);
+      this.ctx.fillStyle = trim;
+      this.ctx.fillRect(sx + 10, sy + 13 - bob, 12, 2);
+    }
+
+    // Long cream developer jacket over blue shirt.
+    this.ctx.fillStyle = coat;
+    this.ctx.fillRect(sx + 7, sy + 10 - bob, 18, 16);
+    this.ctx.fillStyle = shirt;
+    this.ctx.fillRect(sx + 11, sy + 11 - bob, 10, 13);
+    this.ctx.fillStyle = trim;
+    this.ctx.fillRect(sx + 8, sy + 10 - bob, 2, 16);
+    this.ctx.fillRect(sx + 22, sy + 10 - bob, 2, 16);
+    this.ctx.fillRect(sx + 12, sy + 15 - bob, 8, 2);
+
+    // Arms with rolled sleeves.
+    this.ctx.fillStyle = coat;
+    this.ctx.fillRect(sx + 4, sy + 13 - bob, 4, 9);
+    this.ctx.fillRect(sx + 24, sy + 13 - bob, 4, 9);
+    this.ctx.fillStyle = '#e8b89a';
+    this.ctx.fillRect(sx + 4, sy + 21 - bob, 4, 3);
+    this.ctx.fillRect(sx + 24, sy + 21 - bob, 4, 3);
+
+    // Floating dev badge.
+    this.ctx.fillStyle = '#111827';
+    this.ctx.fillRect(sx + 1, sy + 8 - bob, 7, 6);
+    this.ctx.fillStyle = '#3ecf8e';
+    this.ctx.fillRect(sx + 2, sy + 10 - bob, 5, 1);
+    this.ctx.fillRect(sx + 3, sy + 12 - bob, 3, 1);
+
+    // Head and styled hair.
+    this.ctx.fillStyle = '#e8b89a';
+    this.ctx.fillRect(sx + 10, sy + 2 - bob, 12, 10);
+    this.ctx.fillStyle = '#2b1b12';
+    this.ctx.fillRect(sx + 9, sy + 0 - bob, 14, 5);
+    this.ctx.fillRect(sx + 8, sy + 3 - bob, 3, 4);
+    this.ctx.fillRect(sx + 20, sy + 2 - bob, 4, 4);
+    this.ctx.fillStyle = '#7c4a25';
+    this.ctx.fillRect(sx + 13, sy + 1 - bob, 5, 2);
+
+    // Glasses.
+    this.ctx.strokeStyle = '#111827';
+    this.ctx.lineWidth = 1;
+    if (actor.direction !== 'up') {
+      this.ctx.strokeRect(sx + 11.5, sy + 5.5 - bob, 4, 3);
+      this.ctx.strokeRect(sx + 17.5, sy + 5.5 - bob, 4, 3);
+      this.ctx.fillStyle = '#111827';
+      this.ctx.fillRect(sx + 16, sy + 7 - bob, 2, 1);
+    }
+
+    // Trousers and shoes.
+    const legOffset = actor.walkFrame % 2 === 0 ? 0 : 1;
+    this.ctx.fillStyle = '#243447';
+    this.ctx.fillRect(sx + 9, sy + 25, 6, 5 + (legOffset ? 0 : 1));
+    this.ctx.fillRect(sx + 17, sy + 25, 6, 5 + (legOffset ? 1 : 0));
+    this.ctx.fillStyle = '#111827';
+    this.ctx.fillRect(sx + 8, sy + 30, 7, 2);
+    this.ctx.fillRect(sx + 17, sy + 30, 7, 2);
   }
 
   private drawLargeNpc(sx: number, sy: number, actor: RenderActor): void {

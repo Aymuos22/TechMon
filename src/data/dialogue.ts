@@ -64,7 +64,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'sdb_1',
       speaker: 'Soumya Darshan',
-      text: `I am Soumya Darshan, developer of this game. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      text: `As the developer of this game, I can say: I am Soumya Darshan, and yes, I coded my own cameo. Portfolio: ${SOUMYA_PORTFOLIO}`,
       nextId: 'sdb_2',
     },
     {
@@ -78,7 +78,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'sdsh_1',
       speaker: 'Soumya Darshan',
-      text: `Stackhaven mein production jalta hai, aur meri life ka CI bhi. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      text: `As the developer of this game, I can say: Stackhaven mein production jalta hai, aur meri life ka CI bhi. Portfolio: ${SOUMYA_PORTFOLIO}`,
       nextId: 'sdsh_2',
     },
     {
@@ -92,7 +92,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'sdc_1',
       speaker: 'Soumya Darshan',
-      text: `Container Cove mein deploy bhi rolling hai aur mere plans bhi. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      text: `As the developer of this game, I can say: Container Cove mein deploy bhi rolling hai aur mere plans bhi. Portfolio: ${SOUMYA_PORTFOLIO}`,
       nextId: 'sdc_2',
     },
     {
@@ -106,7 +106,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'sdl_1',
       speaker: 'Soumya Darshan',
-      text: `Legacy Crossing reminds me that old code and old overthinking both refuse to die. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      text: `As the developer of this game, I can say: Legacy Crossing reminds me that old code and old overthinking both refuse to die. Portfolio: ${SOUMYA_PORTFOLIO}`,
       nextId: 'sdl_2',
     },
     {
@@ -120,7 +120,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'sds_1',
       speaker: 'Soumya Darshan',
-      text: `Service Square ka vibe: client wants everything yesterday. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      text: `As the developer of this game, I can say: Service Square ka vibe is client wants everything yesterday. Portfolio: ${SOUMYA_PORTFOLIO}`,
       nextId: 'sds_2',
     },
     {
@@ -134,7 +134,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'sdf_1',
       speaker: 'Soumya Darshan',
-      text: `FAANG Heights mein confidence Big O notation mein girta hai. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      text: `As the developer of this game, I can say: FAANG Heights mein confidence Big O notation mein girta hai. Portfolio: ${SOUMYA_PORTFOLIO}`,
       nextId: 'sdf_2',
     },
     {
@@ -148,7 +148,7 @@ export const dialogues: Record<string, DialogueNode[]> = {
     {
       id: 'sdcc_1',
       speaker: 'Soumya Darshan',
-      text: `CuckCoder mein har pitch billion-dollar lagti hai jab tak SaaS ka bill nahi aata. Portfolio: ${SOUMYA_PORTFOLIO}`,
+      text: `As the developer of this game, I can say: CuckCoder mein har pitch billion-dollar lagti hai jab tak SaaS ka bill nahi aata. Portfolio: ${SOUMYA_PORTFOLIO}`,
       nextId: 'sdcc_2',
     },
     {

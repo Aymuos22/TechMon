@@ -22,6 +22,7 @@ export interface NPCDefinition {
   position: Position;
   direction: Direction;
   gender?: 'male' | 'female';
+  appearance?: 'developer';
   color: string;
   dialogueId: string;
   movement?: MovementPattern;

@@ -1135,6 +1135,7 @@ export class GameEngine {
         direction: n.direction,
         color: n.def.color,
         gender: n.def.gender,
+        appearance: n.def.appearance,
         name: n.def.name,
         walkFrame: n.moving ? n.walkFrame : 0,
       })),
