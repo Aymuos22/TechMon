@@ -284,6 +284,8 @@ button {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  contain: layout paint;
+  isolation: isolate;
 }
 
 .game-canvas {
@@ -293,6 +295,9 @@ button {
   image-rendering: crisp-edges;
   display: block;
   background: #0a0a12;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  user-select: none;
 }
 
 /* Compact overworld HUD — world stays primary */
@@ -357,6 +362,8 @@ button {
   box-shadow: inset 0 0 0 2px #5a4a2a;
   padding: 10px 14px;
   z-index: 15;
+  transform: translateZ(0);
+  animation: dialogueRise 120ms ease-out;
 }
 
 .dialogue-speaker {
@@ -388,6 +395,17 @@ button {
 @keyframes blink {
   50% {
     opacity: 0;
+  }
+}
+
+@keyframes dialogueRise {
+  from {
+    opacity: 0.94;
+    transform: translate3d(0, 4px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 

@@ -88,35 +88,113 @@ export class Renderer {
     const sx = Math.round(b.position.x * TILE_SIZE - camX);
     const sy = Math.round(b.position.y * TILE_SIZE - camY);
     const w = b.width * TILE_SIZE;
+    const h = b.height * TILE_SIZE;
     const roof = b.roofColor ?? b.color;
+    const wall = b.color;
+    const wallDark = this.shadeColor(wall, -28);
+    const wallLight = this.shadeColor(wall, 28);
+    const roofDark = this.shadeColor(roof, -35);
+    const roofLight = this.shadeColor(roof, 30);
+    const doorX = sx + (b.door.x - b.position.x) * TILE_SIZE;
+    const doorY = sy + (b.door.y - b.position.y) * TILE_SIZE;
 
-    // Roof band
+    // Soft ground shadow.
+    this.ctx.fillStyle = 'rgba(0,0,0,0.28)';
+    this.ctx.fillRect(sx + 4, sy + h - 5, w - 8, 7);
+
+    // Wall body with border and subtle side depth.
+    this.ctx.fillStyle = wallDark;
+    this.ctx.fillRect(sx + 1, sy + 12, w - 2, h - 14);
+    this.ctx.fillStyle = wall;
+    this.ctx.fillRect(sx + 3, sy + 14, w - 6, h - 18);
+    this.ctx.fillStyle = wallLight;
+    this.ctx.fillRect(sx + 5, sy + 16, w - 10, 2);
+    this.ctx.fillStyle = 'rgba(255,255,255,0.12)';
+    this.ctx.fillRect(sx + 4, sy + 15, 2, h - 22);
+    this.ctx.fillStyle = 'rgba(0,0,0,0.16)';
+    this.ctx.fillRect(sx + w - 6, sy + 15, 3, h - 22);
+
+    // Pixel brick / panel lines.
+    this.ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    for (let row = sy + 25; row < sy + h - 9; row += 14) {
+      this.ctx.fillRect(sx + 5, row, w - 10, 1);
+    }
+    this.ctx.fillStyle = 'rgba(0,0,0,0.12)';
+    for (let col = sx + 18; col < sx + w - 8; col += 32) {
+      this.ctx.fillRect(col, sy + 16, 1, h - 26);
+    }
+
+    // Layered roof with eaves.
+    this.ctx.fillStyle = roofDark;
+    this.ctx.fillRect(sx - 2, sy + 6, w + 4, 12);
     this.ctx.fillStyle = roof;
-    this.ctx.fillRect(sx, sy, w, 10);
+    this.ctx.fillRect(sx, sy + 2, w, 12);
+    this.ctx.fillStyle = roofLight;
+    this.ctx.fillRect(sx + 3, sy + 4, w - 6, 3);
     this.ctx.fillStyle = 'rgba(0,0,0,0.25)';
-    this.ctx.fillRect(sx, sy + 8, w, 3);
+    this.ctx.fillRect(sx - 2, sy + 15, w + 4, 3);
 
-    // Windows on wall row (skip door column)
-    for (let i = 0; i < b.width; i++) {
+    // Windows on each interior column row, skipping the door column.
+    for (let i = 1; i < b.width - 1; i++) {
       const tx = b.position.x + i;
       const ty = b.position.y + 1;
       if (ty >= map.height || tx >= map.width) continue;
       if (map.tiles[ty]?.[tx] === TILE.DOOR) continue;
-      if (b.door.x === tx && b.door.y === ty) continue;
-      const wx = sx + i * TILE_SIZE + 8;
-      const wy = sy + TILE_SIZE + 6;
-      this.ctx.fillStyle = '#f5d76e';
-      this.ctx.fillRect(wx, wy, 6, 6);
-      this.ctx.fillStyle = 'rgba(255,255,255,0.35)';
-      this.ctx.fillRect(wx + 1, wy + 1, 2, 2);
+      if (b.door.x === tx) continue;
+      const wx = sx + i * TILE_SIZE + 9;
+      const wy = sy + TILE_SIZE + 1;
+      this.drawBuildingWindow(wx, wy, i);
+      if (b.height >= 5) {
+        this.drawBuildingWindow(wx, wy + TILE_SIZE, i + 3);
+      }
     }
 
-    // Name plate
-    this.ctx.fillStyle = 'rgba(10,10,20,0.55)';
-    this.ctx.fillRect(sx + 2, sy + 1, Math.min(w - 4, b.name.length * 5 + 8), 8);
+    // Door with frame, threshold, and highlight.
+    this.ctx.fillStyle = '#2b1a12';
+    this.ctx.fillRect(doorX + 5, doorY + 1, 22, 31);
+    this.ctx.fillStyle = '#6b4423';
+    this.ctx.fillRect(doorX + 8, doorY + 5, 16, 27);
+    this.ctx.fillStyle = '#8b5a32';
+    this.ctx.fillRect(doorX + 10, doorY + 7, 12, 6);
+    this.ctx.fillStyle = '#f5d76e';
+    this.ctx.fillRect(doorX + 20, doorY + 18, 2, 3);
+    this.ctx.fillStyle = 'rgba(255,255,255,0.14)';
+    this.ctx.fillRect(doorX + 10, doorY + 6, 2, 22);
+    this.ctx.fillStyle = 'rgba(0,0,0,0.34)';
+    this.ctx.fillRect(doorX + 4, doorY + 30, 24, 3);
+
+    // Name plate, centered and framed.
+    const plateW = Math.min(w - 10, Math.max(34, b.name.length * 5 + 10));
+    const plateX = sx + Math.floor((w - plateW) / 2);
+    this.ctx.fillStyle = 'rgba(7,10,18,0.78)';
+    this.ctx.fillRect(plateX, sy + 6, plateW, 9);
+    this.ctx.strokeStyle = 'rgba(245,215,110,0.85)';
+    this.ctx.strokeRect(plateX + 0.5, sy + 6.5, plateW - 1, 8);
     this.ctx.fillStyle = '#f0e6d0';
     this.ctx.font = '6px monospace';
-    this.ctx.fillText(b.name, sx + 4, sy + 7);
+    this.ctx.fillText(b.name, plateX + 5, sy + 13);
+  }
+
+  private drawBuildingWindow(x: number, y: number, seed: number): void {
+    const lit = Math.sin(this.animTime * 1.4 + seed * 1.7) > -0.35;
+    this.ctx.fillStyle = '#203142';
+    this.ctx.fillRect(x - 2, y - 2, 12, 12);
+    this.ctx.fillStyle = lit ? '#f5d76e' : '#5a718a';
+    this.ctx.fillRect(x, y, 8, 8);
+    this.ctx.fillStyle = lit ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.18)';
+    this.ctx.fillRect(x + 1, y + 1, 3, 2);
+    this.ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    this.ctx.fillRect(x + 3, y, 1, 8);
+    this.ctx.fillRect(x, y + 4, 8, 1);
+  }
+
+  private shadeColor(color: string, amount: number): string {
+    if (!color.startsWith('#') || color.length !== 7) return color;
+    const num = Number.parseInt(color.slice(1), 16);
+    const r = Math.max(0, Math.min(255, (num >> 16) + amount));
+    const g = Math.max(0, Math.min(255, ((num >> 8) & 255) + amount));
+    const b = Math.max(0, Math.min(255, (num & 255) + amount));
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
   }
 
   /** Ground + object base (tree trunks, walls, grass) */

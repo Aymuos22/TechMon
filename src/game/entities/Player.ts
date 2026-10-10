@@ -2,6 +2,10 @@ import type { Direction, Position } from '../../types/common';
 import { MOVE_DURATION_MS, TILE_SIZE } from '../../types/common';
 import { directionDelta } from '../engine/InputManager';
 
+function easeInOut(t: number): number {
+  return t * t * (3 - 2 * t);
+}
+
 export class PlayerEntity {
   tile: Position;
   pixelX: number;
@@ -44,8 +48,9 @@ export class PlayerEntity {
     if (this.moving) {
       this.moveElapsed += dt * 1000;
       const t = Math.min(1, this.moveElapsed / MOVE_DURATION_MS);
-      this.pixelX = this.fromX + (this.toX - this.fromX) * t;
-      this.pixelY = this.fromY + (this.toY - this.fromY) * t;
+      const eased = easeInOut(t);
+      this.pixelX = this.fromX + (this.toX - this.fromX) * eased;
+      this.pixelY = this.fromY + (this.toY - this.fromY) * eased;
       this.walkTimer += dt;
       if (this.walkTimer > 0.1) {
         this.walkFrame = (this.walkFrame + 1) % 4;

@@ -3,18 +3,26 @@ import { TILE_SIZE, VIEWPORT_HEIGHT, VIEWPORT_WIDTH } from '../../types/common';
 export class Camera {
   x = 0;
   y = 0;
+  private initialized = false;
   private shakeX = 0;
   private shakeY = 0;
   private shakeTimer = 0;
 
-  follow(worldX: number, worldY: number, mapPixelW: number, mapPixelH: number): void {
+  follow(worldX: number, worldY: number, mapPixelW: number, mapPixelH: number, snap = false): void {
     const targetX = worldX - VIEWPORT_WIDTH / 2 + TILE_SIZE / 2;
     const targetY = worldY - VIEWPORT_HEIGHT / 2 + TILE_SIZE / 2;
     const maxX = Math.max(0, mapPixelW - VIEWPORT_WIDTH);
     const maxY = Math.max(0, mapPixelH - VIEWPORT_HEIGHT);
-    // Integer pixels — no subpixel camera blur
-    this.x = Math.round(Math.max(0, Math.min(targetX, maxX)));
-    this.y = Math.round(Math.max(0, Math.min(targetY, maxY)));
+    const clampedX = Math.max(0, Math.min(targetX, maxX));
+    const clampedY = Math.max(0, Math.min(targetY, maxY));
+    if (snap || !this.initialized) {
+      this.x = clampedX;
+      this.y = clampedY;
+      this.initialized = true;
+      return;
+    }
+    this.x += (clampedX - this.x) * 0.42;
+    this.y += (clampedY - this.y) * 0.42;
   }
 
   /** Subtle one-shot shake (overworld events / crits) */

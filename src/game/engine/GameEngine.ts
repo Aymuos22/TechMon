@@ -206,7 +206,7 @@ export class GameEngine {
       this.handleDialogueInput();
     }
 
-    this.render();
+    this.render(dt);
     this.input.endFrame();
   }
 
@@ -328,6 +328,7 @@ export class GameEngine {
       this.playerEntity.pixelY,
       map.width * TILE_SIZE,
       map.height * TILE_SIZE,
+      true,
     );
 
     this.checkTrainerSight();
@@ -1108,10 +1109,10 @@ export class GameEngine {
     this.beginWildBattle(chosen.technologyId, level);
   }
 
-  private render(): void {
+  private render(dt: number): void {
     if (!this.renderer) return;
     const map = getMap(this.player.mapId);
-    this.renderer.update(0.016);
+    this.renderer.update(dt);
     this.renderer.clear();
     // Ground + objects
     this.renderer.renderMap(map, this.camera, this.world.isNight, 'base');
