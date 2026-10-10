@@ -139,25 +139,12 @@ export class Renderer {
     this.ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
 
     if (id === TILE.GRASS || id === TILE.TALL_GRASS || id === TILE.FLOWER) {
-      this.ctx.fillStyle = accent ?? color;
-      const wave = Math.floor(Math.sin(this.animTime * 2 + x * 0.1) * 0.5);
-      this.ctx.fillRect(x + 4, y + 8 + wave, 4, 4);
-      this.ctx.fillRect(x + 16, y + 18 + wave, 4, 4);
-      this.ctx.fillRect(x + 22, y + 6 + wave, 3, 3);
+      this.drawCircuitGround(x, y, color, accent);
       if (id === TILE.TALL_GRASS) {
-        const rustle = Math.floor(Math.sin(this.animTime * 6 + x) * 1);
-        this.ctx.fillStyle = '#2f5f29';
-        this.ctx.fillRect(x + 8 + rustle, y + 4, 3, 16);
-        this.ctx.fillRect(x + 18 - rustle, y + 8, 3, 16);
-        this.ctx.fillRect(x + 12, y + 10, 3, 14);
-        this.ctx.fillStyle = '#5da34f';
-        this.ctx.fillRect(x + 9 + rustle, y + 6, 1, 4);
+        this.drawServerPatch(x, y);
       }
       if (id === TILE.FLOWER) {
-        this.ctx.fillStyle = '#e8a0bf';
-        this.ctx.fillRect(x + 12, y + 12, 6, 6);
-        this.ctx.fillStyle = '#f5d76e';
-        this.ctx.fillRect(x + 14, y + 14, 2, 2);
+        this.drawDataBeacon(x, y);
       }
     } else if (id === TILE.WATER || id === TILE.WATER_DEEP) {
       this.ctx.fillStyle = accent ?? color;
@@ -283,6 +270,75 @@ export class Renderer {
       this.ctx.strokeStyle = accent ?? '#fff';
       this.ctx.strokeRect(x + 2, y + 2, TILE_SIZE - 4, TILE_SIZE - 4);
     }
+  }
+
+  private drawCircuitGround(x: number, y: number, color: string, accent?: string): void {
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+    this.ctx.fillStyle = 'rgba(10, 30, 24, 0.22)';
+    this.ctx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+
+    this.ctx.fillStyle = accent ?? '#5da34f';
+    this.ctx.fillRect(x + 3, y + 7, 10, 1);
+    this.ctx.fillRect(x + 12, y + 7, 1, 8);
+    this.ctx.fillRect(x + 18, y + 20, 11, 1);
+    this.ctx.fillRect(x + 18, y + 14, 1, 7);
+    this.ctx.fillRect(x + 5, y + 24, 8, 1);
+    this.ctx.fillRect(x + 25, y + 4, 1, 7);
+
+    const pulse = Math.sin(this.animTime * 3 + x * 0.2 + y * 0.13) > 0.55;
+    this.ctx.fillStyle = pulse ? '#8cffc1' : '#2f7a55';
+    this.ctx.fillRect(x + 11, y + 6, 3, 3);
+    this.ctx.fillRect(x + 17, y + 19, 3, 3);
+    this.ctx.fillRect(x + 24, y + 10, 3, 3);
+  }
+
+  private drawServerPatch(x: number, y: number): void {
+    this.ctx.fillStyle = 'rgba(6, 12, 18, 0.34)';
+    this.ctx.fillRect(x + 2, y + 4, 28, 24);
+
+    const blinkA = Math.sin(this.animTime * 5 + x) > 0;
+    const blinkB = Math.sin(this.animTime * 7 + y) > 0.35;
+    const racks = [
+      { x: 4, y: 5, h: 22 },
+      { x: 13, y: 2, h: 26 },
+      { x: 22, y: 6, h: 21 },
+    ];
+
+    for (const rack of racks) {
+      this.ctx.fillStyle = '#182231';
+      this.ctx.fillRect(x + rack.x, y + rack.y, 7, rack.h);
+      this.ctx.fillStyle = '#2f3d52';
+      this.ctx.fillRect(x + rack.x + 1, y + rack.y + 2, 5, rack.h - 4);
+      this.ctx.fillStyle = '#0b111a';
+      for (let slot = 0; slot < rack.h - 6; slot += 5) {
+        this.ctx.fillRect(x + rack.x + 2, y + rack.y + 4 + slot, 3, 1);
+      }
+      this.ctx.fillStyle = blinkA ? '#3ecf8e' : '#1f6feb';
+      this.ctx.fillRect(x + rack.x + 1, y + rack.y + 4, 1, 2);
+      this.ctx.fillStyle = blinkB ? '#f5d76e' : '#2ecc71';
+      this.ctx.fillRect(x + rack.x + 5, y + rack.y + rack.h - 6, 1, 2);
+    }
+
+    const flow = Math.floor((this.animTime * 8 + x + y) % 10);
+    this.ctx.fillStyle = '#3ecf8e';
+    this.ctx.fillRect(x + 8 + flow, y + 29, 2, 1);
+    this.ctx.fillRect(x + 16 - Math.floor(flow / 2), y + 1, 2, 1);
+    this.ctx.fillStyle = 'rgba(62, 207, 142, 0.36)';
+    this.ctx.fillRect(x + 5, y + 29, 22, 1);
+    this.ctx.fillRect(x + 5, y + 1, 22, 1);
+  }
+
+  private drawDataBeacon(x: number, y: number): void {
+    const pulse = Math.floor(Math.sin(this.animTime * 5 + x) * 2);
+    this.ctx.fillStyle = '#182231';
+    this.ctx.fillRect(x + 10, y + 11, 12, 12);
+    this.ctx.fillStyle = '#3ecf8e';
+    this.ctx.fillRect(x + 13, y + 14 + pulse, 6, 3);
+    this.ctx.fillStyle = '#f5d76e';
+    this.ctx.fillRect(x + 15, y + 16 + pulse, 2, 2);
+    this.ctx.strokeStyle = 'rgba(62, 207, 142, 0.5)';
+    this.ctx.strokeRect(x + 8, y + 9, 16, 16);
   }
 
   /** Tree canopies / roof tops drawn after characters for depth */
