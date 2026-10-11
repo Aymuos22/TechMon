@@ -38,6 +38,23 @@ export async function ensureSchema(): Promise<void> {
         updated_at timestamptz not null default now()
       )
     `;
+    await sql`
+      create table if not exists pvp_battles (
+        code text primary key,
+        host_user_id text not null references users(id) on delete cascade,
+        guest_user_id text references users(id) on delete set null,
+        room_data jsonb not null,
+        status text not null default 'waiting',
+        created_at timestamptz not null default now(),
+        updated_at timestamptz not null default now()
+      )
+    `;
+    await sql`
+      create index if not exists pvp_battles_host_idx on pvp_battles (host_user_id)
+    `;
+    await sql`
+      create index if not exists pvp_battles_guest_idx on pvp_battles (guest_user_id)
+    `;
   })();
   return schemaReady;
 }

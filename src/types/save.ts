@@ -47,6 +47,7 @@ export type GameScreen =
   | 'credits'
   | 'challenge'
   | 'gym_puzzle'
+  | 'pvp'
   | 'upgrade'
   | 'heal'
   | 'victory';

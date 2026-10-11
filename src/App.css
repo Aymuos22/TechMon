@@ -491,6 +491,137 @@ button {
   cursor: not-allowed;
 }
 
+.panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.panel-header h2,
+.panel-header p {
+  margin: 0;
+}
+
+.pvp-panel {
+  width: min(92vw, 640px);
+  max-height: min(86vh, 720px);
+  overflow: auto;
+}
+
+.pvp-empty,
+.pvp-lobby,
+.pvp-room {
+  display: grid;
+  gap: 12px;
+}
+
+.pvp-empty {
+  padding: 16px;
+  border: 2px solid #25324f;
+  background: #10182a;
+}
+
+.pvp-empty.compact {
+  padding: 12px;
+}
+
+.pvp-empty h3,
+.pvp-empty p {
+  margin: 0;
+}
+
+.pvp-lobby button,
+.pvp-footer button,
+.pvp-empty button {
+  min-height: 42px;
+}
+
+.pvp-join {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.pvp-join input {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 2px solid #31405f;
+  background: #0c1220;
+  color: #f8fafc;
+  font: inherit;
+  text-transform: uppercase;
+}
+
+.pvp-code {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 12px;
+  border: 2px solid #36476b;
+  background: #0d1424;
+}
+
+.pvp-code strong {
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+}
+
+.pvp-arena {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.pvp-side {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  min-height: 168px;
+  padding: 12px;
+  border: 2px solid #2f3f62;
+  background: linear-gradient(180deg, #111a2f, #0b1020);
+}
+
+.pvp-side.self {
+  border-color: #2f6b5f;
+}
+
+.pvp-side span,
+.pvp-side small {
+  color: #aab7d4;
+}
+
+.pvp-log {
+  min-height: 116px;
+  padding: 12px;
+  border: 2px solid #263652;
+  background: #080d18;
+}
+
+.pvp-log p {
+  margin: 0 0 6px;
+}
+
+.pvp-actions {
+  padding: 10px;
+  border: 2px solid #31405f;
+  background: #10182a;
+}
+
+.pvp-wait,
+.pvp-error {
+  margin: 0;
+  color: #facc15;
+}
+
+.pvp-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .pause-menu ul {
   list-style: none;
   padding: 0;
@@ -1761,6 +1892,11 @@ button {
 }
 
 @media (max-width: 900px) {
+  .pvp-arena,
+  .pvp-join {
+    grid-template-columns: 1fr;
+  }
+
   html,
   body,
   #root {

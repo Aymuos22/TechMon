@@ -17,6 +17,7 @@ import { MobileControls, shouldShowMobileControls } from '../components/MobileCo
 import { VictoryPanel } from '../components/VictoryPanel';
 import { HealSequence } from '../components/HealSequence';
 import { EngineerCard } from '../components/EngineerCard';
+import { PvpPanel } from '../components/PvpPanel';
 import { getTechnology } from '../data/technologies';
 import { audioManager } from '../game/audio/AudioManager';
 
@@ -61,6 +62,8 @@ export function GameScreen({ game }: Props) {
     victorySummary,
     battleTransition,
     toasts,
+    cloudUser,
+    pushToast,
   } = game;
 
   useEffect(() => {
@@ -213,6 +216,15 @@ export function GameScreen({ game }: Props) {
               puzzle={gymPuzzle}
               onAnswer={submitGymAnswer}
               onClose={closeOverlay}
+            />
+          )}
+
+          {screen === 'pvp' && (
+            <PvpPanel
+              player={player}
+              signedIn={!!cloudUser}
+              onClose={closeOverlay}
+              onToast={pushToast}
             />
           )}
 

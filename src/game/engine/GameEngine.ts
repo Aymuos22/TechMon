@@ -58,6 +58,7 @@ export interface GameEngineEvents {
   onSaveRequest: () => void;
   onHealSequence: () => void;
   onOpenStorage: () => void;
+  onOpenPvp: () => void;
   onBattleTransition: (active: boolean) => void;
 }
 
@@ -604,6 +605,14 @@ export class GameEngine {
 
     if (point.kind === 'save') {
       this.startDialogue('computer_save');
+      return;
+    }
+    if (point.kind === 'pvp') {
+      if (!this.hasBattleReadyTech()) {
+        this.events.onMessage?.('You need at least one battle-ready technology for PvP.');
+        return;
+      }
+      this.events.onOpenPvp?.();
       return;
     }
     if (point.kind === 'computer') {

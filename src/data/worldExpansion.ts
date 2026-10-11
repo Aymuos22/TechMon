@@ -807,6 +807,17 @@ export function createFaangHeights(): MapData {
         label: 'Leetcode Gym',
         color: '#FF9900',
       },
+      {
+        bx: 21,
+        by: 12,
+        bw: 5,
+        bh: 4,
+        doorLocalX: 2,
+        toMapId: 'live_coding_tower',
+        toPos: { x: 6, y: 9 },
+        label: 'Live Coding Tower',
+        color: '#4f46e5',
+      },
     ],
     npcIds: [
       'faang_meta',
@@ -1142,6 +1153,55 @@ export function createFaangCenter(): MapData {
 }
 export function createFaangMart(): MapData {
   return smallMart('faang_mart', 'faang_heights', { x: 18, y: 7 }, 'faang_clerk');
+}
+
+export function createLiveCodingTower(): MapData {
+  const W = 13;
+  const H = 11;
+  const tiles = createGrid(W, H, TILE.WALL);
+  fillRect(tiles, 1, 1, W - 2, H - 2, TILE.FLOOR_DARK);
+  fillRect(tiles, 2, 2, 9, 2, TILE.COMPUTER);
+  fillRect(tiles, 2, 5, 9, 1, TILE.CARPET);
+  fillRect(tiles, 3, 7, 7, 1, TILE.MACHINE);
+  setTile(tiles, 6, H - 1, TILE.DOOR);
+  setTile(tiles, 6, 4, TILE.COMPUTER);
+  return {
+    id: 'live_coding_tower',
+    name: 'Live Coding Tower',
+    width: W,
+    height: H,
+    tiles,
+    collision: buildCollision(tiles),
+    transitions: [
+      {
+        id: 'live_coding_tower_exit',
+        from: { x: 6, y: H - 1 },
+        toMapId: 'faang_heights',
+        toPosition: { x: 23, y: 15 },
+        toFacing: 'down',
+      },
+    ],
+    interactions: [
+      {
+        id: 'pvp_terminal',
+        position: { x: 6, y: 4 },
+        kind: 'pvp',
+        text: 'Live Coding Tower terminal',
+      },
+      {
+        id: 'pvp_rules',
+        position: { x: 6, y: 2 },
+        kind: 'info',
+        text: 'Live Coding Tower: create a battle id, share it, then commit moves like production depends on it.',
+      },
+    ],
+    buildings: [],
+    npcIds: [],
+    music: 'battle',
+    isInterior: true,
+    parentMapId: 'faang_heights',
+    theme: 'interior',
+  };
 }
 
 /** North–south connector: Stackhaven → CuckCoder */
@@ -1613,6 +1673,7 @@ export const expansionMaps: MapData[] = [
   createFaangCenter(),
   createFaangMart(),
   createFaangGym(),
+  createLiveCodingTower(),
   createRouteVibe(),
   createCuckCoder(),
   createCuckCenter(),

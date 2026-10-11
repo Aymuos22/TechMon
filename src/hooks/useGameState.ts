@@ -176,6 +176,10 @@ export function useGameState() {
           setScreen('storage');
           engine.setMode('menu');
         },
+        onOpenPvp: () => {
+          setScreen('pvp');
+          engine.setMode('menu');
+        },
         onSaveRequest: () => {
           const p = engine.getPlayer();
           const w = engine.getWorld();

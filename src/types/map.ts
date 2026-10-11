@@ -64,7 +64,7 @@ export interface MapTransition {
 export interface InteractionPoint {
   id: string;
   position: Position;
-  kind: 'sign' | 'computer' | 'bed' | 'chest' | 'bug' | 'save' | 'info' | 'inspect' | 'door';
+  kind: 'sign' | 'computer' | 'bed' | 'chest' | 'bug' | 'save' | 'info' | 'inspect' | 'door' | 'pvp';
   text?: string;
   itemId?: string;
   flag?: string;
